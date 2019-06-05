@@ -26,13 +26,12 @@ func resourceTagGroup() *schema.Resource {
 		Read:   resourceTagGroupRead,
 		Update: resourceTagGroupUpdate,
 		Delete: resourceTagGroupDelete,
-		
+
 		Schema: map[string]*schema.Schema{
-			"address": &schema.Schema{
+			"address": {
 				Type:     schema.TypeString,
 				Required: true,
 			},
 		},
 	}
 }
-

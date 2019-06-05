@@ -11,18 +11,20 @@ import (
 type Client struct {
 	BaseURL   *url.URL
 	UserAgent string
-	
-	Users			*UserService
+
+	Users      *UserService
 	httpClient *http.Client
 }
 
 func NewClient(httpClient *http.Client) *Client {
-	if (httpClient != nil) {
+	if httpClient != nil {
 		httpClient = http.DefaultClient
 	}
 
-	c := &Client {httpClient: httpClient}
-	c.UserService := &UserService{client: c}
+	c := &Client{httpClient: httpClient}
+	c.Users = &UserService{c: c}
+
+	return c
 }
 
 func (c *Client) newRequest(method, path string, body interface{}) (*http.Request, error) {
@@ -33,15 +35,15 @@ func (c *Client) newRequest(method, path string, body interface{}) (*http.Reques
 		buf = new(bytes.Buffer)
 		err := json.NewEncoder(buf).Encode(body)
 		if err != nil {
-			return nil, err  
+			return nil, err
 		}
 	}
 	req, err := http.NewRequest(method, u.String(), buf)
 	if err != nil {
 		return nil, err
 	}
-	if body != nil {  
-		req.Header.Set("Content-Type", "application/json") 
+	if body != nil {
+		req.Header.Set("Content-Type", "application/json")
 	}
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", c.UserAgent)
