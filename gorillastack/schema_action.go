@@ -10,14 +10,14 @@ func actionsSchema() map[string]*schema.Schema {
 			Type:     schema.TypeList,
 			Elem:     &schema.Resource{Schema: deleteDetachedVolumesActionSchema()},
 			MinItems: 1,
-			MaxItems: 1,
+			MaxItems: 50,
 			Optional: true,
 		},
 		"delay_pause": {
 			Type:     schema.TypeList,
 			Elem:     &schema.Resource{Schema: delayPauseSchema()},
 			MinItems: 1,
-			MaxItems: 1,
+			MaxItems: 50,
 			Optional: true,
 		},
 	}

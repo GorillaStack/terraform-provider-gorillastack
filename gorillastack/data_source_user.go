@@ -32,7 +32,7 @@ func dataSourceUser() *schema.Resource {
 func dataSourceUserRead(d *schema.ResourceData, meta interface{}) error {
 	// name := d.Get("name").(string)
 
-	// client := meta.(*gorillastack.Client)
+	// client := meta.(*Client)
 	// user, err := client.GetUserByName(name)
 	// if err != nil {
 	// 	return err

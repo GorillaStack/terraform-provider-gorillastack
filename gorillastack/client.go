@@ -6,25 +6,42 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"os"
 )
+
+const DEFAULT_GORILLASTACK_API_URL = "https://api.gorillastack.com";
 
 type Client struct {
 	BaseURL   *url.URL
+	apiKey		string
 	UserAgent string
 
 	Users      *UserService
 	httpClient *http.Client
 }
 
-func NewClient(httpClient *http.Client) *Client {
-	if httpClient != nil {
-		httpClient = http.DefaultClient
+func getURL() string {
+	if v := os.Getenv("GORILLASTACK_API_URL"); v != "" {
+		return v
+	}
+	return DEFAULT_GORILLASTACK_API_URL
+
+}
+
+func NewClient(apiKey string) (*Client, error) {
+	apiUrl, err := url.Parse(getURL())
+	if (err != nil) {
+		return nil, err
 	}
 
-	c := &Client{httpClient: httpClient}
+	c := &Client{
+		httpClient: http.DefaultClient,
+		BaseURL: apiUrl,
+		apiKey: apiKey,
+	}
 	c.Users = &UserService{c: c}
 
-	return c
+	return c, nil
 }
 
 func (c *Client) newRequest(method, path string, body interface{}) (*http.Request, error) {

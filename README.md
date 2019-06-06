@@ -22,8 +22,7 @@ Requirements
 Using the provider
 ----------------------
 
-See the [GorillaStack Provider documentation](https://www.terraform.io/docs/providers/gorillastack/index.html) to get started using the
-Google provider.
+See the [GorillaStack Provider documentation](https://www.terraform.io/docs/providers/gorillastack/index.html) to get started using the GorillaStack provider.
 
 
 Upgrading the provider
