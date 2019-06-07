@@ -1,19 +1,23 @@
 package gorillastack
 
 import (
+	"log"
+
 	"bytes"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
 	"os"
 )
 
-const DEFAULT_GORILLASTACK_API_URL = "https://api.gorillastack.com";
+const DEFAULT_GORILLASTACK_API_URL = "https://api.gorillastack.com"
 
 type Client struct {
-	BaseURL   *url.URL
-	apiKey		string
+	baseURL   *url.URL
+	apiKey    string
 	UserAgent string
 
 	Users      *UserService
@@ -30,36 +34,35 @@ func getURL() string {
 
 func NewClient(apiKey string) (*Client, error) {
 	apiUrl, err := url.Parse(getURL())
-	if (err != nil) {
+	if err != nil {
 		return nil, err
 	}
 
 	c := &Client{
 		httpClient: http.DefaultClient,
-		BaseURL: apiUrl,
-		apiKey: apiKey,
+		baseURL:    apiUrl,
+		apiKey:     apiKey,
 	}
 	c.Users = &UserService{c: c}
 
 	return c, nil
 }
 
-func (c *Client) newRequest(method, path string, body interface{}) (*http.Request, error) {
+func (c *Client) newRequest(method, path string, body string) (*http.Request, error) {
 	rel := &url.URL{Path: path}
-	u := c.BaseURL.ResolveReference(rel)
+	u := c.baseURL.ResolveReference(rel)
 	var buf io.ReadWriter
-	if body != nil {
-		buf = new(bytes.Buffer)
-		err := json.NewEncoder(buf).Encode(body)
-		if err != nil {
-			return nil, err
-		}
+	if body != "" {
+		log.Printf("[WARN][GorillaStack] creating new bytes.Buffer")
+		buf = bytes.NewBufferString(body)
+		log.Printf("[WARN][GorillaStack] reading the body")
 	}
+	log.Printf("[WARN][GorillaStack] creating the request")
 	req, err := http.NewRequest(method, u.String(), buf)
 	if err != nil {
 		return nil, err
 	}
-	if body != nil {
+	if body != "" {
 		req.Header.Set("Content-Type", "application/json")
 	}
 	req.Header.Set("Accept", "application/json")
@@ -71,6 +74,9 @@ func (c *Client) do(req *http.Request, v interface{}) (*http.Response, error) {
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, err
+	}
+	if (resp.StatusCode != 200) {
+		return nil, errors.New(fmt.Sprintf("[%d] Error: %+v", resp.StatusCode, resp))
 	}
 	defer resp.Body.Close()
 	err = json.NewDecoder(resp.Body).Decode(v)

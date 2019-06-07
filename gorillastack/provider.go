@@ -8,7 +8,7 @@ import (
 func Provider() terraform.ResourceProvider {
 	return &schema.Provider{
 		Schema: map[string]*schema.Schema{
-			"api_key": &schema.Schema{
+			"api_key": {
 				Type:        schema.TypeString,
 				Required:    true,
 				DefaultFunc: schema.EnvDefaultFunc("GORILLASTACK_API_KEY", nil),
@@ -29,7 +29,7 @@ func Provider() terraform.ResourceProvider {
 func configureProvider(d *schema.ResourceData) (interface{}, error) {
 	apiKey := d.Get("api_key").(string)
 	client, err := NewClient(apiKey)
-	if (err != nil) {
+	if err != nil {
 		return nil, err
 	}
 

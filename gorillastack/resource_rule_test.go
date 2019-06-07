@@ -1,22 +1,23 @@
 package gorillastack
 
-import (
-	"fmt"
-	"testing"
+// import (
+// 	"fmt"
+// 	"testing"
 
-	"os"
-	"regexp"
+// 	"os"
+// 	"regexp"
 
-	"github.com/hashicorp/terraform/helper/acctest"
-	"github.com/hashicorp/terraform/helper/resource"
-	"github.com/hashicorp/terraform/terraform"
-)
+// 	"github.com/hashicorp/terraform/helper/acctest"
+// 	"github.com/hashicorp/terraform/helper/resource"
+// 	"github.com/hashicorp/terraform/terraform"
+// )
 
-var certificateArnRegex = regexp.MustCompile(`^arn:aws:acm:[^:]+:[^:]+:certificate/.+$`)
-const REQUIRED_ENV_VARS = []string{
-	"GORILLASTACK_ROOT_URL",
-	"GORILLASTACK_API_KEY",
-}
+// var certificateArnRegex = regexp.MustCompile(`^arn:aws:acm:[^:]+:[^:]+:certificate/.+$`)
+
+// const REQUIRED_ENV_VARS = []string{
+// 	"GORILLASTACK_ROOT_URL",
+// 	"GORILLASTACK_API_KEY",
+// }
 
 // func getEnv(val string) string {
 // 	if v := os.Getenv(val); v == "" {
@@ -64,7 +65,6 @@ const REQUIRED_ENV_VARS = []string{
 // 	})
 // }
 
-
 // func testAccCheckAcmCertificateDestroy(s *terraform.State) error {
 // 	acmconn := testAccProvider.Meta().(*client).acmconn
 
@@ -87,4 +87,4 @@ const REQUIRED_ENV_VARS = []string{
 // 	}
 
 // 	return nil
-}
+// }

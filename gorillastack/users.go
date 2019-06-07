@@ -10,7 +10,7 @@ type User struct {
 }
 
 func (c *Client) ListUsers() ([]User, error) {
-	req, err := c.newRequest("GET", "/users", nil)
+	req, err := c.newRequest("GET", "/users", "")
 	if err != nil {
 		return nil, err
 	}
