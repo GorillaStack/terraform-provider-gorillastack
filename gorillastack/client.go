@@ -48,13 +48,16 @@ func NewClient(apiKey string) (*Client, error) {
 	return c, nil
 }
 
-func (c *Client) newRequest(method, path string, body string) (*http.Request, error) {
+func (c *Client) newRequest(method, path string, body interface{}) (*http.Request, error) {
 	rel := &url.URL{Path: path}
 	u := c.baseURL.ResolveReference(rel)
 	var buf io.ReadWriter
 	if body != "" {
 		log.Printf("[WARN][GorillaStack] creating new bytes.Buffer")
-		buf = bytes.NewBufferString(body)
+		sBody := fmt.Sprintf("%s", body)
+		log.Printf("[WARN][GorillaStack] sBody: %s", sBody)
+		// buf = bytes.NewBufferString(fmt.Sprintf("%s", body))
+		buf = bytes.NewBufferString(fmt.Sprintf("%s", sBody))
 		log.Printf("[WARN][GorillaStack] reading the body")
 	}
 	log.Printf("[WARN][GorillaStack] creating the request")

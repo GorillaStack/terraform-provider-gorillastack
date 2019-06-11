@@ -4,18 +4,31 @@ import (
 	"log"
 
 	"github.com/hashicorp/terraform/helper/schema"
+	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
 )
 
 type CreateRuleInput struct {
 	teamId string
 }
 
-func constructRuleFromResourceData(d *schema.ResourceData) Rule {
-	return Rule{
-		teamId:  d.Get("team_id").(string),
-		name:    d.Get("name").(string),
-		slug:    d.Get("slug").(string),
-		enabled: d.Get("enabled").(bool),
+func constructContextFromResourceData(d *schema.ResourceData) *Context {
+	return nil
+}
+
+// func constructTriggerFromResourceData(d *schema.ResourceData) Context {
+// }
+// func constructActionsFromResourceData(d *schema.ResourceData) Context {
+// }
+
+func constructRuleFromResourceData(d *schema.ResourceData) *Rule {
+	// context := constructContextFromResourceData(d)
+	// trigger := constructTriggerFromResourceData(d)
+	// actions := constructActionsFromResourceData(d)
+	return &Rule{
+		TeamId:  util.StringAddress(d.Get("team_id").(string)),
+		Name:    util.StringAddress(d.Get("name").(string)),
+		Slug:    util.StringAddress(d.Get("slug").(string)),
+		Enabled: util.BoolAddress(d.Get("enabled").(bool)),
 	}
 }
 
@@ -29,7 +42,7 @@ func resourceRuleCreate(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
-	d.SetId(rule._id)
+	d.SetId(*rule.ID)
 	return resourceRuleRead(d, m)
 }
 
@@ -43,7 +56,7 @@ func resourceRuleRead(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
-	d.Set("name", rule.name)
+	d.Set("name", rule.Name)
 	// TODO: set more attributes/whole rule
 
 	return nil
