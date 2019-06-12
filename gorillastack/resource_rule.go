@@ -12,23 +12,90 @@ type CreateRuleInput struct {
 }
 
 func constructContextFromResourceData(d *schema.ResourceData) *Context {
+	var context Context
+	rawContext := d.Get("context").([]interface{})[0].(map[string]interface{})
+	
+	if rawAws := rawContext["aws"].([]interface{}); rawAws != nil {
+		aws := rawAws[0].(map[string]interface{})
+		context = Context{
+			Platform: util.StringAddress("aws"),
+		  AccountIds: &StringArrayOrNull{StringArray: util.StringArrayOrNil(aws["account_ids"].([]interface{}))},
+		  Regions: &StringArrayOrNull{StringArray: util.StringArrayOrNil(aws["regions"].([]interface{}))},
+			AccountGroupIds: util.StringArrayOrNil(aws["account_group_ids"].([]interface{})),
+		}
+	} else {
+		if rawAzure := rawContext["azure"].([]interface{}); rawAzure != nil {
+			azure := rawAzure[0].(map[string]interface{})
+			context = Context{
+				Platform: util.StringAddress("azure"),
+				SubscriptionIds: &StringArrayOrNull{StringArray: util.StringArrayOrNil(azure["subscription_ids"].([]interface{}))},
+			}
+		} else {
+			// TODO
+			// not a supported platform
+		}
+	}
+
+	return &context
+}
+
+func constructNotifications(rawNotifications []interface{}) []*Notification {
 	return nil
 }
 
-// func constructTriggerFromResourceData(d *schema.ResourceData) Context {
-// }
-// func constructActionsFromResourceData(d *schema.ResourceData) Context {
-// }
+func constructTriggerFromResourceData(d *schema.ResourceData) *Trigger {
+	var trigger Trigger
+	rawTrigger := d.Get("trigger").([]interface{})[0].(map[string]interface{})
+	for k, rawV := range rawTrigger {
+		triggerTypeArr := rawV.([]interface{})
+		if len(triggerTypeArr) == 0 {
+			continue
+		}
+		log.Printf("[WARN][GorillaStack][constructTriggerFromResourceData] %v", rawTrigger)
+		v := triggerTypeArr[0].(map[string]interface{})
+		switch k {
+		case "schedule":
+			trigger = Trigger{
+				Trigger: 								util.StringAddress("schedule"),
+				Cron:		 								util.StringAddress(v["cron"].(string)),
+				Timezone:								util.StringAddress(v["timezone"].(string)),
+				NotificationOffset:			util.IntAddress(v["notification_offset"].(int)),
+				DefaultSnoozeDuration:	util.IntAddress(v["default_snooze_duration"].(int)),
+				Notifications:					constructNotifications(v["notifications"].([]interface{})),
+			}
+		default:
+			break
+		}
+	}
+
+	return &trigger
+}
+
+func constructAction() *Action {
+	return nil
+}
+
+func constructActionsFromResourceData(d *schema.ResourceData) []*Action {
+	// rawActions := d.Get("trigger").([]interface{})[0].(map[string]interface{})
+	rawActions := d.Get("actions").([]interface{})[0].(map[string]interface{})
+	log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] rawActions: %v", rawActions)
+	log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] len(rawActions) = %d", len(rawActions))
+	actions := make([]*Action, len(rawActions))
+
+	return actions
+}
 
 func constructRuleFromResourceData(d *schema.ResourceData) *Rule {
-	// context := constructContextFromResourceData(d)
-	// trigger := constructTriggerFromResourceData(d)
-	// actions := constructActionsFromResourceData(d)
 	return &Rule{
 		TeamId:  util.StringAddress(d.Get("team_id").(string)),
 		Name:    util.StringAddress(d.Get("name").(string)),
 		Slug:    util.StringAddress(d.Get("slug").(string)),
-		Enabled: util.BoolAddress(d.Get("enabled").(bool)),
+    Enabled: util.BoolAddress(d.Get("enabled").(bool)),
+		Labels:  util.ArrayOfStringPointers(d.Get("labels").([]interface{})),
+
+		Context: constructContextFromResourceData(d),
+		Trigger: constructTriggerFromResourceData(d),
+		Actions: constructActionsFromResourceData(d),
 	}
 }
 
@@ -42,7 +109,7 @@ func resourceRuleCreate(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
-	d.SetId(*rule.ID)
+	d.SetId(*rule.Id)
 	return resourceRuleRead(d, m)
 }
 
