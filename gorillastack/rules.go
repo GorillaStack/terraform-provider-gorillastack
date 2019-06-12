@@ -7,8 +7,76 @@ import (
 	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
 )
 
+// This type is for fields like accountIds and regions that can either be an array of strings or null
+type StringArrayOrNull struct {
+	StringArray 			[]*string
+}
+
+func (s StringArrayOrNull) String() string {
+	if len(s.StringArray) == 0 {
+		return "null"
+	}
+	return util.StringValue(s)
+}
+
+func (s StringArrayOrNull) GoString() string {
+	return s.String()
+}
+
+type SlackNotificationConfig struct {
+	RoomId			*string
+}
+
+type EmailNotificationConfig struct {
+	SendToTeam		 		*bool
+	SendToUserGroup		*bool
+	EmailAddresses		[]*string 
+}
+
+type Notification struct {
+	Slack			*SlackNotificationConfig
+	Email			*EmailNotificationConfig
+}
+
+type Context struct {
+	// Common fields
+	Platform 					*string
+	// AWS context fields
+	AccountIds				*StringArrayOrNull
+	Regions						*StringArrayOrNull
+	AccountGroupIds 	[]*string
+	// Azure context fields
+	SubscriptionIds		*StringArrayOrNull
+}
+
+type Trigger struct {
+	// Common fields
+	Trigger 							*string
+	Notifications					[]*Notification
+	// schedule trigger fields
+	Cron									*string
+	Timezone							*string
+	NotificationOffset		*int
+	DefaultSnoozeDuration *int
+}
+
+type Action struct {
+	// Common fields
+	Action						*string
+	ActionId					*string
+	DryRun 						*bool
+	TagTargeted				*bool
+	TagGroups					[]*string
+	TagGroupCombiner	[]*string
+	// Delete detached volumes action
+	DaysDetached			*int
+
+	// Delay pause schema
+	WaitDuration			*int
+}
+
 type Rule struct {
-	ID        *string
+	Id        *string
 	Name      *string
 	Slug      *string
 	TeamId    *string
@@ -18,9 +86,9 @@ type Rule struct {
 	Labels    []*string
 	CreatedAt *time.Time
 	UpdatedAt *time.Time
-	// context			*Context
-	// trigger			*Trigger
-	// actions			[]*Action
+	Context			*Context
+	Trigger			*Trigger
+	Actions			[]*Action
 }
 
 type RuleApiInput struct {
@@ -32,22 +100,10 @@ type RuleApiOutput struct {
 }
 
 func (r RuleApiInput) String() string {
-	log.Printf("[WARN][GorillaStack] in RuleApiInput.String()")
-	log.Printf("[WARN][GorillaStack] calling util.Prettify")
-	return util.Prettify(r)
+	return util.StringValue(r)
 }
 
 func (r RuleApiInput) GoString() string {
-	return r.String()
-}
-
-func (r Rule) String() string {
-	log.Printf("[WARN][GorillaStack] in Rule.String()")
-	log.Printf("[WARN][GorillaStack] calling util.Prettify")
-	return util.Prettify(r)
-}
-
-func (r Rule) GoString() string {
 	return r.String()
 }
 

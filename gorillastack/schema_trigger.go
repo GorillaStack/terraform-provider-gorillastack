@@ -14,7 +14,10 @@ func triggerSchema() map[string]*schema.Schema {
 			Optional: true,
 		},
 		"manual_trigger": {
-			Type:     schema.TypeBool,
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: manualTriggerSchema()},
+			MinItems: 1,
+			MaxItems: 1,
 			Optional: true,
 		},
 	}
@@ -48,6 +51,15 @@ func scheduleTriggerSchema() map[string]*schema.Schema {
 			MinItems: 1,
 			MaxItems: 1,
 			Elem:     &schema.Resource{Schema: notificationSchema()},
+		},
+	}
+}
+
+func manualTriggerSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"trigger": {
+			Type:     schema.TypeString,
+			Computed: true,
 		},
 	}
 }
