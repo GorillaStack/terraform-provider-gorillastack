@@ -66,7 +66,6 @@ func ruleSchema() map[string]*schema.Schema {
 		"actions": {
 			Type:     schema.TypeList,
 			Elem:     &schema.Resource{Schema: actionsSchema()},
-			ConfigMode: schema.SchemaConfigModeAttr,
 			MinItems: 1,
 			MaxItems: 100,
 			Required: true,
