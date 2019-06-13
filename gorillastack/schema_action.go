@@ -1,7 +1,10 @@
 package gorillastack
 
 import (
+	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/constants"
+	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
 	"github.com/hashicorp/terraform/helper/schema"
+	"github.com/hashicorp/terraform/helper/validation"
 )
 
 func actionsSchema() map[string]*schema.Schema {
@@ -187,6 +190,28 @@ func actionsSchema() map[string]*schema.Schema {
 	}
 }
 
+/* Common sub-schemas */
+// This is used where the customer defines multiple AWS tags
+// to add when creating a snapshot etc.
+// The difference is that here we don't want to allow any
+// tags that start with the /^aws:/ reserved namespace.
+// However, in other cases we'll want no restriction on keys
+// and values
+func awsTagSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"key": {
+			Type:					schema.TypeString,
+			ValidateFunc: validation.StringMatch(util.GetAwsNamespaceRegex(), "Cannot use the aws: namespace in tags"),
+			Required:			true,
+		},
+		"value": {
+			Type:					schema.TypeString,
+			ValidateFunc: validation.StringMatch(util.GetAwsNamespaceRegex(), "Cannot use the aws: namespace in tags"),
+			Required:			true,
+		},
+	}
+}
+
 /* AWS Schema functions */
 func copyDbSnapshotsSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
@@ -201,6 +226,54 @@ func copyDbSnapshotsSchema() map[string]*schema.Schema {
 		"index": {
 			Type:			schema.TypeInt,
 			Required: true,
+		},
+		"operator": {
+			Type:			schema.TypeString,
+			Required: true,
+			ValidateFunc: validation.StringInSlice(constants.CopyDbSnapshotsOperators, false),
+		},
+		"value":{
+			Type: 		schema.TypeInt,
+			Required:	true,
+		},
+		"destination_region": {
+			Type:			schema.TypeString,
+			Required: true,
+			ValidateFunc: validation.StringInSlice(constants.AwsRegions, false),
+		},
+		"mode": {
+			Type:					schema.TypeString,
+			Required: 		true,
+			ValidateFunc: validation.StringInSlice(constants.CopySnapshotsModes, false),
+		},
+		"key_mapping": {
+			Type:					schema.TypeMap,
+			Optional:			true,
+		},
+		"use_default_kms_key": {
+			Type:			schema.TypeBool,
+			Required: true,
+		},
+		"tag_targeted": {
+			Type:     schema.TypeBool,
+			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Optional: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
 		},
 	}
 }
@@ -219,6 +292,54 @@ func copySnapshotsSchema() map[string]*schema.Schema {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
+		"operator": {
+			Type:			schema.TypeString,
+			Required: true,
+			ValidateFunc: validation.StringInSlice(constants.CopySnapshotsOperators, false),
+		},
+		"value":{
+			Type: 		schema.TypeInt,
+			Required:	true,
+		},
+		"destination_region": {
+			Type:			schema.TypeString,
+			Required: true,
+			ValidateFunc: validation.StringInSlice(constants.AwsRegions, false),
+		},
+		"mode": {
+			Type:					schema.TypeString,
+			Required: 		true,
+			ValidateFunc: validation.StringInSlice(constants.CopySnapshotsModes, false),
+		},
+		"key_mapping": {
+			Type:					schema.TypeMap,
+			Optional:			true,
+		},
+		"use_default_kms_key": {
+			Type:			schema.TypeBool,
+			Required: true,
+		},
+		"tag_targeted": {
+			Type:     schema.TypeBool,
+			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Optional: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
 	}
 }
 
@@ -235,6 +356,42 @@ func createDbSnapshotsSchema() map[string]*schema.Schema {
 		"index": {
 			Type:			schema.TypeInt,
 			Required: true,
+		},
+		"tag_targeted": {
+			Type:     schema.TypeBool,
+			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Optional: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: 				schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
+		"copy_db_instance_tags": {
+			Type:			schema.TypeBool,
+			Required: true,
+		},
+		"multi_az_only": {
+			Type:			schema.TypeBool,
+			Required: true,
+		},
+		"additional_tags": {
+			Type: 			schema.TypeList,
+			MinItems: 	1,
+			MaxItems: 	100,
+			ConfigMode: schema.SchemaConfigModeAttr,
+			Elem:				&schema.Resource{Schema: awsTagSchema()},
 		},
 	}
 }
@@ -253,6 +410,42 @@ func createImagesActionSchema() map[string]*schema.Schema {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: 				schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
+		"no_reboot": {
+			Type:			schema.TypeBool,
+			Optional:	true,
+		},
+		"copy_volume_tags": {
+			Type:			schema.TypeBool,
+			Required:	true,
+		},
+		"copy_instance_tags": {
+			Type:			schema.TypeBool,
+			Required:	true,
+		},
+		"additional_tags": {
+			Type: 			schema.TypeList,
+			MinItems: 	1,
+			MaxItems: 	100,
+			ConfigMode: schema.SchemaConfigModeAttr,
+			Elem:				&schema.Resource{Schema: awsTagSchema()},
+		},
 	}
 }
 
@@ -270,6 +463,42 @@ func createSnapshotsActionSchema() map[string]*schema.Schema {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
+		"tag_targeted": {
+			Type:     schema.TypeBool,
+			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: 				schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
+		"copy_volume_tags": {
+			Type:			schema.TypeBool,
+			Required: true,
+		},
+		"copy_instance_tags": {
+			Type:			schema.TypeBool,
+			Required:	true,
+		},
+		"additional_tags": {
+			Type: 			schema.TypeList,
+			MinItems: 	1,
+			MaxItems: 	100,
+			ConfigMode: schema.SchemaConfigModeAttr,
+			Elem:				&schema.Resource{Schema: awsTagSchema()},
+		},
 	}
 }
 
@@ -286,6 +515,46 @@ func createVssSnapshotsActionSchema() map[string]*schema.Schema {
 		"index": {
 			Type:			schema.TypeInt,
 			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: 				schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
+		"copy_volume_tags": {
+			Type:			schema.TypeBool,
+			Required: true,
+		},
+		"copy_instance_tags": {
+			Type:			schema.TypeBool,
+			Required:	true,
+		},
+		"exclude_boot_volume": {
+			Type:			schema.TypeBool,
+			Required:	true,
+		},
+		"use_additional_tags": {
+			Type:			schema.TypeBool,
+			Required:	true,
+		},
+		"additional_tags": {
+			Type: 			schema.TypeList,
+			MinItems: 	1,
+			MaxItems: 	100,
+			ConfigMode: schema.SchemaConfigModeAttr,
+			Elem:				&schema.Resource{Schema: awsTagSchema()},
 		},
 	}
 }
@@ -328,7 +597,10 @@ func deleteDetachedVolumesActionSchema() map[string]*schema.Schema {
 			MinItems: 1,
 			MaxItems: 1,
 			Optional: true,
-			Elem:     &schema.Schema{Type: schema.TypeString},
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
 		},
 	}
 }
