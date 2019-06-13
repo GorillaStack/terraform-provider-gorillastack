@@ -29,6 +29,10 @@ func deleteDetachedVolumesActionSchema() map[string]*schema.Schema {
 			Type:     schema.TypeString,
 			Computed: true,
 		},
+		"index": {
+			Type:     schema.TypeInt,
+			Required: true,
+		},
 		"dry_run": {
 			Type:     schema.TypeBool,
 			Optional: true,
@@ -63,6 +67,10 @@ func delayPauseSchema() map[string]*schema.Schema {
 		"action": {
 			Type:     schema.TypeString,
 			Computed: true,
+		},
+		"index": {
+			Type:     schema.TypeInt,
+			Required: true,
 		},
 		"wait_duration": {
 			Type:     schema.TypeInt,

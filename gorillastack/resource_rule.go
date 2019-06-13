@@ -71,16 +71,64 @@ func constructTriggerFromResourceData(d *schema.ResourceData) *Trigger {
 	return &trigger
 }
 
-func constructAction() *Action {
-	return nil
+func getIndex (defn map[string]interface{}) int {
+	return defn["index"].(int)
+}
+
+func constructAction(actionName string, defn map[string]interface{}) *Action {
+	var action Action
+	switch actionName {
+	case "delete_detached_volumes_action":
+		action = Action{
+			Action: 						&actionName,
+			DryRun: 						util.BoolAddress(defn["dry_run"].(bool)),
+			DaysDetached: 			util.IntAddress(defn["days_detached"].(int)),
+			TagTargeted: 				util.BoolAddress(defn["dry_run"].(bool)),
+			TagGroups:					util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
+			TagGroupCombiner:		util.ArrayOfStringPointers(defn["tag_group_combiner"].([]interface{})),
+		}
+
+	case "delay_pause":
+		action = Action{
+			Action: &actionName,
+			WaitDuration: util.IntAddress(defn["wait_duration"].(int)),
+		}
+	}
+
+	return &action
+}
+
+// We cant just go off the number of entries in the map, as
+// any sequences of actions with more than 1 of the same action
+// type will go into an array of definitions
+func actionCount(rawActions map[string]interface{}) int {
+	var count int
+	for _, arrayOfDefns := range rawActions {
+		count += len(arrayOfDefns.([]interface{}))
+	}
+
+	return count
 }
 
 func constructActionsFromResourceData(d *schema.ResourceData) []*Action {
 	// rawActions := d.Get("trigger").([]interface{})[0].(map[string]interface{})
 	rawActions := d.Get("actions").([]interface{})[0].(map[string]interface{})
-	log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] rawActions: %v", rawActions)
-	log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] len(rawActions) = %d", len(rawActions))
-	actions := make([]*Action, len(rawActions))
+	// log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] rawActions: %v", rawActions)
+	// log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] len(rawActions) = %d", len(rawActions))
+	// log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] actionCount(rawActions) = %d", actionCount(rawActions))
+	actions := make([]*Action, actionCount(rawActions))
+
+	for actionName, rawArrayOfMaps := range rawActions {
+		arrayOfMaps := rawArrayOfMaps.([]interface{})
+		// log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] arrayOfMaps: %v", arrayOfMaps)
+		for _, rawDefn := range arrayOfMaps {
+			defn := rawDefn.(map[string]interface{})
+			// log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] defn: %v", defn)
+			action := constructAction(actionName, defn)
+			index := getIndex(defn)
+			actions[index - 1] = action
+		}
+	}
 
 	return actions
 }
