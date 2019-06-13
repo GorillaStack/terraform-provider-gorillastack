@@ -18,6 +18,27 @@ var CopySnapshotsOperators = []string{
 	"created_greater_than",
 }
 
+var DeleteImagesOperators = []string{
+	"keep_last",
+	"created_greater_than",
+}
+
+var InvocationTypes = []string{
+	"sync",
+	"async",
+}
+
+var ASGProcesses = []string{
+	"Launch",
+	"Terminate",
+	"HealthCheck",
+	"ReplaceUnhealthy",
+	"AZRebalance",
+	"AlarmNotification",
+	"ScheduledActions",
+	"AddToLoadBalancer",
+}
+
 var AwsRegions = []string{
 	"eu-north-1",
   "ap-south-1",
