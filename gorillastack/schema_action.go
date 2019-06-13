@@ -62,7 +62,7 @@ func actionsSchema() map[string]*schema.Schema {
 		},
 		"ec2_command_run_powershell_script_action": {
 			Type:			schema.TypeList,
-			Elem:			&schema.Resource{Schema: ec2CommandRunPowershellScriptActionSchema()},
+			Elem:			&schema.Resource{Schema: ec2CommandRunShellScriptActionSchema()},
 			Optional: true,
 		},
 		"ec2_command_run_shell_script_action": {
@@ -117,17 +117,17 @@ func actionsSchema() map[string]*schema.Schema {
 		},
 		"stop_instances_action": {
 			Type:			schema.TypeList,
-			Elem:			&schema.Resource{Schema: stopInstancesActionSchema()},
+			Elem:			&schema.Resource{Schema: startInstancesActionSchema()},
 			Optional: true,
 		},
 		"stop_rds_instances_action": {
 			Type:			schema.TypeList,
-			Elem:			&schema.Resource{Schema: stopRdsInstancesActionSchema()},
+			Elem:			&schema.Resource{Schema: startRdsInstancesActionSchema()},
 			Optional: true,
 		},
 		"suspend_autoscaling_processes_action": {
 			Type:			schema.TypeList,
-			Elem:			&schema.Resource{Schema: suspendAutoscalingProcessesActionSchema()},
+			Elem:			&schema.Resource{Schema: resumeAutoscalingProcessesActionSchema()},
 			Optional: true,
 		},
 		"update_autoscaling_groups_action": {
@@ -191,6 +191,7 @@ func actionsSchema() map[string]*schema.Schema {
 }
 
 /* Common sub-schemas */
+
 // This is used where the customer defines multiple AWS tags
 // to add when creating a snapshot etc.
 // The difference is that here we don't want to allow any
@@ -207,6 +208,23 @@ func awsTagSchema() map[string]*schema.Schema {
 		"value": {
 			Type:					schema.TypeString,
 			ValidateFunc: validation.StringMatch(util.GetAwsNamespaceRegex(), "Cannot use the aws: namespace in tags"),
+			Required:			true,
+		},
+	}
+}
+
+func environmentVariableSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema {
+		"name": {
+			Type:					schema.TypeString,
+			Required:			true,
+		},
+		"value": {
+			Type:					schema.TypeString,
+			Required:			true,
+		},
+		"secret": {
+			Type:					schema.TypeBool,
 			Required:			true,
 		},
 	}
@@ -619,6 +637,40 @@ func deleteImagesActionSchema() map[string]*schema.Schema {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
+		"operator": {
+			Type:			schema.TypeString,
+			Required: true,
+			ValidateFunc: validation.StringInSlice(constants.DeleteImagesOperators, false),
+		},
+		"value": {
+			Type:			schema.TypeInt,
+			Required:	true,
+		},
+		"keep_latest": {
+			Type:     schema.TypeBool,
+			Required: true,
+		},
+		"tag_targeted": {
+			Type:     schema.TypeBool,
+			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Optional: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
 	}
 }
 
@@ -635,6 +687,31 @@ func deleteOrphanedSnapshotsSchema() map[string]*schema.Schema {
 		"index": {
 			Type:			schema.TypeInt,
 			Required: true,
+		},
+		"dry_run": {
+			Type:     schema.TypeBool,
+			Optional: true,
+		},
+		"tag_targeted": {
+			Type:     schema.TypeBool,
+			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Optional: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
 		},
 	}
 }
@@ -653,22 +730,47 @@ func deleteSnapshotsActionSchema() map[string]*schema.Schema {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
-	}
-}
-
-func ec2CommandRunPowershellScriptActionSchema() map[string]*schema.Schema {
-	return map[string]*schema.Schema{
-		"action": {
-			Type:			schema.TypeString,
-			Computed:	true,
+		"dry_run": {
+			Type:     schema.TypeBool,
+			Optional: true,
 		},
-		"action_id": {
+		"operator": {
 			Type:			schema.TypeString,
-			Computed:	true,
-		},
-		"index": {
-			Type:			schema.TypeInt,
 			Required: true,
+			ValidateFunc: validation.StringInSlice(constants.DeleteImagesOperators, false),
+		},
+		"value": {
+			Type:			schema.TypeInt,
+			Required:	true,
+		},
+		"keep_latest": {
+			Type:     schema.TypeBool,
+			Required: true,
+		},
+		"keep_by_volume": {
+			Type:     schema.TypeBool,
+			Optional: true,
+		},
+		"tag_targeted": {
+			Type:     schema.TypeBool,
+			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Optional: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
 		},
 	}
 }
@@ -687,6 +789,37 @@ func ec2CommandRunShellScriptActionSchema() map[string]*schema.Schema {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Optional: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
+		"commands": {
+			Type:			schema.TypeList,
+			MinItems:	1,
+			Required: true,
+			Elem:			&schema.Schema{Type: schema.TypeString},
+		},
+		"working_directory": {
+			Type:			schema.TypeString,
+			Optional: true,
+		},
+		"execution_timeout": {
+			Type:			schema.TypeInt,
+			Optional: true,
+		},
 	}
 }
 
@@ -703,6 +836,29 @@ func invokeNamedLambdaFunctionActionSchema() map[string]*schema.Schema {
 		"index": {
 			Type:			schema.TypeInt,
 			Required: true,
+		},
+		"function_name": {
+			Type:			schema.TypeString,
+			Required: true,
+		},
+		"payload": {
+			Type:			schema.TypeString,
+			Optional: true,
+		},
+		"replace_conflicting_vars": {
+			Type:			schema.TypeBool,
+			Optional: true,
+		},
+		"environment_variables": {
+			Type:			schema.TypeList,
+			MinItems: 1,
+			Optional:	true,
+			Elem: 		&schema.Resource{Schema: environmentVariableSchema()},
+		},
+		"invocation_type": {
+			Type:					schema.TypeString,
+			Optional: 		true,
+			ValidateFunc: validation.StringInSlice(constants.InvocationTypes, false),
 		},
 	}
 }
@@ -721,6 +877,42 @@ func invokeTaggedLambdaFunctionsActionSchema() map[string]*schema.Schema {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Optional: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
+		"payload": {
+			Type:			schema.TypeString,
+			Optional: true,
+		},
+		"replace_conflicting_vars": {
+			Type:			schema.TypeBool,
+			Optional: true,
+		},
+		"environment_variables": {
+			Type:			schema.TypeList,
+			MinItems: 1,
+			Optional:	true,
+			Elem: 		&schema.Resource{Schema: environmentVariableSchema()},
+		},
+		"invocation_type": {
+			Type:					schema.TypeString,
+			Optional: 		true,
+			ValidateFunc: validation.StringInSlice(constants.InvocationTypes, false),
+		},
 	}
 }
 
@@ -737,6 +929,17 @@ func notifyCostActionSchema() map[string]*schema.Schema {
 		"index": {
 			Type:			schema.TypeInt,
 			Required: true,
+		},
+		"service": {
+			Type:			schema.TypeString,
+			Required: true,
+		},
+		"notifications": {
+			Type:     schema.TypeList,
+			Required: true,
+			MinItems: 1,
+			MaxItems: 1,
+			Elem:     &schema.Resource{Schema: notificationSchema()},
 		},
 	}
 }
@@ -755,6 +958,13 @@ func notifyInstanceCountActionSchema() map[string]*schema.Schema {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
+		"notifications": {
+			Type:     schema.TypeList,
+			Required: true,
+			MinItems: 1,
+			MaxItems: 1,
+			Elem:     &schema.Resource{Schema: notificationSchema()},
+		},
 	}
 }
 
@@ -771,6 +981,23 @@ func rebootInstancesActionSchema() map[string]*schema.Schema {
 		"index": {
 			Type:			schema.TypeInt,
 			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
 		},
 	}
 }
@@ -789,6 +1016,31 @@ func releaseDisassociatedIpsActionSchema() map[string]*schema.Schema {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
+		"days_associated": {
+			Type:			schema.TypeInt,
+			Required: true,
+		},
+		"tag_targeted": {
+			Type:     schema.TypeBool,
+			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Optional: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
 	}
 }
 
@@ -805,6 +1057,32 @@ func resumeAutoscalingProcessesActionSchema() map[string]*schema.Schema {
 		"index": {
 			Type:			schema.TypeInt,
 			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
+		"processes": {
+			Type: 		schema.TypeList,
+			Required: true,
+			MinItems:	1,
+			Elem:			&schema.Schema{
+				Type: 				schema.TypeString,
+				ValidateFunc: validation.StringInSlice(constants.ASGProcesses, false),
+			},
 		},
 	}
 }
@@ -823,6 +1101,35 @@ func startInstancesActionSchema() map[string]*schema.Schema {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
+		"wait_instance_state": {
+			Type:			schema.TypeBool,
+			Optional: true,
+		},
+		"wait_instance_status": {
+			Type:			schema.TypeBool,
+			Optional: true,
+		},
+		"wait_system_status": {
+			Type:			schema.TypeBool,
+			Optional: true,
+		},
 	}
 }
 
@@ -840,56 +1147,38 @@ func startRdsInstancesActionSchema() map[string]*schema.Schema {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
-	}
-}
-
-func stopInstancesActionSchema() map[string]*schema.Schema {
-	return map[string]*schema.Schema{
-		"action": {
-			Type:			schema.TypeString,
-			Computed:	true,
-		},
-		"action_id": {
-			Type:			schema.TypeString,
-			Computed:	true,
-		},
-		"index": {
-			Type:			schema.TypeInt,
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
 			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
 		},
-	}
-}
-
-func stopRdsInstancesActionSchema() map[string]*schema.Schema {
-	return map[string]*schema.Schema{
-		"action": {
-			Type:			schema.TypeString,
-			Computed:	true,
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
 		},
-		"action_id": {
-			Type:			schema.TypeString,
-			Computed:	true,
+		"target_clusters": {
+			Type:			schema.TypeBool,
+			Optional: true,
 		},
-		"index": {
-			Type:			schema.TypeInt,
-			Required: true,
+		"wait_instance_state": {
+			Type:			schema.TypeBool,
+			Optional: true,
 		},
-	}
-}
-
-func suspendAutoscalingProcessesActionSchema() map[string]*schema.Schema {
-	return map[string]*schema.Schema{
-		"action": {
-			Type:			schema.TypeString,
-			Computed:	true,
+		"wait_instance_status": {
+			Type:			schema.TypeBool,
+			Optional: true,
 		},
-		"action_id": {
-			Type:			schema.TypeString,
-			Computed:	true,
-		},
-		"index": {
-			Type:			schema.TypeInt,
-			Required: true,
+		"wait_system_status": {
+			Type:			schema.TypeBool,
+			Optional: true,
 		},
 	}
 }
@@ -908,6 +1197,47 @@ func updateAutoscalingGroupsActionSchema() map[string]*schema.Schema {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
+		"min": {
+			Type:			schema.TypeInt,
+			Optional: true,
+		},
+		"max": {
+			Type:			schema.TypeInt,
+			Optional: true,
+		},
+		"desired": {
+			Type:			schema.TypeInt,
+			Optional: true,
+		},
+		"store_existing_asg_settings": {
+			Type: 		schema.TypeBool,
+			Optional:	true,
+		},
+		"restore_to_previousg_asg_settings": {
+			Type: 		schema.TypeBool,
+			Optional:	true,
+		},
+		"ignore_if_no_cached_asg_settings": {
+			Type: 		schema.TypeBool,
+			Optional:	true,
+		},
 	}
 }
 
@@ -924,6 +1254,31 @@ func updateDynamodbTableThroughputActionSchema() map[string]*schema.Schema {
 		"index": {
 			Type:			schema.TypeInt,
 			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
+		"read_units": {
+			Type:			schema.TypeInt,
+			Optional: true,
+		},
+		"write_units": {
+			Type:			schema.TypeInt,
+			Optional: true,
 		},
 	}
 }
@@ -942,6 +1297,39 @@ func updateEcsServiceScaleActionSchema() map[string]*schema.Schema {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
+		"desired_count": {
+			Type:			schema.TypeInt,
+			Required: true,
+		},
+		"store_existing_desired_count": {
+			Type:			schema.TypeBool,
+			Required: true,
+		},
+		"restore_to_previous_desired_count": {
+			Type:			schema.TypeBool,
+			Required: true,
+		},
+		"ignore_if_no_cached_desired_count": {
+			Type:			schema.TypeBool,
+			Required: true,
+		},
 	}
 }
 
@@ -956,6 +1344,27 @@ func updateProvisionedIopsActionSchema() map[string]*schema.Schema {
 			Computed:	true,
 		},
 		"index": {
+			Type:			schema.TypeInt,
+			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
+		"iops": {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
