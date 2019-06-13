@@ -163,7 +163,7 @@ func actionsSchema() map[string]*schema.Schema {
 		},
 		"start_vms_action": {
 			Type:			schema.TypeList,
-			Elem:			&schema.Resource{Schema: startVmsActionSchema()},
+			Elem:			&schema.Resource{Schema: deallocateVmsActionSchema()},
 			Optional: true,
 		},
 		"update_scale_sets_action": {
@@ -1371,6 +1371,79 @@ func updateProvisionedIopsActionSchema() map[string]*schema.Schema {
 	}
 }
 
+/* helper functions with schemas for updateSecurityGroupsActionSchema */
+func ruleChangeMatchFields() map[string]*schema.Schema {
+	return map[string]*schema.Schema {
+		"protocol_int": {
+			Type: 					schema.TypeInt,
+			Optional:				true,
+			ConflictsWith:	[]string{"protocol_name"},
+		},
+		"protocol_name": {
+			Type:						schema.TypeString,
+			Optional: 			true,
+			ConflictsWith:	[]string{"protocol_int"},
+		},
+		"port": {
+			Type:					schema.TypeString,
+			Optional: 		true,
+		},
+		"endpoint": {
+			Type:					schema.TypeString,
+			Optional: 		true,
+		},
+		"endpoint_description": {
+			Type:					schema.TypeString,
+			Optional: 		true,
+		},
+
+	}
+}
+
+func ruleChangeMatchSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"type": {
+			Type:					schema.TypeString,
+			Required: 		true,
+			ValidateFunc: validation.StringInSlice([]string{"fields"}, false),
+		},
+		"direction": {
+			Type:					schema.TypeString,
+			Required: 		true,
+			ValidateFunc: validation.StringInSlice([]string{"ingress", "egress"}, false),
+		},
+		"fields": {
+			Type:					schema.TypeMap,
+			Optional: 		true,
+		},
+	}
+}
+
+func ruleChangeChangeSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"operation": {
+			Type:					schema.TypeString,
+			Required:			true,
+			ValidateFunc: validation.StringInSlice([]string{"delete"}, false),
+		},
+	}
+}
+
+func securityGroupRuleChangesSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"match": {
+			Type: 		schema.TypeMap,
+			Required: true,
+			Elem:			&schema.Resource{Schema: ruleChangeMatchSchema()},
+		},
+		"change": {
+			Type: 		schema.TypeMap,
+			Required: true,
+			Elem:			&schema.Resource{Schema: ruleChangeChangeSchema()},
+		},
+	}
+}
+
 func updateSecurityGroupsActionSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"action": {
@@ -1384,6 +1457,34 @@ func updateSecurityGroupsActionSchema() map[string]*schema.Schema {
 		"index": {
 			Type:			schema.TypeInt,
 			Required: true,
+		},
+		"tag_targeted": {
+			Type:     schema.TypeBool,
+			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Optional: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
+		"rule_changes": {
+			Type:			schema.TypeList,
+			Required:	true,
+			MinItems: 1,
+			MaxItems: 100,
+			Elem:			&schema.Resource{Schema: securityGroupRuleChangesSchema()},
 		},
 	}
 }
@@ -1404,22 +1505,22 @@ func deallocateVmsActionSchema() map[string]*schema.Schema {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
-	}
-}
-
-func startVmsActionSchema() map[string]*schema.Schema {
-	return map[string]*schema.Schema{
-		"action": {
-			Type:			schema.TypeString,
-			Computed:	true,
-		},
-		"action_id": {
-			Type:			schema.TypeString,
-			Computed:	true,
-		},
-		"index": {
-			Type:			schema.TypeInt,
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
 			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
 		},
 	}
 }
@@ -1438,6 +1539,27 @@ func updateScaleSetsActionSchema() map[string]*schema.Schema {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
+		"capacity": {
+			Type:			schema.TypeInt,
+			Required:	true,
+		},
 	}
 }
 
@@ -1454,6 +1576,35 @@ func updateAutoscaleSettingsActionSchema() map[string]*schema.Schema {
 		"index": {
 			Type:			schema.TypeInt,
 			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Schema{
+				Type: schema.TypeString,
+				ValidateFunc: validation.StringInSlice([]string{"and", "or"}, false),
+			},
+		},
+		"min": {
+			Type:			schema.TypeInt,
+			Optional:	true,
+		},
+		"max": {
+			Type:			schema.TypeInt,
+			Optional:	true,
+		},
+		"desired": {
+			Type:			schema.TypeInt,
+			Optional:	true,
 		},
 	}
 }
