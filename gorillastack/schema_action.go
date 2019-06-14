@@ -25,27 +25,27 @@ func actionsSchema() map[string]*schema.Schema {
 			Elem:			&schema.Resource{Schema: createDbSnapshotsSchema()},
 			Optional: true,
 		},
-		"create_images_action": {
+		"create_images": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: createImagesActionSchema()},
 			Optional: true,
 		},
-		"create_snapshots_action": {
+		"create_snapshots": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: createSnapshotsActionSchema()},
 			Optional: true,
 		},
-		"create_vss_snapshots_action": {
+		"create_vss_snapshots": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: createVssSnapshotsActionSchema()},
 			Optional: true,
 		},
-		"delete_detached_volumes_action": {
+		"delete_detached_volumes": {
 			Type:     schema.TypeList,
 			Elem:     &schema.Resource{Schema: deleteDetachedVolumesActionSchema()},
 			Optional: true,
 		},
-		"delete_images_action": {
+		"delete_images": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: deleteImagesActionSchema()},
 			Optional: true,
@@ -55,134 +55,134 @@ func actionsSchema() map[string]*schema.Schema {
 			Elem:			&schema.Resource{Schema: deleteOrphanedSnapshotsSchema()},
 			Optional: true,
 		},
-		"delete_snapshots_action": {
+		"delete_snapshots": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: deleteSnapshotsActionSchema()},
 			Optional: true,
 		},
-		"ec2_command_run_powershell_script_action": {
+		"ec2_command_run_powershell_script": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: ec2CommandRunShellScriptActionSchema()},
 			Optional: true,
 		},
-		"ec2_command_run_shell_script_action": {
+		"ec2_command_run_shell_script": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: ec2CommandRunShellScriptActionSchema()},
 			Optional: true,
 		},
-		"invoke_named_lambda_function_action": {
+		"invoke_named_lambda_function": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: invokeNamedLambdaFunctionActionSchema()},
 			Optional: true,
 		},
-		"invoke_tagged_lambda_functions_action": {
+		"invoke_tagged_lambda_functions": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: invokeTaggedLambdaFunctionsActionSchema()},
 			Optional: true,
 		},
-		"notify_cost_action": {
+		"notify_cost": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: notifyCostActionSchema()},
 			Optional: true,
 		},
-		"notify_instance_count_action": {
+		"notify_instance_count": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: notifyInstanceCountActionSchema()},
 			Optional: true,
 		},
-		"reboot_instances_action": {
+		"reboot_instances": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: rebootInstancesActionSchema()},
 			Optional: true,
 		},
-		"release_disassociated_ips_action": {
+		"release_disassociated_ips": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: releaseDisassociatedIpsActionSchema()},
 			Optional: true,
 		},
-		"resume_autoscaling_processes_action": {
+		"resume_autoscaling_processes": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: resumeAutoscalingProcessesActionSchema()},
 			Optional: true,
 		},
-		"start_instances_action": {
+		"start_instances": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: startInstancesActionSchema()},
 			Optional: true,
 		},
-		"start_rds_instances_action": {
+		"start_rds_instances": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: startRdsInstancesActionSchema()},
 			Optional: true,
 		},
-		"stop_instances_action": {
+		"stop_instances": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: startInstancesActionSchema()},
 			Optional: true,
 		},
-		"stop_rds_instances_action": {
+		"stop_rds_instances": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: startRdsInstancesActionSchema()},
 			Optional: true,
 		},
-		"suspend_autoscaling_processes_action": {
+		"suspend_autoscaling_processes": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: resumeAutoscalingProcessesActionSchema()},
 			Optional: true,
 		},
-		"update_autoscaling_groups_action": {
+		"update_autoscaling_groups": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: updateAutoscalingGroupsActionSchema()},
 			Optional: true,
 		},
-		"update_dynamodb_table_throughput_action": {
+		"update_dynamodb_table_throughput": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: updateDynamodbTableThroughputActionSchema()},
 			Optional: true,
 		},
-		"update_ecs_service_scale_action": {
+		"update_ecs_service_scale": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: updateEcsServiceScaleActionSchema()},
 			Optional: true,
 		},
-		"update_provisioned_iops_action": {
+		"update_provisioned_iops": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: updateProvisionedIopsActionSchema()},
 			Optional: true,
 		},
-		"update_security_groups_action": {
+		"update_security_groups": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: updateSecurityGroupsActionSchema()},
 			Optional: true,
 		},
 		// Azure Actions
-		"deallocate_vms_action": {
+		"deallocate_vms": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: deallocateVmsActionSchema()},
 			Optional: true,
 		},
-		"start_vms_action": {
+		"start_vms": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: deallocateVmsActionSchema()},
 			Optional: true,
 		},
-		"update_scale_sets_action": {
+		"update_scale_sets": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: updateScaleSetsActionSchema()},
 			Optional: true,
 		},
-		"update_autoscale_settings_action": {
+		"update_autoscale_settings": {
 			Type:			schema.TypeList,
 			Elem:			&schema.Resource{Schema: updateAutoscaleSettingsActionSchema()},
 			Optional: true,
 		},
 		// Pauses
-		"delay_pause": {
+		"delay": {
 			Type:     schema.TypeList,
 			Elem:     &schema.Resource{Schema: delayPauseSchema()},
 			Optional: true,
 		},
-		"manual_approval_pause": {
+		"manual_approval": {
 			Type:     schema.TypeList,
 			Elem:     &schema.Resource{Schema: manualApprovalSchema()},
 			Optional: true,
