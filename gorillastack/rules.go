@@ -60,17 +60,122 @@ type Trigger struct {
 	DefaultSnoozeDuration *int
 }
 
+type Wait struct {
+	InstanceState		*bool
+	InstanceStatus  *bool
+	SystemStatus  	*bool
+}
+
+type AutoscalingParams struct {
+	Min					*int
+	Max					*int
+	Desired			*int
+}
+
+type IntOrString struct {
+	IVal						*int
+	SVal						*string
+}
+
+func (s IntOrString) String() string {
+	if len(*s.SVal) == 0 {
+		return util.StringValue(s.IVal)
+	}
+	return util.StringValue(s.SVal)
+}
+
+func (s IntOrString) GoString() string {
+	return s.String()
+}
+
+type SGMatchFields struct {
+	Protocol							*IntOrString
+	Port									*int
+	Endpoint							*string
+	EndpointDescription 	*string
+}
+
+type SGMatch struct {
+	Type				*string
+	Direction		*string
+	Fields			*SGMatchFields
+}
+
+type SGChange struct {
+	Operation		*string
+}
+
+type SGRuleChanges struct {
+	Match				*SGMatch
+	Change			*SGChange
+}
+
 type Action struct {
 	// Common fields
-	Action						*string
-	ActionId					*string
-	DryRun 						*bool
-	TagTargeted				*bool
-	TagGroups					[]*string
-	TagGroupCombiner	[]*string
+	Action							*string
+	ActionId						*string
+	DryRun 							*bool
+	TagTargeted					*bool
+	TagGroups						[]*string
+	TagGroupCombiner		[]*string
+	// Copy (DB)?Snapshots
+	Operator						*string
+	Value								*int
+  DestinationRegion		*string
+	Mode								*string
+ 	KeyMapping					*map[string]string						
+	UseDefaultKmsKey		*bool
+	// Create DB/Images/Snapshots
+	CopyDbInstanceTags	*bool
+	MultiAzOnly					*bool
+	AdditionalTags			*[]map[string]string
+	NoReboot						*bool
+	CopyVolumeTags			*bool
+	CopyInstanceTags		*bool
+	ExcludeBootVolume		*bool
+	UseAdditionalTags		*bool
 	// Delete detached volumes action
-	DaysDetached			*int
-
+	DaysDetached				*int
+	// Delete images/orphaned? snapshots
+	KeepLatest					*bool
+	KeepByVolume				*bool
+	// EC2 Run Commands
+	Commands						[]*string
+	WorkingDirectory		*string
+	ExecutionTimeout		*int
+	// Invoke Lambdas
+	FunctionName				*string
+	InvocationType			*string
+	Payload							*string
+	ReplaceConflictingVars *bool
+	EnvironmentVariables 	*[]map[string]string
+	// Notify*
+	Service							*string
+	Notifications				[]*Notification
+	// Release Disassociated IPs
+	DaysDisassociated		*int
+	// Suspend/Resume ASG Procs
+	Processes						[]*string
+	Wait								*Wait
+	// Update ASG
+	Params	 						*AutoscalingParams
+	StoreExistingAsgSettings			*bool
+	RestoreToPreviousAsgSettings	*bool
+	IgnoreIfNoCachedAsgSettings		*bool
+	// Update Dynamo
+	ReadUnits						*int
+	WriteUnits					*int
+	// ECS Service Scale
+	DesiredCount										*int
+  StoredExistingDesiredCount			*bool
+  RestoreToPreviousDesiredCount		*bool
+	IgnoreIfNoCachedDesiredCount		*bool
+	// Provisioned Iops
+	Iops							*int
+	// Update SecurityGroups
+	RuleChanges				[]*SGRuleChanges
+	// Update Scale Sets
+	Capacity					*int
 	// Delay pause schema
 	WaitDuration			*int
 }

@@ -57,3 +57,14 @@ var AwsRegions = []string{
   "us-west-1",
   "us-west-2",
 }
+
+var Triggers = []string{
+	"cloudtrail_event",
+	"cost_threshold",
+	"detached_volumes_detected",
+	"incoming_webhook",
+	"manual",
+	"number_of_instances_threshold",
+	"schedule",
+	"sns_push",
+}
