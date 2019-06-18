@@ -43,9 +43,38 @@ func constructSGRuleChanges(rawSGRuleChanges []interface{}) []*SGRuleChanges {
 	// TODO
 	return nil
 }
+
+func constructNotification(notificationData map[string]interface{}) *Notification {
+	notification := Notification{}
+	rawSlackWebhooks := notificationData["slack_webhook"].([]interface{})
+	if len(rawSlackWebhooks) > 0 {
+		rawSlackWebhook := rawSlackWebhooks[0].(map[string]interface{})
+
+		notification.Slack = &SlackNotificationConfig{
+			RoomId: util.StringAddress(rawSlackWebhook["room_id"].(string)),
+		}
+	}
+
+	rawEmailConfigs := notificationData["email"].([]interface{})
+	if len(rawEmailConfigs) > 0 {
+		rawEmailConfig := rawEmailConfigs[0].(map[string]interface{})
+
+		notification.Email = &EmailNotificationConfig{
+			SendToTeam: util.BoolAddress(rawEmailConfig["send_to_team"].(bool)),
+			SendToUserGroup: util.BoolAddress(rawEmailConfig["send_to_user_group"].(bool)),
+			EmailAddresses: util.ArrayOfStringPointers(rawEmailConfig["email_addresses"].([]interface{})),
+		}
+	}
+
+	return &notification
+}
+
 func constructNotifications(rawNotifications []interface{}) []*Notification {
-	// TODO
-	return nil
+	var notifications []*Notification
+	for _, rawNotification := range rawNotifications {
+		notifications = append(notifications, constructNotification(rawNotification.(map[string]interface{})))
+	}
+	return notifications
 }
 
 func constructTriggerFromResourceData(d *schema.ResourceData) *Trigger {
