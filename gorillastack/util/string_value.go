@@ -11,6 +11,11 @@ import (
 	"strings"
 )
 
+var callStringMethodOn = []string{
+	"gorillastack.StringArrayOrNull",
+	"gorillastack.IntOrString",
+}
+
 // StringValue returns the string representation of a value.
 func StringValue(i interface{}) string {
 	var buf bytes.Buffer
@@ -38,7 +43,7 @@ func stringValue(v reflect.Value, buf *bytes.Buffer) {
 		} else if strings.HasPrefix(strtype, "io.") {
 			buf.WriteString("<buffer>")
 			break
-		} else if strtype == "gorillastack.StringArrayOrNull" {
+		} else if Contains(callStringMethodOn, strtype) {
 			tmp := v.MethodByName("String").Call([]reflect.Value{})
 			buf.WriteString(tmp[0].String())
 			break
@@ -61,7 +66,7 @@ func stringValue(v reflect.Value, buf *bytes.Buffer) {
 
 		for i, n := range names {
 			val := v.FieldByName(n)
-			buf.WriteString(decapitalize(n) + ":")
+			buf.WriteString("\"" + decapitalize(n) + "\":")
 			stringValue(val, buf)
 
 			if i < len(names)-1 {
@@ -91,7 +96,7 @@ func stringValue(v reflect.Value, buf *bytes.Buffer) {
 		buf.WriteString("{")
 
 		for i, k := range v.MapKeys() {
-			buf.WriteString(decapitalize(k.String()) + ":")
+			buf.WriteString("\"" + decapitalize(k.String()) + "\":")
 			stringValue(v.MapIndex(k), buf)
 
 			if i < v.Len()-1 {
