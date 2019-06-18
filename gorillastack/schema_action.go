@@ -408,6 +408,7 @@ func createDbSnapshotsSchema() map[string]*schema.Schema {
 			Type: 			schema.TypeList,
 			MinItems: 	1,
 			MaxItems: 	100,
+			Optional: 	true,
 			ConfigMode: schema.SchemaConfigModeAttr,
 			Elem:				&schema.Resource{Schema: awsTagSchema()},
 		},
@@ -461,6 +462,7 @@ func createImagesActionSchema() map[string]*schema.Schema {
 			Type: 			schema.TypeList,
 			MinItems: 	1,
 			MaxItems: 	100,
+			Optional: 	true,
 			ConfigMode: schema.SchemaConfigModeAttr,
 			Elem:				&schema.Resource{Schema: awsTagSchema()},
 		},
@@ -514,6 +516,7 @@ func createSnapshotsActionSchema() map[string]*schema.Schema {
 			Type: 			schema.TypeList,
 			MinItems: 	1,
 			MaxItems: 	100,
+			Optional: 	true,
 			ConfigMode: schema.SchemaConfigModeAttr,
 			Elem:				&schema.Resource{Schema: awsTagSchema()},
 		},
@@ -571,6 +574,7 @@ func createVssSnapshotsActionSchema() map[string]*schema.Schema {
 			Type: 			schema.TypeList,
 			MinItems: 	1,
 			MaxItems: 	100,
+			Optional: 	true,
 			ConfigMode: schema.SchemaConfigModeAttr,
 			Elem:				&schema.Resource{Schema: awsTagSchema()},
 		},
@@ -1016,7 +1020,7 @@ func releaseDisassociatedIpsActionSchema() map[string]*schema.Schema {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
-		"days_associated": {
+		"days_disassociated": {
 			Type:			schema.TypeInt,
 			Required: true,
 		},
@@ -1230,7 +1234,7 @@ func updateAutoscalingGroupsActionSchema() map[string]*schema.Schema {
 			Type: 		schema.TypeBool,
 			Optional:	true,
 		},
-		"restore_to_previousg_asg_settings": {
+		"restore_to_previous_asg_settings": {
 			Type: 		schema.TypeBool,
 			Optional:	true,
 		},
