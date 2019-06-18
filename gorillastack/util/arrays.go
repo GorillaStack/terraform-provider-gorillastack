@@ -10,3 +10,12 @@ func ListWithout(source []string, filterTerm string) []string {
 
 	return filtered
 }
+
+func Contains(a []string, x string) bool {
+	for _, n := range a {
+		if x == n {
+			return true
+		}
+	}
+	return false
+}
