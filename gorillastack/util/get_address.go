@@ -1,11 +1,11 @@
 package util
 
 func StringAddress(v string) *string {
-	return &v 
+	return &v
 }
 
 func BoolAddress(v bool) *bool {
-	return &v 
+	return &v
 }
 
 func IntAddress(i int) *int {

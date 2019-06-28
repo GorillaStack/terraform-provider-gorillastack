@@ -78,7 +78,7 @@ func (c *Client) do(req *http.Request, v interface{}) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	if (resp.StatusCode != 200) {
+	if resp.StatusCode != 200 {
 		return nil, errors.New(fmt.Sprintf("[%d] Error: %+v", resp.StatusCode, resp))
 	}
 	defer resp.Body.Close()

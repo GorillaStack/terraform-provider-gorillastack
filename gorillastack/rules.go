@@ -3,13 +3,13 @@ package gorillastack
 import (
 	"log"
 
-	"time"
 	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
+	"time"
 )
 
 // This type is for fields like accountIds and regions that can either be an array of strings or null
 type StringArrayOrNull struct {
-	StringArray 			[]*string
+	StringArray []*string
 }
 
 func (s StringArrayOrNull) String() string {
@@ -24,57 +24,57 @@ func (s StringArrayOrNull) GoString() string {
 }
 
 type SlackNotificationConfig struct {
-	RoomId			*string
+	RoomId *string
 }
 
 type EmailNotificationConfig struct {
-	SendToTeam		 		*bool
-	SendToUserGroup		*bool
-	EmailAddresses		[]*string 
+	SendToTeam      *bool
+	SendToUserGroup *bool
+	EmailAddresses  []*string
 }
 
 type Notification struct {
-	Slack			*SlackNotificationConfig
-	Email			*EmailNotificationConfig
+	Slack *SlackNotificationConfig
+	Email *EmailNotificationConfig
 }
 
 type Context struct {
 	// Common fields
-	Platform 					*string
+	Platform *string
 	// AWS context fields
-	AccountIds				*StringArrayOrNull
-	Regions						*StringArrayOrNull
-	AccountGroupIds 	[]*string
+	AccountIds      *StringArrayOrNull
+	Regions         *StringArrayOrNull
+	AccountGroupIds []*string
 	// Azure context fields
-	SubscriptionIds		*StringArrayOrNull
+	SubscriptionIds *StringArrayOrNull
 }
 
 type Trigger struct {
 	// Common fields
-	Trigger 							*string
-	Notifications					[]*Notification
+	Trigger       *string
+	Notifications []*Notification
 	// schedule trigger fields
-	Cron									*string
-	Timezone							*string
-	NotificationOffset		*int
+	Cron                  *string
+	Timezone              *string
+	NotificationOffset    *int
 	DefaultSnoozeDuration *int
 }
 
 type Wait struct {
-	InstanceState		*bool
-	InstanceStatus  *bool
-	SystemStatus  	*bool
+	InstanceState  *bool
+	InstanceStatus *bool
+	SystemStatus   *bool
 }
 
 type AutoscalingParams struct {
-	Min					*int
-	Max					*int
-	Desired			*int
+	Min     *int
+	Max     *int
+	Desired *int
 }
 
 type IntOrString struct {
-	IVal						*int
-	SVal						*string
+	IVal *int
+	SVal *string
 }
 
 func (s IntOrString) String() string {
@@ -89,95 +89,95 @@ func (s IntOrString) GoString() string {
 }
 
 type SGMatchFields struct {
-	Protocol							*IntOrString
-	Port									*int
-	Endpoint							*string
-	EndpointDescription 	*string
+	Protocol            *IntOrString
+	Port                *int
+	Endpoint            *string
+	EndpointDescription *string
 }
 
 type SGMatch struct {
-	Type				*string
-	Direction		*string
-	Fields			*SGMatchFields
+	Type      *string
+	Direction *string
+	Fields    *SGMatchFields
 }
 
 type SGChange struct {
-	Operation		*string
+	Operation *string
 }
 
 type SGRuleChanges struct {
-	Match				*SGMatch
-	Change			*SGChange
+	Match  *SGMatch
+	Change *SGChange
 }
 
 type Action struct {
 	// Common fields
-	Action							*string
-	ActionId						*string
-	DryRun 							*bool
-	TagTargeted					*bool
-	TagGroups						[]*string
-	TagGroupCombiner		[]*string
+	Action           *string
+	ActionId         *string
+	DryRun           *bool
+	TagTargeted      *bool
+	TagGroups        []*string
+	TagGroupCombiner *string
 	// Copy (DB)?Snapshots
-	Operator						*string
-	Value								*int
-  DestinationRegion		*string
-	Mode								*string
- 	KeyMapping					*map[string]string						
-	UseDefaultKmsKey		*bool
+	Operator          *string
+	Value             *int
+	DestinationRegion *string
+	Mode              *string
+	KeyMapping        *map[string]string
+	UseDefaultKmsKey  *bool
 	// Create DB/Images/Snapshots
-	CopyDbInstanceTags	*bool
-	MultiAzOnly					*bool
-	AdditionalTags			*[]map[string]string
-	NoReboot						*bool
-	CopyVolumeTags			*bool
-	CopyInstanceTags		*bool
-	ExcludeBootVolume		*bool
-	UseAdditionalTags		*bool
+	CopyDbInstanceTags *bool
+	MultiAzOnly        *bool
+	AdditionalTags     *[]map[string]string
+	NoReboot           *bool
+	CopyVolumeTags     *bool
+	CopyInstanceTags   *bool
+	ExcludeBootVolume  *bool
+	UseAdditionalTags  *bool
 	// Delete detached volumes action
-	DaysDetached				*int
+	DaysDetached *int
 	// Delete images/orphaned? snapshots
-	KeepLatest					*bool
-	KeepByVolume				*bool
+	KeepLatest   *bool
+	KeepByVolume *bool
 	// EC2 Run Commands
-	Commands						[]*string
-	WorkingDirectory		*string
-	ExecutionTimeout		*int
+	Commands         []*string
+	WorkingDirectory *string
+	ExecutionTimeout *int
 	// Invoke Lambdas
-	FunctionName				*string
-	InvocationType			*string
-	Payload							*string
+	FunctionName           *string
+	InvocationType         *string
+	Payload                *string
 	ReplaceConflictingVars *bool
-	EnvironmentVariables 	*[]map[string]string
+	EnvironmentVariables   *[]map[string]string
 	// Notify*
-	Service							*string
-	Notifications				[]*Notification
+	Service       *string
+	Notifications []*Notification
 	// Release Disassociated IPs
-	DaysDisassociated		*int
+	DaysDisassociated *int
 	// Suspend/Resume ASG Procs
-	Processes						[]*string
-	Wait								*Wait
+	Processes []*string
+	Wait      *Wait
 	// Update ASG
-	Params	 						*AutoscalingParams
-	StoreExistingAsgSettings			*bool
-	RestoreToPreviousAsgSettings	*bool
-	IgnoreIfNoCachedAsgSettings		*bool
+	Params                       *AutoscalingParams
+	StoreExistingAsgSettings     *bool
+	RestoreToPreviousAsgSettings *bool
+	IgnoreIfNoCachedAsgSettings  *bool
 	// Update Dynamo
-	ReadUnits						*int
-	WriteUnits					*int
+	ReadUnits  *int
+	WriteUnits *int
 	// ECS Service Scale
-	DesiredCount										*int
-  StoredExistingDesiredCount			*bool
-  RestoreToPreviousDesiredCount		*bool
-	IgnoreIfNoCachedDesiredCount		*bool
+	DesiredCount                  *int
+	StoredExistingDesiredCount    *bool
+	RestoreToPreviousDesiredCount *bool
+	IgnoreIfNoCachedDesiredCount  *bool
 	// Provisioned Iops
-	Iops							*int
+	Iops *int
 	// Update SecurityGroups
-	RuleChanges				[]*SGRuleChanges
+	RuleChanges []*SGRuleChanges
 	// Update Scale Sets
-	Capacity					*int
+	Capacity *int
 	// Delay pause schema
-	WaitDuration			*int
+	WaitDuration *int
 }
 
 type Rule struct {
@@ -191,17 +191,17 @@ type Rule struct {
 	Labels    []*string
 	CreatedAt *time.Time
 	UpdatedAt *time.Time
-	Context			*Context
-	Trigger			*Trigger
-	Actions			[]*Action
+	Context   *Context
+	Trigger   *Trigger
+	Actions   []*Action
 }
 
 type RuleApiInput struct {
-	Rule		*Rule
+	Rule *Rule
 }
 
 type RuleApiOutput struct {
-	Rule		*Rule
+	Rule *Rule
 }
 
 func (r RuleApiInput) String() string {
@@ -224,7 +224,7 @@ func (c *Client) ListRules() ([]*Rule, error) {
 }
 
 func (c *Client) GetRule(teamId string, ruleId string) (*Rule, error) {
-	req, err := c.newRequest("GET", "/teams/" + teamId + "/rules/byId/" + ruleId, "")
+	req, err := c.newRequest("GET", "/teams/"+teamId+"/rules/byId/"+ruleId, "")
 	if err != nil {
 		return nil, err
 	}
@@ -236,7 +236,7 @@ func (c *Client) GetRule(teamId string, ruleId string) (*Rule, error) {
 func (c *Client) CreateRule(teamId string, rule *Rule) (*Rule, error) {
 	request := RuleApiInput{Rule: rule}
 	log.Printf("[WARN][GorillaStack] request: %s", request)
-	req, err := c.newRequest("POST", "/teams/" + teamId + "/rules", request)
+	req, err := c.newRequest("POST", "/teams/"+teamId+"/rules", request)
 	if err != nil {
 		return nil, err
 	}
@@ -253,7 +253,7 @@ func (c *Client) CreateRule(teamId string, rule *Rule) (*Rule, error) {
 
 func (c *Client) UpdateRule(teamId string, ruleId string, rule *Rule) (*Rule, error) {
 	request := RuleApiInput{Rule: rule}
-	req, err := c.newRequest("PUT", "/teams/" + teamId + "/rules/byId/" + ruleId, request)
+	req, err := c.newRequest("PUT", "/teams/"+teamId+"/rules/byId/"+ruleId, request)
 	if err != nil {
 		return nil, err
 	}
@@ -263,7 +263,7 @@ func (c *Client) UpdateRule(teamId string, ruleId string, rule *Rule) (*Rule, er
 }
 
 func (c *Client) DeleteRule(teamId string, ruleId string) error {
-	req, err := c.newRequest("DELETE", "/teams/" + teamId + "/rules/byId/" + ruleId, "")
+	req, err := c.newRequest("DELETE", "/teams/"+teamId+"/rules/byId/"+ruleId, "")
 
 	if err != nil {
 		return err
