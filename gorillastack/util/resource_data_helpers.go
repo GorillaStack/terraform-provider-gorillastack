@@ -6,7 +6,7 @@ func StringArrayOrNil(v []interface{}) []*string {
 	if len(v) > 0 {
 		return ArrayOfStringPointers(v)
 	}
-	
+
 	return nil
 }
 

@@ -7,60 +7,60 @@ import (
 func triggerSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"cloudtrail_event": {
-			Type:     			schema.TypeList,
-			Elem:     			&schema.Resource{Schema: cloudtrailEventTriggerSchema()},
-			MinItems:				1,
-			MaxItems:				1,
-			Optional: 			true,
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: cloudtrailEventTriggerSchema()},
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
 		},
 		"cost_threshold": {
-			Type:     			schema.TypeList,
-			Elem:     			&schema.Resource{Schema: costThresholdTriggerSchema()},
-			MinItems:				1,
-			MaxItems:				1,
-			Optional: 			true,
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: costThresholdTriggerSchema()},
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
 		},
 		"detached_volumes_detected": {
-			Type:     			schema.TypeList,
-			Elem:     			&schema.Resource{Schema: detachedVolumesDetectedTriggerSchema()},
-			MinItems:				1,
-			MaxItems:				1,
-			Optional: 			true,
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: detachedVolumesDetectedTriggerSchema()},
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
 		},
 		"incoming_webhook": {
-			Type:     			schema.TypeList,
-			Elem:     			&schema.Resource{Schema: incomingWebhookTriggerSchema()},
-			MinItems:				1,
-			MaxItems:				1,
-			Optional: 			true,
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: incomingWebhookTriggerSchema()},
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
 		},
 		"manual": {
-			Type:     			schema.TypeList,
-			Elem:     			&schema.Resource{Schema: manualTriggerSchema()},
-			MinItems:				1,
-			MaxItems:				1,
-			Optional: 			true,
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: manualTriggerSchema()},
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
 		},
 		"number_of_instances_threshold": {
-			Type:     			schema.TypeList,
-			Elem:     			&schema.Resource{Schema: numberOfInstancesThresholdTriggerSchema()},
-			MinItems:				1,
-			MaxItems:				1,
-			Optional: 			true,
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: numberOfInstancesThresholdTriggerSchema()},
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
 		},
 		"schedule": {
-			Type:     			schema.TypeList,
-			Elem:     			&schema.Resource{Schema: scheduleTriggerSchema()},
-			MinItems:				1,
-			MaxItems:				1,
-			Optional: 			true,
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: scheduleTriggerSchema()},
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
 		},
 		"sns_push": {
-			Type:     			schema.TypeList,
-			Elem:     			&schema.Resource{Schema: snsPushTriggerSchema()},
-			MinItems:				1,
-			MaxItems:				1,
-			Optional: 			true,
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: snsPushTriggerSchema()},
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
 		},
 	}
 }
@@ -108,17 +108,18 @@ func notificationSchema() map[string]*schema.Schema {
 		},
 	}
 }
+
 /* Trigger Schemas */
 
 // Supporting schemas for cloudtrailEventTriggerSchema
 func cloudtrailEventMatchFieldsSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"event_name": {
-			Type:			schema.TypeList,
+			Type:     schema.TypeList,
 			Required: true,
 			MinItems: 1,
 			MaxItems: 100,
-			Elem:			&schema.Schema{Type: schema.TypeString},
+			Elem:     &schema.Schema{Type: schema.TypeString},
 		},
 	}
 }
@@ -130,9 +131,9 @@ func cloudtrailEventTriggerSchema() map[string]*schema.Schema {
 			Computed: true,
 		},
 		"match_fields": {
-			Type:			schema.TypeMap,
-			Required:	true,
-			Elem:			&schema.Resource{Schema: cloudtrailEventMatchFieldsSchema()},
+			Type:     schema.TypeMap,
+			Required: true,
+			Elem:     &schema.Resource{Schema: cloudtrailEventMatchFieldsSchema()},
 		},
 	}
 }
