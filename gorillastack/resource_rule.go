@@ -69,12 +69,12 @@ func constructNotification(notificationData map[string]interface{}) *Notificatio
 	return &notification
 }
 
-func constructNotifications(rawNotifications []interface{}) []*Notification {
+func constructNotifications(rawNotifications []interface{}) *Notification {
 	var notifications []*Notification
 	for _, rawNotification := range rawNotifications {
 		notifications = append(notifications, constructNotification(rawNotification.(map[string]interface{})))
 	}
-	return notifications
+	return notifications[0]
 }
 
 func constructTriggerFromResourceData(d *schema.ResourceData) *Trigger {
@@ -182,6 +182,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			AdditionalTags:    util.ArrayOfMapsAddress(defn["additional_tags"].([]map[string]string)),
 		}
 	case "delete_detached_volumes":
+		log.Printf("[WARN][GorillaStack][action dfn]: %v", defn)
 		action = Action{
 			Action:           &actionName,
 			DryRun:           util.BoolAddress(defn["dry_run"].(bool)),
@@ -190,6 +191,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
 			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
 		}
+		log.Printf("[WARN][GorillaStack][constructActionsFromResourceData]: %v", action)
 	case "delete_images":
 		action = Action{
 			Action:           &actionName,
@@ -251,7 +253,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		action = Action{
 			Action:                 &actionName,
 			TagGroups:              util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner:  		util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner:       util.StringAddress(defn["tag_group_combiner"].(string)),
 			InvocationType:         util.StringAddress(defn["invocation_type"].(string)),
 			Payload:                util.StringAddress(defn["payload"].(string)),
 			ReplaceConflictingVars: util.BoolAddress(defn["replace_conflicting_vars"].(bool)),
@@ -344,7 +346,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		action = Action{
 			Action:                       &actionName,
 			TagGroups:                    util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: 			  util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner:             util.StringAddress(defn["tag_group_combiner"].(string)),
 			StoreExistingAsgSettings:     util.BoolAddress(defn["store_existing_asg_settings"].(bool)),
 			RestoreToPreviousAsgSettings: util.BoolAddress(defn["restore_to_previous_asg_settings"].(bool)),
 			IgnoreIfNoCachedAsgSettings:  util.BoolAddress(defn["ignore_if_no_cached_asg_settings"].(bool)),
@@ -366,7 +368,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		action = Action{
 			Action:                        &actionName,
 			TagGroups:                     util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: 			   util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner:              util.StringAddress(defn["tag_group_combiner"].(string)),
 			DesiredCount:                  util.IntAddress(defn["desired_count"].(int)),
 			StoredExistingDesiredCount:    util.BoolAddress(defn["store_existing_desired_count"].(bool)),
 			RestoreToPreviousDesiredCount: util.BoolAddress(defn["restore_to_previous_desired_count"].(bool)),
@@ -446,11 +448,11 @@ func actionCount(rawActions map[string]interface{}) int {
 }
 
 func constructActionsFromResourceData(d *schema.ResourceData) []*Action {
-	// rawActions := d.Get("trigger").([]interface{})[0].(map[string]interface{})
-	rawActions := d.Get("actions").([]interface{})[0].(map[string]interface{})
-	// log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] rawActions: %v", rawActions)
-	// log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] len(rawActions) = %d", len(rawActions))
-	// log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] actionCount(rawActions) = %d", actionCount(rawActions))
+	log.Printf("[WARN][GorillaStack] blah rawActions: %v", rawActions)
+	rawActions := d.Get("actions").([]interface{})[1].(map[string]interface{})
+	log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] rawActions: %v", rawActions)
+	log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] len(rawActions) = %d", len(rawActions))
+	log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] actionCount(rawActions) = %d", actionCount(rawActions))
 	actions := make([]*Action, actionCount(rawActions))
 
 	for actionName, rawArrayOfMaps := range rawActions {
