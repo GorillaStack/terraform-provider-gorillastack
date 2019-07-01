@@ -52,7 +52,7 @@ type Context struct {
 type Trigger struct {
 	// Common fields
 	Trigger       *string
-	Notifications []*Notification
+	Notifications *Notification
 	// schedule trigger fields
 	Cron                  *string
 	Timezone              *string
@@ -151,7 +151,7 @@ type Action struct {
 	EnvironmentVariables   *[]map[string]string
 	// Notify*
 	Service       *string
-	Notifications []*Notification
+	Notifications *Notification
 	// Release Disassociated IPs
 	DaysDisassociated *int
 	// Suspend/Resume ASG Procs
