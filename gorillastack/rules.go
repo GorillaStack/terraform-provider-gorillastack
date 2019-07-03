@@ -3,8 +3,9 @@ package gorillastack
 import (
 	"log"
 
-	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
 	"time"
+
+	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
 )
 
 // This type is for fields like accountIds and regions that can either be an array of strings or null
@@ -181,7 +182,7 @@ type Action struct {
 }
 
 type Rule struct {
-	Id        *string
+	Id        *string `json:"_id"`
 	Name      *string
 	Slug      *string
 	TeamId    *string
@@ -248,6 +249,8 @@ func (c *Client) CreateRule(teamId string, rule *Rule) (*Rule, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	log.Printf("[WARN][GorillaStack] response: %v", response)
 	return response.Rule, err
 }
 

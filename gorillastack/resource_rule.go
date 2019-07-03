@@ -493,6 +493,8 @@ func resourceRuleCreate(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
+	log.Printf("[WARN][GorillaStack][resourceRuleCreate] %+v", *rule)
+
 	d.SetId(*rule.Id)
 	return resourceRuleRead(d, m)
 }
@@ -501,14 +503,38 @@ func resourceRuleRead(d *schema.ResourceData, m interface{}) error {
 	teamId := d.Get("team_id").(string)
 	ruleId := d.Id()
 	client := m.(*Client)
+	log.Printf("[WARN][GorillaStack][resourceRuleRead] %s", ruleId)
 	rule, err := client.GetRule(teamId, ruleId)
 
 	if err != nil {
 		return err
 	}
 
-	d.Set("name", rule.Name)
 	// TODO: set more attributes/whole rule
+	d.Set("_id", ruleId)
+	d.Set("name", rule.Name)
+	d.Set("slug", rule.Slug)
+	d.Set("slug", rule.Slug)
+	d.Set("created_at", rule.CreatedAt)
+	d.Set("updated_at", rule.UpdatedAt)
+	d.Set("created_by", rule.CreatedBy)
+	d.Set("team_id", rule.TeamId)
+	d.Set("name", rule.Name)
+	d.Set("enabled", rule.Enabled)
+	d.Set("user_group", rule.UserGroup)
+	d.Set("labels", rule.Labels)
+	// var context map[string]interface{}
+	actionMapping := map[string][]map[string]interface{}{}
+	for index, action := range rule.Actions {
+		actionMapping[*(action.Action)] = append(actionMapping[*(action.Action)], map[string]interface{}{
+			"action_id": action.ActionId,
+			"index":     index,
+		})
+	}
+
+	// d.Set("context", rule.Context)
+	// d.Set("trigger", rule.Trigger)
+	d.Set("actions", []map[string][]map[string]interface{}{actionMapping})
 
 	return nil
 }
