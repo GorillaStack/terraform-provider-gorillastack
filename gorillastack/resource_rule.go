@@ -124,7 +124,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			UseDefaultKmsKey:  util.BoolAddress(defn["use_default_kms_key"].(bool)),
 			TagTargeted:       util.BoolAddress(defn["tag_targeted"].(bool)),
 			TagGroups:         util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner:  util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner:  util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 		}
 	case "copy_snapshots":
 		action = Action{
@@ -137,14 +137,14 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			UseDefaultKmsKey:  util.BoolAddress(defn["use_default_kms_key"].(bool)),
 			TagTargeted:       util.BoolAddress(defn["tag_targeted"].(bool)),
 			TagGroups:         util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner:  util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner:  util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 		}
 	case "create_db_snapshots":
 		action = Action{
 			Action:             &actionName,
 			TagTargeted:        util.BoolAddress(defn["tag_targeted"].(bool)),
 			TagGroups:          util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner:   util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner:   util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			CopyDbInstanceTags: util.BoolAddress(defn["copy_db_instance_tags"].(bool)),
 			MultiAzOnly:        util.BoolAddress(defn["multi_az_only"].(bool)),
 			AdditionalTags:     util.ArrayOfMapsAddress(defn["additional_tags"].([]map[string]string)),
@@ -153,7 +153,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			NoReboot:         util.BoolAddress(defn["no_reboot"].(bool)),
 			CopyVolumeTags:   util.BoolAddress(defn["copy_volume_tags"].(bool)),
 			CopyInstanceTags: util.BoolAddress(defn["copy_instance_tags"].(bool)),
@@ -164,7 +164,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			Action:           &actionName,
 			TagTargeted:      util.BoolAddress(defn["tag_targeted"].(bool)),
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			CopyVolumeTags:   util.BoolAddress(defn["copy_volume_tags"].(bool)),
 			CopyInstanceTags: util.BoolAddress(defn["copy_instance_tags"].(bool)),
 			AdditionalTags:   util.ArrayOfMapsAddress(defn["additional_tags"].([]map[string]string)),
@@ -174,7 +174,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			Action:            &actionName,
 			TagTargeted:       util.BoolAddress(defn["tag_targeted"].(bool)),
 			TagGroups:         util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner:  util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner:  util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			CopyVolumeTags:    util.BoolAddress(defn["copy_volume_tags"].(bool)),
 			CopyInstanceTags:  util.BoolAddress(defn["copy_instance_tags"].(bool)),
 			ExcludeBootVolume: util.BoolAddress(defn["exclude_boot_volume"].(bool)),
@@ -189,7 +189,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			DaysDetached:     util.IntAddress(defn["days_detached"].(int)),
 			TagTargeted:      util.BoolAddress(defn["tag_targeted"].(bool)),
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 		}
 		log.Printf("[WARN][GorillaStack][constructActionsFromResourceData]: %v", action)
 	case "delete_images":
@@ -200,7 +200,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			KeepLatest:       util.BoolAddress(defn["keep_latest"].(bool)),
 			TagTargeted:      util.BoolAddress(defn["tag_targeted"].(bool)),
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 		}
 	case "delete_orphaned_snapshots":
 		action = Action{
@@ -208,7 +208,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			DryRun:           util.BoolAddress(defn["dry_run"].(bool)),
 			TagTargeted:      util.BoolAddress(defn["tag_targeted"].(bool)),
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 		}
 	case "delete_snapshots":
 		action = Action{
@@ -220,13 +220,13 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			KeepByVolume:     util.BoolAddress(defn["keep_by_volume"].(bool)),
 			TagTargeted:      util.BoolAddress(defn["tag_targeted"].(bool)),
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 		}
 	case "ec2_command_run_powershell_script":
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			Commands:         util.ArrayOfStringPointers(defn["commands"].([]interface{})),
 			WorkingDirectory: util.StringAddress(defn["working_directory"].(string)),
 			ExecutionTimeout: util.IntAddress(defn["execution_timeout"].(int)),
@@ -235,7 +235,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			Commands:         util.ArrayOfStringPointers(defn["commands"].([]interface{})),
 			WorkingDirectory: util.StringAddress(defn["working_directory"].(string)),
 			ExecutionTimeout: util.IntAddress(defn["execution_timeout"].(int)),
@@ -253,7 +253,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		action = Action{
 			Action:                 &actionName,
 			TagGroups:              util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner:       util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner:       util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			InvocationType:         util.StringAddress(defn["invocation_type"].(string)),
 			Payload:                util.StringAddress(defn["payload"].(string)),
 			ReplaceConflictingVars: util.BoolAddress(defn["replace_conflicting_vars"].(bool)),
@@ -274,7 +274,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 		}
 	case "release_disassociated_ips":
 		action = Action{
@@ -282,20 +282,20 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			DaysDisassociated: util.IntAddress(defn["days_disassociated"].(int)),
 			TagTargeted:       util.BoolAddress(defn["tag_targeted"].(bool)),
 			TagGroups:         util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner:  util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner:  util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 		}
 	case "resume_autoscaling_processes":
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			Processes:        util.ArrayOfStringPointers(defn["processes"].([]interface{})),
 		}
 	case "start_instances":
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			Wait: &Wait{
 				InstanceState:  util.BoolAddress(defn["wait_instance_state"].(bool)),
 				InstanceStatus: util.BoolAddress(defn["wait_instance_status"].(bool)),
@@ -306,7 +306,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			Wait: &Wait{
 				InstanceState:  util.BoolAddress(defn["wait_instance_state"].(bool)),
 				InstanceStatus: util.BoolAddress(defn["wait_instance_status"].(bool)),
@@ -317,7 +317,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			Wait: &Wait{
 				InstanceState:  util.BoolAddress(defn["wait_instance_state"].(bool)),
 				InstanceStatus: util.BoolAddress(defn["wait_instance_status"].(bool)),
@@ -328,7 +328,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			Wait: &Wait{
 				InstanceState:  util.BoolAddress(defn["wait_instance_state"].(bool)),
 				InstanceStatus: util.BoolAddress(defn["wait_instance_status"].(bool)),
@@ -339,14 +339,14 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			Processes:        util.ArrayOfStringPointers(defn["processes"].([]interface{})),
 		}
 	case "update_autoscaling_groups":
 		action = Action{
 			Action:                       &actionName,
 			TagGroups:                    util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner:             util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner:             util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			StoreExistingAsgSettings:     util.BoolAddress(defn["store_existing_asg_settings"].(bool)),
 			RestoreToPreviousAsgSettings: util.BoolAddress(defn["restore_to_previous_asg_settings"].(bool)),
 			IgnoreIfNoCachedAsgSettings:  util.BoolAddress(defn["ignore_if_no_cached_asg_settings"].(bool)),
@@ -360,7 +360,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			ReadUnits:        util.IntAddress(defn["read_units"].(int)),
 			WriteUnits:       util.IntAddress(defn["write_units"].(int)),
 		}
@@ -368,7 +368,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		action = Action{
 			Action:                        &actionName,
 			TagGroups:                     util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner:              util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner:              util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			DesiredCount:                  util.IntAddress(defn["desired_count"].(int)),
 			StoredExistingDesiredCount:    util.BoolAddress(defn["store_existing_desired_count"].(bool)),
 			RestoreToPreviousDesiredCount: util.BoolAddress(defn["restore_to_previous_desired_count"].(bool)),
@@ -378,7 +378,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			Iops:             util.IntAddress(defn["iops"].(int)),
 		}
 	case "update_security_groups":
@@ -386,7 +386,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			Action:           &actionName,
 			TagTargeted:      util.BoolAddress(defn["tag_targeted"].(bool)),
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			RuleChanges:      constructSGRuleChanges(defn["rule_changes"].([]interface{})),
 		}
 		/* Azure Actions */
@@ -394,26 +394,26 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 		}
 	case "start_vms":
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 		}
 	case "update_scale_sets":
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			Capacity:         util.IntAddress(defn["capacity"].(int)),
 		}
 	case "update_autoscale_settings":
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.StringAddress(defn["tag_group_combiner"].(string)),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			Params: &AutoscalingParams{
 				Min:     util.IntAddress(defn["min"].(int)),
 				Max:     util.IntAddress(defn["max"].(int)),
@@ -448,11 +448,10 @@ func actionCount(rawActions map[string]interface{}) int {
 }
 
 func constructActionsFromResourceData(d *schema.ResourceData) []*Action {
-	log.Printf("[WARN][GorillaStack] blah rawActions: %v", rawActions)
-	rawActions := d.Get("actions").([]interface{})[1].(map[string]interface{})
-	log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] rawActions: %v", rawActions)
-	log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] len(rawActions) = %d", len(rawActions))
-	log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] actionCount(rawActions) = %d", actionCount(rawActions))
+	rawActions := d.Get("actions").([]interface{})[0].(map[string]interface{})
+	// log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] rawActions: %v", rawActions)
+	// log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] len(rawActions) = %d", len(rawActions))
+	// log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] actionCount(rawActions) = %d", actionCount(rawActions))
 	actions := make([]*Action, actionCount(rawActions))
 
 	for actionName, rawArrayOfMaps := range rawActions {
