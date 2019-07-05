@@ -28,7 +28,7 @@ func ruleSchema() map[string]*schema.Schema {
 		},
 		"team_id": {
 			Type:     schema.TypeString,
-			Required: true,
+			Computed: true,
 		},
 		"name": {
 			Type:     schema.TypeString,
