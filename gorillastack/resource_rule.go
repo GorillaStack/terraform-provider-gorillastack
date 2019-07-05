@@ -7,10 +7,6 @@ import (
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
-type CreateRuleInput struct {
-	teamId string
-}
-
 func constructContextFromResourceData(d *schema.ResourceData) *Context {
 	var context Context
 	rawContext := d.Get("context").([]interface{})[0].(map[string]interface{})
@@ -469,9 +465,9 @@ func constructActionsFromResourceData(d *schema.ResourceData) []*Action {
 	return actions
 }
 
-func constructRuleFromResourceData(d *schema.ResourceData) *Rule {
+func constructRuleFromResourceData(d *schema.ResourceData, teamId string) *Rule {
 	return &Rule{
-		TeamId:  util.StringAddress(d.Get("team_id").(string)),
+		TeamId:  &teamId,
 		Name:    util.StringAddress(d.Get("name").(string)),
 		Slug:    util.StringAddress(d.Get("slug").(string)),
 		Enabled: util.BoolAddress(d.Get("enabled").(bool)),
@@ -484,10 +480,11 @@ func constructRuleFromResourceData(d *schema.ResourceData) *Rule {
 }
 
 func resourceRuleCreate(d *schema.ResourceData, m interface{}) error {
-	client := m.(*Client)
-	teamId := d.Get("team_id").(string)
+	providerContext := m.(*ProviderContext)
+	client := providerContext.Client
+	teamId := providerContext.TeamId
 	log.Printf("[WARN] Attempting to create rule for team: %s", teamId)
-	rule, err := client.CreateRule(teamId, constructRuleFromResourceData(d))
+	rule, err := client.CreateRule(teamId, constructRuleFromResourceData(d, teamId))
 
 	if err != nil {
 		return err
@@ -500,9 +497,10 @@ func resourceRuleCreate(d *schema.ResourceData, m interface{}) error {
 }
 
 func resourceRuleRead(d *schema.ResourceData, m interface{}) error {
-	teamId := d.Get("team_id").(string)
+	providerContext := m.(*ProviderContext)
+	client := providerContext.Client
+	teamId := providerContext.TeamId
 	ruleId := d.Id()
-	client := m.(*Client)
 	log.Printf("[WARN][GorillaStack][resourceRuleRead] %s", ruleId)
 	rule, err := client.GetRule(teamId, ruleId)
 
@@ -540,10 +538,11 @@ func resourceRuleRead(d *schema.ResourceData, m interface{}) error {
 }
 
 func resourceRuleUpdate(d *schema.ResourceData, m interface{}) error {
-	teamId := d.Get("team_id").(string)
+	providerContext := m.(*ProviderContext)
+	client := providerContext.Client
+	teamId := providerContext.TeamId
 	ruleId := d.Id()
-	client := m.(*Client)
-	_, err := client.UpdateRule(teamId, ruleId, constructRuleFromResourceData(d))
+	_, err := client.UpdateRule(teamId, ruleId, constructRuleFromResourceData(d, teamId))
 
 	if err != nil {
 		return err
@@ -552,9 +551,10 @@ func resourceRuleUpdate(d *schema.ResourceData, m interface{}) error {
 }
 
 func resourceRuleDelete(d *schema.ResourceData, m interface{}) error {
-	teamId := d.Get("team_id").(string)
+	providerContext := m.(*ProviderContext)
+	client := providerContext.Client
+	teamId := providerContext.TeamId
 	ruleId := d.Id()
-	client := m.(*Client)
 
 	err := client.DeleteRule(teamId, ruleId)
 
@@ -572,6 +572,10 @@ func resourceRule() *schema.Resource {
 		Read:   resourceRuleRead,
 		Update: resourceRuleUpdate,
 		Delete: resourceRuleDelete,
+
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 
 		Schema: ruleSchema(),
 	}
