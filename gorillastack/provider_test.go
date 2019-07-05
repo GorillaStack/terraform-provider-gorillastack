@@ -32,4 +32,7 @@ func testAccPreCheck(t *testing.T) {
 	if v := os.Getenv("GORILLASTACK_API_KEY"); v == "" {
 		t.Fatal("GORILLASTACK_API_KEY must be set for acceptance tests")
 	}
+	if v := os.Getenv("GORILLASTACK_TEAM_ID"); v == "" {
+		t.Fatal("GORILLASTACK_TEAM_ID must be set for acceptance tests")
+	}
 }
