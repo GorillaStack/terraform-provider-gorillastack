@@ -1,5 +1,6 @@
 TEST?=$$(go list ./... | grep -v 'vendor')
 PKG_NAME=gorillastack
+export GO111MODULE=on
 
 default: build
 
