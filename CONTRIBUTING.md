@@ -18,10 +18,10 @@ Pull requests are the best way to propose changes to the codebase (we use [Githu
 3. If you've changed APIs, update the documentation.
 4. Ensure the test suite passes.
 5. Make sure your code lints.
-6. Issue that pull request!
+6. Issue that pull request! Be sure to highlight any key changes for us to highlight in the [changelog](/CHANGELOG.md).
 
-## Any contributions you make will be under the MIT Software License
-In short, when you submit code changes, your submissions are understood to be under the same [MIT License](http://choosealicense.com/licenses/mit/) that covers the project. Feel free to contact the maintainers if that's a concern.
+## Any contributions you make will be under the MPL Software License
+In short, when you submit code changes, your submissions are understood to be under the same [MPL License](/LICENSE) that covers the project. Feel free to contact the maintainers if that's a concern.
 
 ## Report bugs using Github's [issues](https://github.com/briandk/transcriptase-atom/issues)
 We use Github issues to track public bugs. Report a bug by [opening a new issue](); it's that easy!
@@ -40,15 +40,6 @@ We use Github issues to track public bugs. Report a bug by [opening a new issue]
 - Notes (possibly including why you think this might be happening, or stuff you tried that didn't work)
 
 People *love* thorough bug reports. I'm not even kidding.
-
-## Use a Consistent Coding Style
-I'm again borrowing these from [Facebook's Guidelines](https://github.com/facebook/draft-js/blob/a9316a723f9e918afde44dea68b5f9f39b7d9b00/CONTRIBUTING.md)
-
-* 2 spaces for indentation rather than tabs
-* You can try running `npm run lint` for style unification
-
-## License
-By contributing, you agree that your contributions will be licensed under its MIT License.
 
 ## References
 This document was adapted from https://gist.github.com/briandk/3d2e8b3ec8daf5a27a62, which itself was adapted from the open-source contribution guidelines for [Facebook's Draft](https://github.com/facebook/draft-js/blob/a9316a723f9e918afde44dea68b5f9f39b7d9b00/CONTRIBUTING.md)

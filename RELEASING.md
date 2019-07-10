@@ -16,7 +16,7 @@ Verify that the acceptance test suite has passed for the release PR, then merge 
 ## Tag the release
 
 ```
-git tag -am "terraform-provider-gorillastack_vX.Y.Z_x5 release" vX.Y.Z
+git tag -am "terraform-provider-gorillastack_vX.Y.Z release" vX.Y.Z
 git push --tags
 ```
 
