@@ -1,8 +1,6 @@
 package gorillastack
 
 import (
-	"log"
-
 	"time"
 
 	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
@@ -236,21 +234,17 @@ func (c *Client) GetRule(teamId string, ruleId string) (*Rule, error) {
 
 func (c *Client) CreateRule(teamId string, rule *Rule) (*Rule, error) {
 	request := RuleApiInput{Rule: rule}
-	log.Printf("[WARN][GorillaStack] request: %s", request)
 	req, err := c.newRequest("POST", "/teams/"+teamId+"/rules", request)
 	if err != nil {
 		return nil, err
 	}
 	var response RuleApiOutput
 
-	log.Printf("[WARN][GorillaStack] attempting to do")
-
 	_, err = c.do(req, &response)
 	if err != nil {
 		return nil, err
 	}
 
-	log.Printf("[WARN][GorillaStack] response: %v", response)
 	return response.Rule, err
 }
 

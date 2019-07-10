@@ -1,8 +1,6 @@
 package gorillastack
 
 import (
-	"log"
-
 	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
 	"github.com/hashicorp/terraform/helper/schema"
 )
@@ -19,17 +17,15 @@ func constructContextFromResourceData(d *schema.ResourceData) *Context {
 			Regions:         &StringArrayOrNull{StringArray: util.StringArrayOrNil(aws["regions"].([]interface{}))},
 			AccountGroupIds: util.StringArrayOrNil(aws["account_group_ids"].([]interface{})),
 		}
-	} else {
-		if rawAzure := rawContext["azure"].([]interface{}); rawAzure != nil {
-			azure := rawAzure[0].(map[string]interface{})
-			context = Context{
-				Platform:        util.StringAddress("azure"),
-				SubscriptionIds: &StringArrayOrNull{StringArray: util.StringArrayOrNil(azure["subscription_ids"].([]interface{}))},
-			}
-		} else {
-			// TODO
-			// not a supported platform
+	} else if rawAzure := rawContext["azure"].([]interface{}); rawAzure != nil {
+		azure := rawAzure[0].(map[string]interface{})
+		context = Context{
+			Platform:        util.StringAddress("azure"),
+			SubscriptionIds: &StringArrayOrNull{StringArray: util.StringArrayOrNil(azure["subscription_ids"].([]interface{}))},
 		}
+	} else {
+		// not a supported platform - will error on API call
+		return nil
 	}
 
 	return &context
@@ -81,7 +77,6 @@ func constructTriggerFromResourceData(d *schema.ResourceData) *Trigger {
 		if len(triggerTypeArr) == 0 {
 			continue
 		}
-		log.Printf("[WARN][GorillaStack][constructTriggerFromResourceData] %v", rawTrigger)
 		v := triggerTypeArr[0].(map[string]interface{})
 		switch k {
 		case "schedule":
@@ -178,7 +173,6 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			AdditionalTags:    util.ArrayOfMapsAddress(defn["additional_tags"].([]map[string]string)),
 		}
 	case "delete_detached_volumes":
-		log.Printf("[WARN][GorillaStack][action dfn]: %v", defn)
 		action = Action{
 			Action:           &actionName,
 			DryRun:           util.BoolAddress(defn["dry_run"].(bool)),
@@ -187,7 +181,6 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
 			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 		}
-		log.Printf("[WARN][GorillaStack][constructActionsFromResourceData]: %v", action)
 	case "delete_images":
 		action = Action{
 			Action:           &actionName,
@@ -445,17 +438,12 @@ func actionCount(rawActions map[string]interface{}) int {
 
 func constructActionsFromResourceData(d *schema.ResourceData) []*Action {
 	rawActions := d.Get("actions").([]interface{})[0].(map[string]interface{})
-	// log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] rawActions: %v", rawActions)
-	// log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] len(rawActions) = %d", len(rawActions))
-	// log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] actionCount(rawActions) = %d", actionCount(rawActions))
 	actions := make([]*Action, actionCount(rawActions))
 
 	for actionName, rawArrayOfMaps := range rawActions {
 		arrayOfMaps := rawArrayOfMaps.([]interface{})
-		// log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] arrayOfMaps: %v", arrayOfMaps)
 		for _, rawDefn := range arrayOfMaps {
 			defn := rawDefn.(map[string]interface{})
-			// log.Printf("[WARN][GorillaStack][constructActionsFromResourceData] defn: %v", defn)
 			action := constructAction(actionName, defn)
 			index := getIndex(defn)
 			actions[index-1] = action
@@ -483,14 +471,11 @@ func resourceRuleCreate(d *schema.ResourceData, m interface{}) error {
 	providerContext := m.(*ProviderContext)
 	client := providerContext.Client
 	teamId := providerContext.TeamId
-	log.Printf("[WARN] Attempting to create rule for team: %s", teamId)
 	rule, err := client.CreateRule(teamId, constructRuleFromResourceData(d, teamId))
 
 	if err != nil {
 		return err
 	}
-
-	log.Printf("[WARN][GorillaStack][resourceRuleCreate] %+v", *rule)
 
 	d.SetId(*rule.Id)
 	return resourceRuleRead(d, m)
@@ -501,39 +486,22 @@ func resourceRuleRead(d *schema.ResourceData, m interface{}) error {
 	client := providerContext.Client
 	teamId := providerContext.TeamId
 	ruleId := d.Id()
-	log.Printf("[WARN][GorillaStack][resourceRuleRead] %s", ruleId)
 	rule, err := client.GetRule(teamId, ruleId)
 
 	if err != nil {
 		return err
 	}
 
-	// TODO: set more attributes/whole rule
 	d.Set("_id", ruleId)
 	d.Set("name", rule.Name)
-	d.Set("slug", rule.Slug)
 	d.Set("slug", rule.Slug)
 	d.Set("created_at", rule.CreatedAt)
 	d.Set("updated_at", rule.UpdatedAt)
 	d.Set("created_by", rule.CreatedBy)
 	d.Set("team_id", rule.TeamId)
-	d.Set("name", rule.Name)
 	d.Set("enabled", rule.Enabled)
 	d.Set("user_group", rule.UserGroup)
 	d.Set("labels", rule.Labels)
-	// var context map[string]interface{}
-	actionMapping := map[string][]map[string]interface{}{}
-	for index, action := range rule.Actions {
-		actionMapping[*(action.Action)] = append(actionMapping[*(action.Action)], map[string]interface{}{
-			"action_id": action.ActionId,
-			"index":     index,
-		})
-	}
-
-	// d.Set("context", rule.Context)
-	// d.Set("trigger", rule.Trigger)
-	d.Set("actions", []map[string][]map[string]interface{}{actionMapping})
-
 	return nil
 }
 
