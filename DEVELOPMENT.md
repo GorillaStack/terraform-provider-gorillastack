@@ -70,4 +70,4 @@ When you have changes you would like to propose to kritis, you will need to:
 
 ### Reviews
 
-Each PR must be reviewed by a maintainer. In order for a PR to merge you must post a screenshot of the ACC tests passing. We do not run these via Travis due to GorillaSTack rate limiting. It gets to be untenable. Maintainers have access to GorillaStack team they can run this against so if you are an outside contributor feel free to request ACC tests be run.
+Each PR must be reviewed by a maintainer. In order for a PR to merge you must post a screenshot of the ACC tests passing. We do not run these via Travis due to GorillaStack rate limiting. It gets to be untenable. Maintainers have access to GorillaStack team they can run this against so if you are an outside contributor feel free to request ACC tests be run.
