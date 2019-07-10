@@ -11,7 +11,7 @@ install:
 - sudo snap install snapcraft --classic
 script:
 - make build
-- make test
+- make testacc
 branches:
   only:
   - master
