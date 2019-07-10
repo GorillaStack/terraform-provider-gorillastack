@@ -1,8 +1,6 @@
 package gorillastack
 
 import (
-	"log"
-
 	"bytes"
 	"encoding/json"
 	"errors"
@@ -53,14 +51,9 @@ func (c *Client) newRequest(method, path string, body interface{}) (*http.Reques
 	u := c.baseURL.ResolveReference(rel)
 	var buf io.ReadWriter
 	if body != "" {
-		log.Printf("[WARN][GorillaStack] creating new bytes.Buffer")
 		sBody := fmt.Sprintf("%s", body)
-		log.Printf("[WARN][GorillaStack] sBody: %s", sBody)
-		// buf = bytes.NewBufferString(fmt.Sprintf("%s", body))
 		buf = bytes.NewBufferString(fmt.Sprintf("%s", sBody))
-		log.Printf("[WARN][GorillaStack] reading the body")
 	}
-	log.Printf("[WARN][GorillaStack] creating the request")
 	req, err := http.NewRequest(method, u.String(), buf)
 	if err != nil {
 		return nil, err
