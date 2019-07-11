@@ -1,8 +1,6 @@
 package gorillastack
 
 import (
-	"log"
-
 	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
 	"github.com/hashicorp/terraform/helper/schema"
 )
@@ -18,14 +16,11 @@ func resourceTagGroupCreate(d *schema.ResourceData, m interface{}) error {
 	providerContext := m.(*ProviderContext)
 	client := providerContext.Client
 	teamId := providerContext.TeamId
-	log.Printf("[WARN] Attempting to create TagGroup for team: %s", teamId)
 	tagGroup, err := client.CreateTagGroup(teamId, constructTagGroupFromResourceData(d))
 
 	if err != nil {
 		return err
 	}
-
-	log.Printf("[WARN][GorillaStack][resourceTagGroupCreate] %+v", *tagGroup)
 
 	d.SetId(*tagGroup.Id)
 	return resourceTagGroupRead(d, m)
@@ -36,7 +31,6 @@ func resourceTagGroupRead(d *schema.ResourceData, m interface{}) error {
 	client := providerContext.Client
 	teamId := providerContext.TeamId
 	tagGroupId := d.Id()
-	log.Printf("[WARN][GorillaStack][resourceTagGroupRead] %s", tagGroupId)
 	tagGroup, err := client.GetTagGroup(teamId, tagGroupId)
 
 	if err != nil {

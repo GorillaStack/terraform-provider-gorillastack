@@ -439,14 +439,14 @@ func actionCount(rawActions map[string]interface{}) int {
 func constructActionsFromResourceData(d *schema.ResourceData) []*Action {
 	rawActions := d.Get("actions").([]interface{})[0].(map[string]interface{})
 	actions := make([]*Action, actionCount(rawActions))
+	smallestIndex := util.GetSmallestArrayIndex(rawActions)
 
 	for actionName, rawArrayOfMaps := range rawActions {
-		arrayOfMaps := rawArrayOfMaps.([]interface{})
-		for _, rawDefn := range arrayOfMaps {
-			defn := rawDefn.(map[string]interface{})
+		arrayOfMaps := util.ConvertToArrayOfMaps(rawArrayOfMaps.([]interface{}))
+		for _, defn := range arrayOfMaps {
 			action := constructAction(actionName, defn)
 			index := getIndex(defn)
-			actions[index-1] = action
+			actions[index-smallestIndex] = action
 		}
 	}
 
