@@ -1,16 +1,16 @@
 package gorillastack
 
 type UserService struct {
-	Client 		*c
+	c *Client
 }
 
 type User struct {
-	email		string,
-	role		string,
+	email string
+	role  string
 }
 
-func (c *Client) ListUsers() ([]User, error) { 
-	req, err := c.newRequest("GET", "/users", nil)
+func (c *Client) ListUsers() ([]User, error) {
+	req, err := c.newRequest("GET", "/users", "")
 	if err != nil {
 		return nil, err
 	}

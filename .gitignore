@@ -1,12 +1,12 @@
 *.dll
 *.exe
 .DS_Store
-example.tf
+example*.tf
 terraform.tfvars
 terraform.tfplan
 terraform.tfstate
 bin/
-terraform-provider-google
+terraform-provider-gorillastack
 modules-dev/
 /pkg/
 website/.vagrant
@@ -17,6 +17,7 @@ website/node_modules
 *.backup
 ./*.tfstate
 .terraform/
+.ignore/
 *.log
 *.bak
 *~
