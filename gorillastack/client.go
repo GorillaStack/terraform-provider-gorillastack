@@ -3,45 +3,63 @@ package gorillastack
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
+	"os"
 )
 
+const DEFAULT_GORILLASTACK_API_URL = "https://api.gorillastack.com"
+
 type Client struct {
-	BaseURL   *url.URL
+	baseURL   *url.URL
+	apiKey    string
 	UserAgent string
-	
-	Users			*UserService
+
+	Users      *UserService
 	httpClient *http.Client
 }
 
-func NewClient(httpClient *http.Client) *Client {
-	if (httpClient != nil) {
-		httpClient = http.DefaultClient
+func getURL() string {
+	if v := os.Getenv("GORILLASTACK_API_URL"); v != "" {
+		return v
+	}
+	return DEFAULT_GORILLASTACK_API_URL
+
+}
+
+func NewClient(apiKey string) (*Client, error) {
+	apiUrl, err := url.Parse(getURL())
+	if err != nil {
+		return nil, err
 	}
 
-	c := &Client {httpClient: httpClient}
-	c.UserService := &UserService{client: c}
+	c := &Client{
+		httpClient: http.DefaultClient,
+		baseURL:    apiUrl,
+		apiKey:     apiKey,
+	}
+	c.Users = &UserService{c: c}
+
+	return c, nil
 }
 
 func (c *Client) newRequest(method, path string, body interface{}) (*http.Request, error) {
 	rel := &url.URL{Path: path}
-	u := c.BaseURL.ResolveReference(rel)
+	u := c.baseURL.ResolveReference(rel)
 	var buf io.ReadWriter
-	if body != nil {
-		buf = new(bytes.Buffer)
-		err := json.NewEncoder(buf).Encode(body)
-		if err != nil {
-			return nil, err  
-		}
+	if body != "" {
+		sBody := fmt.Sprintf("%s", body)
+		buf = bytes.NewBufferString(fmt.Sprintf("%s", sBody))
 	}
 	req, err := http.NewRequest(method, u.String(), buf)
 	if err != nil {
 		return nil, err
 	}
-	if body != nil {  
-		req.Header.Set("Content-Type", "application/json") 
+	if body != "" {
+		req.Header.Set("Content-Type", "application/json")
 	}
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("User-Agent", c.UserAgent)
@@ -52,6 +70,9 @@ func (c *Client) do(req *http.Request, v interface{}) (*http.Response, error) {
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		return nil, errors.New(fmt.Sprintf("[%d] Error: %+v", resp.StatusCode, resp))
 	}
 	defer resp.Body.Close()
 	err = json.NewDecoder(resp.Body).Decode(v)
