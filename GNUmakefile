@@ -2,10 +2,26 @@ TEST?=$$(go list ./... | grep -v 'vendor')
 PKG_NAME=gorillastack
 export GO111MODULE=on
 
+# Last tagged version
+VERSION = $$(git tag --sort=v:refname | tail -1)
+
 default: build
 
+# Builds a binary for current OS and Arch in the plugins dir
 build: fmtcheck
-	go install
+	@mkdir -p ~/.terraform.d/plugins/
+	@go build -o "${HOME}/.terraform.d/plugins/terraform-provider-gorillastack_${VERSION}"
+
+# Builds a binary for current OS and Arch in the plugins dir
+build-dev: fmtcheck
+	@mkdir -p ~/.terraform.d/plugins/
+	@go build -o "${HOME}/.terraform.d/plugins/terraform-provider-gorillastack_${VERSION}_dev"
+
+# Builds a binary for Linux, Windows, and OSX and installs it in the default terraform plugins directory
+build-plugins: fmtcheck
+	@mkdir -p ~/.terraform.d/plugins/
+	gox -osarch="linux/amd64 darwin/amd64 windows/amd64" \
+	  -output="${HOME}/.terraform.d/plugins/{{.OS}}_{{.Arch}}/terraform-provider-gorillastack_${VERSION}" .
 
 test: fmtcheck
 	go test -i $(TEST) || exit 1
