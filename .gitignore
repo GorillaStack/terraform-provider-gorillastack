@@ -6,7 +6,7 @@ terraform.tfvars
 terraform.tfplan
 terraform.tfstate
 bin/
-terraform-provider-gorillastack
+terraform-provider-gorillastack*
 modules-dev/
 /pkg/
 website/.vagrant
