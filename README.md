@@ -36,19 +36,12 @@ make
 Using the Provider
 ------------------
 
-Configure the provider using a .tfvars file:
-
-```terraform
-provider "gorillastack" {
-  api_key = "${var.api_key}" // Your GorillaStack API Key
-  team_id = "${var.team_id}" // Your GorillaStack Team's Id
-}
-```
-
-Here is what your terraform.tfvars file should look like.
+Configure the provider using a .tfvars file. Here is what your terraform.tfvars file should look like.
 
 ```
+# Your GorillaStack API Key
 api_key = "<api_key>"
+# Your GorillaStack Team's Id
 team_id = "<gorillastack team_id>"
 ```
 
@@ -58,6 +51,9 @@ We do not recommend hardcoding API keys and other information in your templates.
 Then, define Rule and Tag Group resources in your templates.
 
 ```terraform
+variable "api_key" {}
+variable "team_id" {}
+
 provider "gorillastack" {
   api_key = "${var.api_key}"
   team_id = "${var.team_id}"
@@ -153,7 +149,7 @@ to upgrade to the latest stable version of the GorillaStack provider.
 Building the provider
 ---------------------
 
-Clone repository to: `$GOPATH/src/github.com/gorillastack/terraform-provider-gorillastack`
+Clone the repository. In the steps above, `go get -d` installs the repository to: `$GOPATH/src/github.com/gorillastack/terraform-provider-gorillastack`
 
 ```sh
 $ mkdir -p $GOPATH/src/github.com/gorillastack; cd $GOPATH/src/github.com/gorillastack
@@ -164,7 +160,7 @@ Enter the provider directory and build the provider
 
 ```sh
 $ cd $GOPATH/src/github.com/gorillastack/terraform-provider-gorillastack
-$ make build
+$ make
 ```
 
 Contributing/Developing the provider
@@ -172,13 +168,6 @@ Contributing/Developing the provider
 
 If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (version 1.11.4+ is *required*). You'll also need to correctly setup a [GOPATH](http://golang.org/doc/code.html#GOPATH), as well as adding `$GOPATH/bin` to your `$PATH`.
 
-To compile the provider, run `make build`. This will build the provider and put the provider binary in the `$GOPATH/bin` directory.
-
-```sh
-$ make build
-...
-$ $GOPATH/bin/terraform-provider-gorillastack
-...
-```
+To compile the provider, run `make`. This will build the provider and put the provider binary in the `$GOPATH/bin` directory.
 
 For guidance on common development practices such as testing changes or vendoring libraries, see the [contribution guidelines](https://github.com/gorillastack/terraform-provider-gorillastack/blob/master/CONTRIBUTING.md). If you have other development questions we don't cover, please file an issue!
