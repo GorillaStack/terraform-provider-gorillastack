@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -14,10 +15,9 @@ import (
 const DEFAULT_GORILLASTACK_API_URL = "https://api.gorillastack.com"
 
 type Client struct {
-	baseURL   *url.URL
-	apiKey    string
-	UserAgent string
-
+	baseURL    *url.URL
+	apiKey     string
+	UserAgent  string
 	Users      *UserService
 	httpClient *http.Client
 }
@@ -47,7 +47,7 @@ func NewClient(apiKey string) (*Client, error) {
 }
 
 func (c *Client) newRequest(method, path string, body interface{}) (*http.Request, error) {
-	rel := &url.URL{Path: path}
+	rel := &url.URL{Path: "/v1" + path}
 	u := c.baseURL.ResolveReference(rel)
 	var buf io.ReadWriter
 	if body != "" {
@@ -62,6 +62,7 @@ func (c *Client) newRequest(method, path string, body interface{}) (*http.Reques
 		req.Header.Set("Content-Type", "application/json")
 	}
 	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+c.apiKey)
 	req.Header.Set("User-Agent", c.UserAgent)
 	return req, nil
 }
@@ -72,7 +73,9 @@ func (c *Client) do(req *http.Request, v interface{}) (*http.Response, error) {
 		return nil, err
 	}
 	if resp.StatusCode != 200 {
-		return nil, errors.New(fmt.Sprintf("[%d] Error: %+v", resp.StatusCode, resp))
+		defer resp.Body.Close()
+		body, _ := ioutil.ReadAll(resp.Body)
+		return nil, errors.New(fmt.Sprintf("[%d] Error: %s \n %+v", resp.StatusCode, body, resp))
 	}
 	defer resp.Body.Close()
 	err = json.NewDecoder(resp.Body).Decode(v)
