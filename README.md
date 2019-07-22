@@ -1,9 +1,10 @@
 Terraform Provider for GorillaStack
 ==================
 
+[![Build Status](https://img.shields.io/travis/GorillaStack/terraform-provider-gorillastack/master.svg?style=for-the-badge)](https://travis-ci.org/GorillaStack/terraform-provider-gorillastack)
 [![Release](https://img.shields.io/github/tag/GorillaStack/terraform-provider-gorillastack.svg?label=Release&style=for-the-badge)](https://github.com/GorillaStack/terraform-provider-gorillastack/releases/latest)
 [![Software License](https://img.shields.io/badge/license-MPL-brightgreen.svg?style=for-the-badge)](/LICENSE.md)
-[![Build Status](https://img.shields.io/travis/GorillaStack/terraform-provider-gorillastack/master.svg?style=for-the-badge)](https://travis-ci.org/GorillaStack/terraform-provider-gorillastack)
+![GitHub last commit](https://img.shields.io/github/last-commit/gorillastack/terraform-provider-gorillastack.svg?style=for-the-badge)
 [![Powered By: GorillaStack](https://img.shields.io/badge/powered%20by-GorillaStack-green.svg?style=for-the-badge)](https://www.gorillastack.com)
 
 - Terraform Website: https://www.terraform.io
