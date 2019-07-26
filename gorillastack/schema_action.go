@@ -10,6 +10,11 @@ import (
 func actionsSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		// AWS Actions
+		"check_tag_compliance": {
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: checkTagComplianceSchema()},
+			Optional: true,
+		},
 		"copy_db_snapshots": {
 			Type:     schema.TypeList,
 			Elem:     &schema.Resource{Schema: copyDbSnapshotsSchema()},
@@ -83,6 +88,11 @@ func actionsSchema() map[string]*schema.Schema {
 		"notify_cost": {
 			Type:     schema.TypeList,
 			Elem:     &schema.Resource{Schema: notifyCostActionSchema()},
+			Optional: true,
+		},
+		"notify_event": {
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: notifyEventActionSchema()},
 			Optional: true,
 		},
 		"notify_instance_count": {
@@ -231,6 +241,64 @@ func environmentVariableSchema() map[string]*schema.Schema {
 }
 
 /* AWS Schema functions */
+func checkTagComplianceSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"action": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"action_id": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"index": {
+			Type:     schema.TypeInt,
+			Required: true,
+		},
+		"tag_targeted": {
+			Type:     schema.TypeBool,
+			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Optional: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeString,
+			Optional: true,
+		},
+		"resource_types": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			Optional: true,
+			Elem: &schema.Schema{
+				Type:         schema.TypeString,
+				ValidateFunc: validation.StringInSlice(constants.ResourceTypes, false),
+			},
+		},
+		"report_type": {
+			Type:         schema.TypeString,
+			Required:     true,
+			ValidateFunc: validation.StringInSlice(constants.ReportType, false),
+		},
+		"notifications_trigger": {
+			Type:         schema.TypeString,
+			Required:     true,
+			ValidateFunc: validation.StringInSlice(constants.NotificationsTrigger, false),
+		},
+		"notifications": {
+			Type:     schema.TypeList,
+			Required: true,
+			MinItems: 1,
+			MaxItems: 1,
+			Elem:     &schema.Resource{Schema: notificationSchema()},
+		},
+	}
+}
+
 func copyDbSnapshotsSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"action": {
@@ -865,6 +933,55 @@ func notifyCostActionSchema() map[string]*schema.Schema {
 		"service": {
 			Type:     schema.TypeString,
 			Required: true,
+		},
+		"notifications": {
+			Type:     schema.TypeList,
+			Required: true,
+			MinItems: 1,
+			MaxItems: 1,
+			Elem:     &schema.Resource{Schema: notificationSchema()},
+		},
+	}
+}
+
+func fieldMappingSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"mapping_id": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"label": {
+			Type:     schema.TypeString,
+			Required: true,
+		},
+		"expression": {
+			Type:     schema.TypeString,
+			Required: true,
+		},
+	}
+}
+
+func notifyEventActionSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"action": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"action_id": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"index": {
+			Type:     schema.TypeInt,
+			Required: true,
+		},
+		"notification_field_mapping": {
+			Type:       schema.TypeList,
+			MinItems:   1,
+			MaxItems:   100,
+			Optional:   true,
+			ConfigMode: schema.SchemaConfigModeAttr,
+			Elem:       &schema.Resource{Schema: fieldMappingSchema()},
 		},
 		"notifications": {
 			Type:     schema.TypeList,
