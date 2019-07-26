@@ -9,6 +9,7 @@ Terraform Provider for GorillaStack
 
 - Terraform Website: https://www.terraform.io
 - GorillaStack Website: https://www.gorillastack.com
+- Sample Terraform Templates: https://github.com/GorillaStack/terraform-examples
 <!-- - Documentation: https://www.terraform.io/docs/providers/gorillastack/index.html -->
 
 Maintainers
@@ -36,6 +37,8 @@ make
 
 Using the Provider
 ------------------
+
+If you are looking for some [sample terraform templates to help you get started, please take a look here](https://github.com/GorillaStack/terraform-examples).
 
 Configure the provider using a .tfvars file. Here is what your terraform.tfvars file should look like.
 
