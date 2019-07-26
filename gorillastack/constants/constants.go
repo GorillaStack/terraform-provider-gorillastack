@@ -68,3 +68,39 @@ var Triggers = []string{
 	"schedule",
 	"sns_push",
 }
+
+/* Tag Compliane Action Constants */
+var NotificationsTrigger = []string{
+	"resources_reported",
+	"always",
+	"never",
+}
+
+var ReportType = []string{
+	"matching",
+	"not_matching",
+}
+
+var ResourceTypes = []string{
+	/* Aws Resources */
+	"amis",
+	"autoScalingGroups",
+	"dbSnapshots",
+	"dynamoDBTables",
+	"ebsSnapshots",
+	"ebsVolumes",
+	"ecsServices",
+	"ec2Instances",
+	"ec2InstanceAttachedVolumes",
+	"elasticIps",
+	"estimatedCharges",
+	"kmsKeys",
+	"lambdaFunctions",
+	"rdsInstances",
+	"securityGroups",
+	"snsTopics",
+	/* Azure Resources */
+	"virtualMachines",
+	"scaleSets",
+	"autoscaleSettings",
+}

@@ -30,6 +30,13 @@ func getURL() string {
 
 }
 
+func getPrefix() string {
+	if v := os.Getenv("GORILLASTACK_API_URL"); v != "" {
+		return ""
+	}
+	return "/v1"
+}
+
 func NewClient(apiKey string) (*Client, error) {
 	apiUrl, err := url.Parse(getURL())
 	if err != nil {
@@ -47,7 +54,7 @@ func NewClient(apiKey string) (*Client, error) {
 }
 
 func (c *Client) newRequest(method, path string, body interface{}) (*http.Request, error) {
-	rel := &url.URL{Path: "/v1" + path}
+	rel := &url.URL{Path: getPrefix() + path}
 	u := c.baseURL.ResolveReference(rel)
 	var buf io.ReadWriter
 	if body != "" {
