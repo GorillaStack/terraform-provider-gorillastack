@@ -31,6 +31,23 @@ func constructContextFromResourceData(d *schema.ResourceData) *Context {
 	return &context
 }
 
+func constructNotificationFieldMapping(fieldMappingInput map[string]interface{}) *NotificationFieldMapping {
+	return &NotificationFieldMapping{
+		MappingId:  util.StringAddress(fieldMappingInput["mapping_id"].(string)),
+		Label:      util.StringAddress(fieldMappingInput["label"].(string)),
+		Expression: util.StringAddress(fieldMappingInput["expression"].(string)),
+	}
+}
+
+func constructNotificationFieldMappings(rawFieldMappings []interface{}) []*NotificationFieldMapping {
+	var fieldMappings []*NotificationFieldMapping
+	for _, rawFieldMapping := range rawFieldMappings {
+		fieldMappings = append(fieldMappings, constructNotificationFieldMapping(rawFieldMapping.(map[string]interface{})))
+	}
+
+	return fieldMappings
+}
+
 func constructSGRuleChanges(rawSGRuleChanges []interface{}) []*SGRuleChanges {
 	// TODO
 	return nil
@@ -69,6 +86,13 @@ func constructNotifications(rawNotifications []interface{}) *Notification {
 	return notifications[0]
 }
 
+func constructMatchFields(rawMatchFields []interface{}) *MatchFields {
+	matchField := rawMatchFields[0].(map[string]interface{})
+	return &MatchFields{
+		EventName: util.ArrayOfStringPointers(matchField["event_name"].([]interface{})),
+	}
+}
+
 func constructTriggerFromResourceData(d *schema.ResourceData) *Trigger {
 	var trigger Trigger
 	rawTrigger := d.Get("trigger").([]interface{})[0].(map[string]interface{})
@@ -88,6 +112,11 @@ func constructTriggerFromResourceData(d *schema.ResourceData) *Trigger {
 				DefaultSnoozeDuration: util.IntAddress(v["default_snooze_duration"].(int)),
 				Notifications:         constructNotifications(v["notifications"].([]interface{})),
 			}
+		case "cloudtrail_event":
+			trigger = Trigger{
+				Trigger:     util.StringAddress("cloudtrail_event"),
+				MatchFields: constructMatchFields(v["match_fields"].([]interface{})),
+			}
 		default:
 			break
 		}
@@ -104,6 +133,17 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 	var action Action
 	switch actionName {
 	/* AWS Actions */
+	case "check_tag_compliance":
+		action = Action{
+			Action:               &actionName,
+			TagTargeted:          util.BoolAddress(defn["tag_targeted"].(bool)),
+			TagGroups:            util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
+			TagGroupCombiner:     util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
+			ResourceTypes:        &StringArrayOrNull{StringArray: util.StringArrayOrNil(defn["resource_types"].([]interface{}))},
+			ReportType:           util.StringAddress(defn["report_type"].(string)),
+			NotificationsTrigger: util.StringAddress(defn["notifications_trigger"].(string)),
+			Notifications:        constructNotifications(defn["notifications"].([]interface{})),
+		}
 	case "copy_db_snapshots":
 		action = Action{
 			Action:            &actionName,
@@ -253,6 +293,12 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			Action:        &actionName,
 			Service:       util.StringAddress(defn["service"].(string)),
 			Notifications: constructNotifications(defn["notifications"].([]interface{})),
+		}
+	case "notify_event":
+		action = Action{
+			Action:                    &actionName,
+			NotificationFieldMappings: constructNotificationFieldMappings(defn["notification_field_mapping"].([]interface{})),
+			Notifications:             constructNotifications(defn["notifications"].([]interface{})),
 		}
 	case "notify_instance_count":
 		action = Action{
