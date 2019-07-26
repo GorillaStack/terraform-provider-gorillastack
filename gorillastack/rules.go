@@ -48,6 +48,10 @@ type Context struct {
 	SubscriptionIds *StringArrayOrNull
 }
 
+type MatchFields struct {
+	EventName []*string
+}
+
 type Trigger struct {
 	// Common fields
 	Trigger       *string
@@ -57,6 +61,8 @@ type Trigger struct {
 	Timezone              *string
 	NotificationOffset    *int
 	DefaultSnoozeDuration *int
+	// CloudTrail Event trigger fields
+	MatchFields *MatchFields
 }
 
 type Wait struct {
@@ -107,6 +113,12 @@ type SGChange struct {
 type SGRuleChanges struct {
 	Match  *SGMatch
 	Change *SGChange
+}
+
+type NotificationFieldMapping struct {
+	MappingId  *string
+	Label      *string
+	Expression *string
 }
 
 type Action struct {
@@ -177,6 +189,12 @@ type Action struct {
 	Capacity *int
 	// Delay pause schema
 	WaitDuration *int
+	// Check Tag Compliance
+	ResourceTypes        *StringArrayOrNull
+	ReportType           *string
+	NotificationsTrigger *string
+	// Notify Event
+	NotificationFieldMappings []*NotificationFieldMapping
 }
 
 type Rule struct {

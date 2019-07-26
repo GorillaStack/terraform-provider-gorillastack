@@ -131,7 +131,9 @@ func cloudtrailEventTriggerSchema() map[string]*schema.Schema {
 			Computed: true,
 		},
 		"match_fields": {
-			Type:     schema.TypeMap,
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
 			Required: true,
 			Elem:     &schema.Resource{Schema: cloudtrailEventMatchFieldsSchema()},
 		},
