@@ -1,19 +1,16 @@
-## 0.1.0 (July 8, 2019)
+## 0.2.1 (July 31, 2019)
 
 #### BREAKING CHANGES:
-
-* None
-
 #### FEATURES:
-
-* **New Resource:** Rule
-* **New Resource:** Tag Group
-
 #### IMPROVEMENTS:
 #### BUG FIXES:
+
+* Fixing an infinite loop when stringifying the StringArrayOrNull type in the context
+
 #### NOTES:
 
-* This is the initial GorillaStack Terraform provider implementation. As implied by a < 1 major version, there is little commitment to maintaining backwards compatibility right now, and there may be breaking changes in coming minor version updates. All breaking changes will be communicated in the changelog.
+* Version bumped to version 0.2.1 for this bugfix
+
 
 ## 0.2.0 (July 26, 2019)
 
@@ -39,3 +36,21 @@
 #### NOTES:
 
 * Version bumped to version 0.2.0 as there are some minor breaking changes and significant new features, thus a patch version is not quite appropriate.
+
+
+## 0.1.0 (July 8, 2019)
+
+#### BREAKING CHANGES:
+
+* None
+
+#### FEATURES:
+
+* **New Resource:** Rule
+* **New Resource:** Tag Group
+
+#### IMPROVEMENTS:
+#### BUG FIXES:
+#### NOTES:
+
+* This is the initial GorillaStack Terraform provider implementation. As implied by a < 1 major version, there is little commitment to maintaining backwards compatibility right now, and there may be breaking changes in coming minor version updates. All breaking changes will be communicated in the changelog.
