@@ -12,10 +12,10 @@ type StringArrayOrNull struct {
 }
 
 func (s StringArrayOrNull) String() string {
-	if len(s.StringArray) == 0 {
+	if s.StringArray == nil || len(s.StringArray) == 0 {
 		return "null"
 	}
-	return util.StringValue(s)
+	return util.StringValue(s.StringArray)
 }
 
 func (s StringArrayOrNull) GoString() string {
