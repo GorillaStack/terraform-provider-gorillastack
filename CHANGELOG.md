@@ -9,7 +9,7 @@
 
 #### NOTES:
 
-* Version bumped to version 0.2.1 for this bugfixj
+* Version bumped to version 0.2.1 for this bugfix
 
 
 ## 0.2.0 (July 26, 2019)
