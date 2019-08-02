@@ -1,3 +1,17 @@
+## 0.2.2 (August 2, 2019)
+
+#### BREAKING CHANGES:
+#### FEATURES:
+#### IMPROVEMENTS:
+#### BUG FIXES:
+
+* Rule Resource was not passing through the user defined user_group attribute
+
+#### NOTES:
+
+* Version bumped to version 0.2.2 for this bugfix
+
+
 ## 0.2.1 (July 31, 2019)
 
 #### BREAKING CHANGES:
