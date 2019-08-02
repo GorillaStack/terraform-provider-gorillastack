@@ -501,11 +501,12 @@ func constructActionsFromResourceData(d *schema.ResourceData) []*Action {
 
 func constructRuleFromResourceData(d *schema.ResourceData, teamId string) *Rule {
 	return &Rule{
-		TeamId:  &teamId,
-		Name:    util.StringAddress(d.Get("name").(string)),
-		Slug:    util.StringAddress(d.Get("slug").(string)),
-		Enabled: util.BoolAddress(d.Get("enabled").(bool)),
-		Labels:  util.ArrayOfStringPointers(d.Get("labels").([]interface{})),
+		TeamId:    &teamId,
+		Name:      util.StringAddress(d.Get("name").(string)),
+		Slug:      util.StringAddress(d.Get("slug").(string)),
+		Enabled:   util.BoolAddress(d.Get("enabled").(bool)),
+		Labels:    util.ArrayOfStringPointers(d.Get("labels").([]interface{})),
+		UserGroup: util.StringAddress(d.Get("user_group").(string)),
 
 		Context: constructContextFromResourceData(d),
 		Trigger: constructTriggerFromResourceData(d),
