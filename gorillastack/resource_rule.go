@@ -5,17 +5,21 @@ import (
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
-func constructContextFromResourceData(d *schema.ResourceData) *Context {
+func constructContext(d *schema.ResourceData) *Context {
 	var context Context
 	rawContext := d.Get("context").([]interface{})[0].(map[string]interface{})
 
 	if rawAws := rawContext["aws"].([]interface{}); rawAws != nil {
 		aws := rawAws[0].(map[string]interface{})
+		accGroupIds := util.StringArrayOrNil(aws["account_group_ids"].([]interface{}))
 		context = Context{
-			Platform:        util.StringAddress("aws"),
-			AccountIds:      &StringArrayOrNull{StringArray: util.StringArrayOrNil(aws["account_ids"].([]interface{}))},
+			Platform: util.StringAddress("aws"),
+			AccountIds: &StringArrayOrNull{
+				StringArray: util.StringArrayOrNil(aws["account_ids"].([]interface{})),
+				ShowEmpty:   len(util.StringArrayOrNil(aws["account_group_ids"].([]interface{}))) > 0,
+			},
 			Regions:         &StringArrayOrNull{StringArray: util.StringArrayOrNil(aws["regions"].([]interface{}))},
-			AccountGroupIds: util.StringArrayOrNil(aws["account_group_ids"].([]interface{})),
+			AccountGroupIds: accGroupIds,
 		}
 	} else if rawAzure := rawContext["azure"].([]interface{}); rawAzure != nil {
 		azure := rawAzure[0].(map[string]interface{})
@@ -93,7 +97,7 @@ func constructMatchFields(rawMatchFields []interface{}) *MatchFields {
 	}
 }
 
-func constructTriggerFromResourceData(d *schema.ResourceData) *Trigger {
+func constructTrigger(d *schema.ResourceData) *Trigger {
 	var trigger Trigger
 	rawTrigger := d.Get("trigger").([]interface{})[0].(map[string]interface{})
 	for k, rawV := range rawTrigger {
@@ -482,7 +486,7 @@ func actionCount(rawActions map[string]interface{}) int {
 	return count
 }
 
-func constructActionsFromResourceData(d *schema.ResourceData) []*Action {
+func constructActions(d *schema.ResourceData) []*Action {
 	rawActions := d.Get("actions").([]interface{})[0].(map[string]interface{})
 	actions := make([]*Action, actionCount(rawActions))
 	smallestIndex := util.GetSmallestArrayIndex(rawActions)
@@ -508,9 +512,9 @@ func constructRuleFromResourceData(d *schema.ResourceData, teamId string) *Rule 
 		Labels:    util.ArrayOfStringPointers(d.Get("labels").([]interface{})),
 		UserGroup: util.StringAddress(d.Get("user_group").(string)),
 
-		Context: constructContextFromResourceData(d),
-		Trigger: constructTriggerFromResourceData(d),
-		Actions: constructActionsFromResourceData(d),
+		Context: constructContext(d),
+		Trigger: constructTrigger(d),
+		Actions: constructActions(d),
 	}
 }
 
