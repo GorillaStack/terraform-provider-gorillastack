@@ -1,3 +1,20 @@
+## 0.2.3 (August 5, 2019)
+
+#### BREAKING CHANGES:
+#### FEATURES:
+#### IMPROVEMENTS:
+
+* Adding tests around the StringArrayOrNull stringification
+* Adding tests around the construction of the context from resource data
+
+#### BUG FIXES:
+
+* Fixing issue whereby `account_ids` would be interpreted as null, even if there were `account_group_ids` specified.
+
+#### NOTES:
+
+* Version bumped to version 0.2.3 for this bugfix
+
 ## 0.2.2 (August 2, 2019)
 
 #### BREAKING CHANGES:
