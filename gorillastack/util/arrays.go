@@ -49,3 +49,13 @@ func ConvertToArrayOfMaps(arr []interface{}) []map[string]interface{} {
 
 	return res
 }
+
+func MapAddresses(arr []string) []*string {
+	LEN := len(arr)
+	ptr := make([]*string, LEN)
+	for i := 0; i < LEN; i++ {
+		ptr[i] = &arr[i]
+	}
+
+	return ptr
+}
