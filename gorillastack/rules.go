@@ -9,13 +9,15 @@ import (
 // This type is for fields like accountIds and regions that can either be an array of strings or null
 type StringArrayOrNull struct {
 	StringArray []*string
+	ShowEmpty   bool
 }
 
 func (s StringArrayOrNull) String() string {
-	if s.StringArray == nil || len(s.StringArray) == 0 {
-		return "null"
+	if len(s.StringArray) > 0 || s.ShowEmpty {
+		return util.StringValue(s.StringArray)
 	}
-	return util.StringValue(s.StringArray)
+
+	return "null"
 }
 
 func (s StringArrayOrNull) GoString() string {

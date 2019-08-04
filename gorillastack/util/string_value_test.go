@@ -13,6 +13,15 @@ func TestStringValueOnArray(t *testing.T) {
 	}
 }
 
+func TestStringValueOnArrayOfStringPointers(t *testing.T) {
+	strings := []string{"one", "two", "three"}
+	expected := "[\"one\",\"two\",\"three\"]"
+	result := StringValue(MapAddresses(strings))
+	if result != expected {
+		t.Errorf("Incorrect array stringification. Got: '%s' Expected: '%s'", result, expected)
+	}
+}
+
 type B struct {
 	WhichJeff      string
 	IsThisABadTest bool
