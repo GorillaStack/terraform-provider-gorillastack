@@ -75,7 +75,9 @@ func constructNotification(notificationData map[string]interface{}) *Notificatio
 		notification.Email = &EmailNotificationConfig{
 			SendToTeam:      util.BoolAddress(rawEmailConfig["send_to_team"].(bool)),
 			SendToUserGroup: util.BoolAddress(rawEmailConfig["send_to_user_group"].(bool)),
-			EmailAddresses:  util.ArrayOfStringPointers(rawEmailConfig["email_addresses"].([]interface{})),
+		}
+		if addrs := util.ArrayOfStringPointers(rawEmailConfig["email_addresses"].([]interface{})); len(addrs) > 0 {
+			notification.Email.EmailAddresses = addrs
 		}
 	}
 

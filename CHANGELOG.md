@@ -1,3 +1,17 @@
+## 0.2.4 (August 9, 2019)
+
+#### BREAKING CHANGES:
+#### FEATURES:
+#### IMPROVEMENTS:
+#### BUG FIXES:
+
+* Fixing issue where empty array of email addresses was sent to the GorillaStack API where no extra email recipients desired. Property needed to be omitted from the request.
+
+#### NOTES:
+
+* Version bumped to version 0.2.4 for this bugfix
+
+
 ## 0.2.3 (August 5, 2019)
 
 #### BREAKING CHANGES:
@@ -14,6 +28,7 @@
 #### NOTES:
 
 * Version bumped to version 0.2.3 for this bugfix
+
 
 ## 0.2.2 (August 2, 2019)
 
