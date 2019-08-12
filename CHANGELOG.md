@@ -1,3 +1,17 @@
+## 0.2.5 (August 12, 2019)
+
+#### BREAKING CHANGES:
+#### FEATURES:
+#### IMPROVEMENTS:
+#### BUG FIXES:
+
+* Adding custom JSON unmarshal function to help construct StringArrayOrNull from API responses
+
+#### NOTES:
+
+* Version bumped to version 0.2.5 for this bugfix
+
+
 ## 0.2.4 (August 9, 2019)
 
 #### BREAKING CHANGES:
