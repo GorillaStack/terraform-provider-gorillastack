@@ -1,6 +1,7 @@
 package gorillastack
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
@@ -22,6 +23,22 @@ func (s StringArrayOrNull) String() string {
 
 func (s StringArrayOrNull) GoString() string {
 	return s.String()
+}
+
+func (s *StringArrayOrNull) UnmarshalJSON(b []byte) error {
+	if b[0] != '[' {
+		(*s).StringArray = nil
+		return nil
+	}
+	var arr []*string
+	if err := json.Unmarshal(b, &arr); err != nil {
+		return err
+	}
+	(*s).StringArray = arr
+	if len(arr) == 0 {
+		(*s).ShowEmpty = true
+	}
+	return nil
 }
 
 type SlackNotificationConfig struct {
