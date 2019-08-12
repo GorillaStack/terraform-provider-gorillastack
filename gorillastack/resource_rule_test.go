@@ -1,6 +1,7 @@
 package gorillastack
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
@@ -61,5 +62,25 @@ func TestConstructContextAccountGroupWithAccountsSelected(t *testing.T) {
 
 	if result != expected {
 		t.Errorf("constructContextFromResourceData is wrong. Got: '%s' Expected: '%s'", result, expected)
+	}
+}
+
+// Test unmarshalling the JSON response to a StringArrayOrNull
+func TestStringArrayOrNullUnmarshalJSONAccountIdsNull(t *testing.T) {
+	var context Context
+	if err := json.Unmarshal([]byte(`{ "platform": "aws", "accountIds": null, "regions": ["ap-southeast-2"] }`), &context); err != nil {
+		t.Errorf("StringArrayOrNull.UnmarshalJSON is wrong. Caught error: %s", err)
+	}
+}
+
+func TestStringArrayOrNullUnmarshalJSONAccountIdsEmptyArray(t *testing.T) {
+	var context Context
+	if err := json.Unmarshal([]byte(`{ "platform": "aws", "accountIds": [], "regions": ["ap-southeast-2"], "accountGroupIds": ["fake_account_group_id"] }`), &context); err != nil {
+		t.Errorf("StringArrayOrNull.UnmarshalJSON is wrong. Caught error: %s", err)
+	}
+	result := util.StringValue(context)
+	expected := "{\"platform\":\"aws\",\"accountIds\":[],\"regions\":[\"ap-southeast-2\"],\"accountGroupIds\":[\"fake_account_group_id\"]}"
+	if result != expected {
+		t.Errorf("StringArrayOrNull.UnmarshalJSON is wrong. Got: '%s' Expected: '%s'", result, expected)
 	}
 }
