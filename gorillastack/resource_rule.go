@@ -99,6 +99,14 @@ func constructMatchFields(rawMatchFields []interface{}) *MatchFields {
 	}
 }
 
+func constructMatchExpression(rawMatchExpression []interface{}) *MatchExpression {
+	matchExpression := rawMatchExpression[0].(map[string]interface{})
+	return &MatchExpression{
+		Expression:         util.StringAddress(matchExpression["expression"].(string)),
+		ExpressionLanguage: util.StringAddress("jmespath"),
+	}
+}
+
 func constructTrigger(d *schema.ResourceData) *Trigger {
 	var trigger Trigger
 	rawTrigger := d.Get("trigger").([]interface{})[0].(map[string]interface{})
@@ -120,8 +128,9 @@ func constructTrigger(d *schema.ResourceData) *Trigger {
 			}
 		case "cloudtrail_event":
 			trigger = Trigger{
-				Trigger:     util.StringAddress("cloudtrail_event"),
-				MatchFields: constructMatchFields(v["match_fields"].([]interface{})),
+				Trigger:         util.StringAddress("cloudtrail_event"),
+				MatchFields:     constructMatchFields(v["match_fields"].([]interface{})),
+				MatchExpression: constructMatchExpression(v["match_expression"].([]interface{})),
 			}
 		default:
 			break

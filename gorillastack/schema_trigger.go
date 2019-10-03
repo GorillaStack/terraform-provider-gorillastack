@@ -124,6 +124,19 @@ func cloudtrailEventMatchFieldsSchema() map[string]*schema.Schema {
 	}
 }
 
+func cloudtrailEventMatchExpressionSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"expression": {
+			Type:     schema.TypeString,
+			Required: true,
+		},
+		"expression_language": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+	}
+}
+
 func cloudtrailEventTriggerSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"trigger": {
@@ -136,6 +149,13 @@ func cloudtrailEventTriggerSchema() map[string]*schema.Schema {
 			MaxItems: 1,
 			Required: true,
 			Elem:     &schema.Resource{Schema: cloudtrailEventMatchFieldsSchema()},
+		},
+		"match_expression": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 1,
+			Optional: true,
+			Elem:     &schema.Resource{Schema: cloudtrailEventMatchExpressionSchema()},
 		},
 	}
 }
