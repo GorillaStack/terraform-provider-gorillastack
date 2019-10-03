@@ -100,11 +100,14 @@ func constructMatchFields(rawMatchFields []interface{}) *MatchFields {
 }
 
 func constructMatchExpression(rawMatchExpression []interface{}) *MatchExpression {
-	matchExpression := rawMatchExpression[0].(map[string]interface{})
-	return &MatchExpression{
-		Expression:         util.StringAddress(matchExpression["expression"].(string)),
-		ExpressionLanguage: util.StringAddress("jmespath"),
+	if len(rawMatchExpression) > 0 {
+		matchExpression := rawMatchExpression[0].(map[string]interface{})
+		return &MatchExpression{
+			Expression:         util.StringAddress(matchExpression["expression"].(string)),
+			ExpressionLanguage: util.StringAddress("jmespath"),
+		}
 	}
+	return nil
 }
 
 func constructTrigger(d *schema.ResourceData) *Trigger {
