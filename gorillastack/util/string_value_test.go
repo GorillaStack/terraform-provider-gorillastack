@@ -38,8 +38,8 @@ func TestStringValueOnComplexObject(t *testing.T) {
 	input := A{
 		Name: "test case",
 		Bbbbs: []*B{
-			&B{WhichJeff: "Goldblum", IsThisABadTest: true, SomePrime: 3},
-			&B{WhichJeff: "Garlin", IsThisABadTest: true, SomePrime: 7},
+			{WhichJeff: "Goldblum", IsThisABadTest: true, SomePrime: 3},
+			{WhichJeff: "Garlin", IsThisABadTest: true, SomePrime: 7},
 		},
 	}
 	expected := "{\"name\":\"test case\",\"bbbbs\":[" +
