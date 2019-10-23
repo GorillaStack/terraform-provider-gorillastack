@@ -71,6 +71,11 @@ type MatchFields struct {
 	EventName []*string
 }
 
+type MatchExpression struct {
+	Expression         *string
+	ExpressionLanguage *string
+}
+
 type Trigger struct {
 	// Common fields
 	Trigger       *string
@@ -81,7 +86,8 @@ type Trigger struct {
 	NotificationOffset    *int
 	DefaultSnoozeDuration *int
 	// CloudTrail Event trigger fields
-	MatchFields *MatchFields
+	MatchFields     *MatchFields
+	MatchExpression *MatchExpression
 }
 
 type Wait struct {
