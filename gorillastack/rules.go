@@ -181,10 +181,10 @@ type Action struct {
 	ExecutionTimeout *int
 	// Invoke Lambdas
 	FunctionName           *string
-	InvocationType         *string
-	Payload                *string
+	InvocationType         *string `json:",omitempty"`
+	Payload                *string `json:",omitempty"`
 	ReplaceConflictingVars *bool
-	EnvironmentVariables   *[]map[string]string
+	EnvironmentVariables   *[]map[string]string `json:",omitempty"`
 	// Notify*
 	Service       *string
 	Notifications *Notification

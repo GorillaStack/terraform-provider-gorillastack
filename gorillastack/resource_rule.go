@@ -196,7 +196,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			TagGroupCombiner:   util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			CopyDbInstanceTags: util.BoolAddress(defn["copy_db_instance_tags"].(bool)),
 			MultiAzOnly:        util.BoolAddress(defn["multi_az_only"].(bool)),
-			AdditionalTags:     util.ArrayOfMapsAddress(defn["additional_tags"].([]map[string]string)),
+			AdditionalTags:     util.ArrayOfMapsAddress(defn["additional_tags"].([]interface{})),
 		}
 	case "create_images":
 		action = Action{
@@ -206,7 +206,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			NoReboot:         util.BoolAddress(defn["no_reboot"].(bool)),
 			CopyVolumeTags:   util.BoolAddress(defn["copy_volume_tags"].(bool)),
 			CopyInstanceTags: util.BoolAddress(defn["copy_instance_tags"].(bool)),
-			AdditionalTags:   util.ArrayOfMapsAddress(defn["additional_tags"].([]map[string]string)),
+			AdditionalTags:   util.ArrayOfMapsAddress(defn["additional_tags"].([]interface{})),
 		}
 	case "create_snapshots":
 		action = Action{
@@ -216,7 +216,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 			CopyVolumeTags:   util.BoolAddress(defn["copy_volume_tags"].(bool)),
 			CopyInstanceTags: util.BoolAddress(defn["copy_instance_tags"].(bool)),
-			AdditionalTags:   util.ArrayOfMapsAddress(defn["additional_tags"].([]map[string]string)),
+			AdditionalTags:   util.ArrayOfMapsAddress(defn["additional_tags"].([]interface{})),
 		}
 	case "create_vss_snapshots":
 		action = Action{
@@ -228,7 +228,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			CopyInstanceTags:  util.BoolAddress(defn["copy_instance_tags"].(bool)),
 			ExcludeBootVolume: util.BoolAddress(defn["exclude_boot_volume"].(bool)),
 			UseAdditionalTags: util.BoolAddress(defn["use_additional_tags"].(bool)),
-			AdditionalTags:    util.ArrayOfMapsAddress(defn["additional_tags"].([]map[string]string)),
+			AdditionalTags:    util.ArrayOfMapsAddress(defn["additional_tags"].([]interface{})),
 		}
 	case "delete_detached_volumes":
 		action = Action{
@@ -294,7 +294,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			InvocationType:         util.StringAddress(defn["invocation_type"].(string)),
 			Payload:                util.StringAddress(defn["payload"].(string)),
 			ReplaceConflictingVars: util.BoolAddress(defn["replace_conflicting_vars"].(bool)),
-			EnvironmentVariables:   util.ArrayOfMapsAddress(defn["environment_variables"].([]map[string]string)),
+			EnvironmentVariables:   util.ArrayOfMapsAddress(defn["environment_variables"].([]interface{})),
 		}
 	case "invoke_tagged_lambda_functions":
 		action = Action{
@@ -304,7 +304,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			InvocationType:         util.StringAddress(defn["invocation_type"].(string)),
 			Payload:                util.StringAddress(defn["payload"].(string)),
 			ReplaceConflictingVars: util.BoolAddress(defn["replace_conflicting_vars"].(bool)),
-			EnvironmentVariables:   util.ArrayOfMapsAddress(defn["environment_variables"].([]map[string]string)),
+			EnvironmentVariables:   util.ArrayOfMapsAddress(defn["environment_variables"].([]interface{})),
 		}
 	case "notify_cost":
 		action = Action{

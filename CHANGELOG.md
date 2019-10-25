@@ -1,3 +1,22 @@
+## 0.2.7 (Oct 25, 2019)
+
+#### BREAKING CHANGES:
+#### FEATURES:
+#### IMPROVEMENTS:
+#### BUG FIXES:
+
+* Adding temporary use of omitempty and returning of nil from some helper functions to not include some optional values
+
+## 0.2.6 (Oct 4, 2019)
+
+#### BREAKING CHANGES:
+#### FEATURES:
+#### IMPROVEMENTS:
+#### BUG FIXES:
+
+* Adding support for CloudTrail Event Trigger match expression
+
+
 ## 0.2.5 (August 12, 2019)
 
 #### BREAKING CHANGES:
