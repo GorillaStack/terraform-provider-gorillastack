@@ -220,6 +220,8 @@ type Action struct {
 	NotificationsTrigger *string
 	// Notify Event
 	NotificationFieldMappings []*NotificationFieldMapping
+	// Start/Stop RDS cluster instances
+	TargetClusters *bool
 }
 
 type Rule struct {

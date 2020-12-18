@@ -386,6 +386,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
 			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
+			TargetClusters:   util.BoolAddress(defn["target_clusters"].(bool)),
 			Wait: &Wait{
 				InstanceState:  util.BoolAddress(defn["wait_instance_state"].(bool)),
 				InstanceStatus: util.BoolAddress(defn["wait_instance_status"].(bool)),
