@@ -135,6 +135,10 @@ func constructTrigger(d *schema.ResourceData) *Trigger {
 				MatchFields:     constructMatchFields(v["match_fields"].([]interface{})),
 				MatchExpression: constructMatchExpression(v["match_expression"].([]interface{})),
 			}
+		case "manual":
+			trigger = Trigger{
+				Trigger:		util.StringAddress("manual_trigger"),
+			}
 		default:
 			break
 		}
@@ -382,6 +386,7 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
 			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
+			TargetClusters:   util.BoolAddress(defn["target_clusters"].(bool)),
 			Wait: &Wait{
 				InstanceState:  util.BoolAddress(defn["wait_instance_state"].(bool)),
 				InstanceStatus: util.BoolAddress(defn["wait_instance_status"].(bool)),
