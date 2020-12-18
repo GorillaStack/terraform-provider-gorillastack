@@ -1,3 +1,10 @@
+## 0.3.0 (Dec 18, 2020)
+#### IMPROVEMENTS:
+* Moving to support the latest version of Terraform, implementing the new source definition in `versions.tf`
+* Updating our Makefile to simplify build process and support more archs and OS's
+#### BUG FIXES:
+* Adding missing support for `target_clusters` in start/stop rds_instances actions
+
 ## 0.2.7 (Oct 25, 2019)
 
 #### BREAKING CHANGES:
