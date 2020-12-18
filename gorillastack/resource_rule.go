@@ -135,6 +135,10 @@ func constructTrigger(d *schema.ResourceData) *Trigger {
 				MatchFields:     constructMatchFields(v["match_fields"].([]interface{})),
 				MatchExpression: constructMatchExpression(v["match_expression"].([]interface{})),
 			}
+		case "manual":
+			trigger = Trigger{
+				Trigger:		util.StringAddress("manual_trigger"),
+			}
 		default:
 			break
 		}
