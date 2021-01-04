@@ -371,6 +371,12 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 				SystemStatus:   util.BoolAddress(defn["wait_system_status"].(bool)),
 			},
 		}
+	case "start_workspaces":
+		action = Action{
+			Action:           &actionName,
+			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
+		}
 	case "stop_instances":
 		action = Action{
 			Action:           &actionName,
@@ -393,6 +399,12 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 				InstanceStatus: util.BoolAddress(defn["wait_instance_status"].(bool)),
 				SystemStatus:   util.BoolAddress(defn["wait_system_status"].(bool)),
 			},
+		}
+	case "stop_workspaces":
+		action = Action{
+			Action:           &actionName,
+			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 		}
 	case "suspend_autoscaling_processes":
 		action = Action{

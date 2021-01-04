@@ -3,7 +3,8 @@ HOSTNAME=terraform.gorillastack.com
 NAMESPACE=gorillastack
 NAME=gorillastack
 BINARY=terraform-provider-${NAME}
-VERSION=$(shell git tag --sort=v:refname | tail -1)
+VERSION=v0.3.1
+# VERSION=$(shell git tag --sort=v:refname | tail -1)
 OS_ARCH=linux_amd64
 
 default: install

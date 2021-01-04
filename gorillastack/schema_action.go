@@ -125,6 +125,11 @@ func actionsSchema() map[string]*schema.Schema {
 			Elem:     &schema.Resource{Schema: startRdsInstancesActionSchema()},
 			Optional: true,
 		},
+		"start_workspaces": {
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: startWorkspacesActionSchema()},
+			Optional: true,
+		},
 		"stop_instances": {
 			Type:     schema.TypeList,
 			Elem:     &schema.Resource{Schema: startInstancesActionSchema()},
@@ -133,6 +138,11 @@ func actionsSchema() map[string]*schema.Schema {
 		"stop_rds_instances": {
 			Type:     schema.TypeList,
 			Elem:     &schema.Resource{Schema: startRdsInstancesActionSchema()},
+			Optional: true,
+		},
+		"stop_workspaces": {
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: startWorkspacesActionSchema()},
 			Optional: true,
 		},
 		"suspend_autoscaling_processes": {
@@ -1201,6 +1211,35 @@ func startRdsInstancesActionSchema() map[string]*schema.Schema {
 		},
 	}
 }
+
+func startWorkspacesActionSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"action": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"action_id": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"index": {
+			Type:     schema.TypeInt,
+			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeString,
+			Optional: true,
+		},
+	}
+}
+
 
 func updateAutoscalingGroupsActionSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
