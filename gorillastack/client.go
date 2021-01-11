@@ -10,9 +10,11 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"log"
 )
 
-const DEFAULT_GORILLASTACK_API_URL = "https://api.gorillastack.com"
+// const DEFAULT_GORILLASTACK_API_URL = "https://api.gorillastack.com"
+const DEFAULT_GORILLASTACK_API_URL = "https://api.preprod.aws.ape.gs/api"
 
 type Client struct {
 	baseURL    *url.URL
@@ -31,8 +33,8 @@ func getURL() string {
 }
 
 func getPrefix() string {
-	if v := os.Getenv("GORILLASTACK_API_URL"); v != "" {
-		return ""
+	if v := os.Getenv("PREFIX_OVERRIDE"); v != "" {
+		return v 
 	}
 	return "/v1"
 }
@@ -75,6 +77,7 @@ func (c *Client) newRequest(method, path string, body interface{}) (*http.Reques
 }
 
 func (c *Client) do(req *http.Request, v interface{}) (*http.Response, error) {
+	log.Printf("Rule b4 req %+v\n", v);
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, err

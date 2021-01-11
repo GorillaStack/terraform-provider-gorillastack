@@ -181,11 +181,66 @@ func actionsSchema() map[string]*schema.Schema {
 			Elem:     &schema.Resource{Schema: deallocateVmsActionSchema()},
 			Optional: true,
 		},
+		"restore_sql_databases": {
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: restoreSqlDatabasesActionSchema()},
+			Optional: true,
+		},
+		"start_container_groups": {
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: deallocateVmsActionSchema()},
+			Optional: true,
+		},
+		"start_sql_databases": {
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: deallocateVmsActionSchema()},
+			Optional: true,
+		},
 		"start_vms": {
 			Type:     schema.TypeList,
 			Elem:     &schema.Resource{Schema: deallocateVmsActionSchema()},
 			Optional: true,
 		},
+		"start_wvd_session_hosts": {
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: startWvdSessionHostsActionSchema()},
+			Optional: true,
+		},
+		"stop_container_groups": {
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: deallocateVmsActionSchema()},
+			Optional: true,
+		},
+		"stop_sql_databases": {
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: deallocateVmsActionSchema()},
+			Optional: true,
+		},
+		"stop_wvd_session_hosts": {
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: deallocateVmsActionSchema()},
+			Optional: true,
+		},
+		"update_aks_node_pool_scale": {
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: updateAksNodePoolScaleActionSchema()},
+			Optional: true,
+		},
+		"update_application_autoscaling_settings": {
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: updateApplicationAutoscalingSettings()},
+			Optional: true,
+		},
+		// "update_cosmos_container_throughput": {
+		// 	Type:     schema.TypeList,
+		// 	Elem:     &schema.Resource{Schema: updateCosmosContainerThroughputActionSchema()},
+		// 	Optional: true,
+		// },
+		// "update_cosmos_table_throughput": {
+		// 	Type:     schema.TypeList,
+		// 	Elem:     &schema.Resource{Schema: updateCosmosTableThroughputActionSchema()},
+		// 	Optional: true,
+		// },
 		"update_scale_sets": {
 			Type:     schema.TypeList,
 			Elem:     &schema.Resource{Schema: updateScaleSetsActionSchema()},
@@ -1519,6 +1574,187 @@ func updateSecurityGroupsActionSchema() map[string]*schema.Schema {
 /* Azure Schema functions */
 
 func deallocateVmsActionSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"action": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"action_id": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"index": {
+			Type:     schema.TypeInt,
+			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeString,
+			Optional: true,
+		},
+	}
+}
+
+func updateAksNodePoolScaleActionSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"action": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"action_id": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"index": {
+			Type:     schema.TypeInt,
+			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeString,
+			Optional: true,
+		},
+		"min_count": {
+			Type:     schema.TypeInt,
+			Optional: true,
+		},
+		"max_count": {
+			Type:     schema.TypeInt,
+			Optional: true,
+		},
+		"restore_to_previous_scale": {
+			Type:     schema.TypeBool,
+			Optional: true,
+		},
+	}
+}
+
+func updateApplicationAutoscalingSettings() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"action": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"action_id": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"index": {
+			Type:     schema.TypeInt,
+			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeString,
+			Optional: true,
+		},
+		"scalable_dimension": {
+			Type:     schema.TypeString,
+			Optional: true,
+		},
+		"service_namespace": {
+			Type:     schema.TypeString,
+			Optional: true,
+		},
+		"min_capacity": {
+			Type:     schema.TypeInt,
+			Optional: true,
+		},
+		"max_capacity": {
+			Type:     schema.TypeInt,
+			Optional: true,
+		},
+		"store_existing_autoscaling_settings": {
+			Type:     schema.TypeBool,
+			Optional: true,
+		},
+		"restore_existing_autoscaling_settings": {
+			Type:     schema.TypeBool,
+			Optional: true,
+		},
+		"ignore_if_no_cached_autoscaling_settings": {
+			Type:     schema.TypeBool,
+			Optional: true,
+		},
+	}
+}
+
+func restoreSqlDatabasesActionSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"action": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"action_id": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"index": {
+			Type:     schema.TypeInt,
+			Required: true,
+		},
+		"database_name": {
+			Type:     schema.TypeString,
+			Required: true,
+		},
+		"database_server": {
+			Type:     schema.TypeString,
+			Required: true,
+		},
+		"resource_group": {
+			Type:     schema.TypeString,
+			Required: true,
+		},
+	}
+}
+
+func startWvdSessionHostsActionSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"action": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"action_id": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"index": {
+			Type:     schema.TypeInt,
+			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"tag_group_combiner": {
+			Type:     schema.TypeString,
+			Optional: true,
+		},
+	}
+}
+
+func startSqlDatabasesActionSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"action": {
 			Type:     schema.TypeString,

@@ -3,6 +3,7 @@ package gorillastack
 import (
 	"encoding/json"
 	"time"
+	"fmt"
 
 	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
 )
@@ -97,9 +98,22 @@ type Wait struct {
 }
 
 type AutoscalingParams struct {
-	Min     *int
-	Max     *int
-	Desired *int
+	Min     *int   `json:",omitempty"`
+	Max     *int   `json:",omitempty"`
+	Desired *int   `json:",omitempty"`
+
+	MinCount     *int  `json:",omitempty"`	
+	MaxCount     *int `json:",omitempty"`
+	// Properties struct {
+	// 	MinCount     *int
+	// 	MaxCount     *int
+	// }
+	// Properties		*interface{}
+}
+
+type AksNodePoolParams struct {
+	MinCount     *int
+	MaxCount     *int
 }
 
 type IntOrString struct {
@@ -222,6 +236,21 @@ type Action struct {
 	NotificationFieldMappings []*NotificationFieldMapping
 	// Start/Stop RDS cluster instances
 	TargetClusters *bool
+	// Restore SQL database
+	DatabaseName				*string
+	DatabaseServer				*string
+	ResourceGroup				*string
+	// Update Aks Node Pool
+	RestoreToPreviousScale 		*bool
+
+	// Update application autoscaling settings
+	ScalableDimension  		*string
+	ServiceNamespace 		*string
+	MinCapacity				*int 
+	MaxCapacity				*int 
+	StoreExistingAutoscalingSettings		*bool
+	RestoreExistingAutoscalingSettings 		*bool
+	IgnoreIfNoCachedAutoscalingSettings		*bool
 }
 
 type Rule struct {
@@ -278,6 +307,8 @@ func (c *Client) GetRule(teamId string, ruleId string) (*Rule, error) {
 }
 
 func (c *Client) CreateRule(teamId string, rule *Rule) (*Rule, error) {
+	fmt.Println("[DEBUG] =============Create Rule==========");
+	fmt.Printf("[DEBUG] %+v\n", rule);
 	request := RuleApiInput{Rule: rule}
 	req, err := c.newRequest("POST", "/teams/"+teamId+"/rules", request)
 	if err != nil {
