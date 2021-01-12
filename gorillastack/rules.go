@@ -3,8 +3,6 @@ package gorillastack
 import (
 	"encoding/json"
 	"time"
-	"fmt"
-
 	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
 )
 
@@ -101,18 +99,11 @@ type AutoscalingParams struct {
 	Min     *int
 	Max     *int
 	Desired *int
-
 	// Update AKS Node Pool Scale 
 	MinCount     *int
 	MaxCount     *int
-
 	// Update Cosmos Container Throughput
 	Throughput *int
-	// Properties struct {
-	// 	MinCount     *int
-	// 	MaxCount     *int
-	// }
-	// Properties		*interface{}
 }
 
 type AksNodePoolParams struct {
@@ -312,8 +303,6 @@ func (c *Client) GetRule(teamId string, ruleId string) (*Rule, error) {
 }
 
 func (c *Client) CreateRule(teamId string, rule *Rule) (*Rule, error) {
-	fmt.Println("[DEBUG] =============Create Rule==========");
-	fmt.Printf("[DEBUG] %+v\n", rule);
 	request := RuleApiInput{Rule: rule}
 	req, err := c.newRequest("POST", "/teams/"+teamId+"/rules", request)
 	if err != nil {

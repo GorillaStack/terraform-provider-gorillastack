@@ -10,11 +10,9 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"log"
 )
 
-// const DEFAULT_GORILLASTACK_API_URL = "https://api.gorillastack.com"
-const DEFAULT_GORILLASTACK_API_URL = "https://api.preprod.aws.ape.gs/api"
+const DEFAULT_GORILLASTACK_API_URL = "https://api.gorillastack.com"
 
 type Client struct {
 	baseURL    *url.URL
@@ -77,7 +75,6 @@ func (c *Client) newRequest(method, path string, body interface{}) (*http.Reques
 }
 
 func (c *Client) do(req *http.Request, v interface{}) (*http.Response, error) {
-	log.Printf("Rule b4 req %+v\n", v);
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, err

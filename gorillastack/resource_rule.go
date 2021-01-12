@@ -1,7 +1,5 @@
 package gorillastack
 
-import "log"
-
 import (
 	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
 	"github.com/hashicorp/terraform/helper/schema"
@@ -11,10 +9,7 @@ func constructContext(d *schema.ResourceData) *Context {
 	var context Context
 	rawContext := d.Get("context").([]interface{})[0].(map[string]interface{})
 
-	log.Println("[DEBUG] =============Constructing context==========");
 	if rawAws := rawContext["aws"].([]interface{}); rawAws != nil && len(rawAws) > 0  {
-		log.Printf("[DEBUG] In aws context");
-		log.Printf("[DEBUG] %s", rawAws);
 		aws := rawAws[0].(map[string]interface{})
 		accGroupIds := util.StringArrayOrNil(aws["account_group_ids"].([]interface{}))
 		context = Context{
@@ -27,14 +22,12 @@ func constructContext(d *schema.ResourceData) *Context {
 			AccountGroupIds: accGroupIds,
 		}
 	} else if rawAzure := rawContext["azure"].([]interface{}); rawAzure != nil && len(rawAzure) > 0 {
-		log.Printf("[DEBUG] In azure context");
 		azure := rawAzure[0].(map[string]interface{})
 		context = Context{
 			Platform:        util.StringAddress("azure"),
 			SubscriptionIds: &StringArrayOrNull{StringArray: util.StringArrayOrNil(azure["subscription_ids"].([]interface{}))},
 		}
 	} else {
-		log.Printf("[DEBUG] In non valid context");
 		// not a supported platform - will error on API call
 		return nil
 	}
@@ -469,16 +462,16 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		}
 	case "update_application_autoscaling_settings":
 		action = Action{
-			Action:           &actionName,
-			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
-			ScalableDimension:  util.StringAddress(defn["scalable_dimension"].(string)),
-			ServiceNamespace:  util.StringAddress(defn["service_namespace"].(string)),
-			MinCapacity:	 util.IntAddress(defn["min_capacity"].(int)),
-			MaxCapacity:	 util.IntAddress(defn["max_capacity"].(int)),
-			StoreExistingAutoscalingSettings: util.BoolAddress(defn["store_existing_autoscaling_settings"].(bool)),
-			RestoreExistingAutoscalingSettings: util.BoolAddress(defn["restore_existing_autoscaling_settings"].(bool)),
-			IgnoreIfNoCachedAutoscalingSettings: util.BoolAddress(defn["ignore_if_no_cached_autoscaling_settings"].(bool)),
+			Action:          		 					&actionName,
+			TagGroups:        							util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
+			TagGroupCombiner: 							util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
+			ScalableDimension:  						util.StringAddress(defn["scalable_dimension"].(string)),
+			ServiceNamespace:  							util.StringAddress(defn["service_namespace"].(string)),
+			MinCapacity:	 							util.IntAddress(defn["min_capacity"].(int)),
+			MaxCapacity:	 							util.IntAddress(defn["max_capacity"].(int)),
+			StoreExistingAutoscalingSettings: 			util.BoolAddress(defn["store_existing_autoscaling_settings"].(bool)),
+			RestoreExistingAutoscalingSettings:			util.BoolAddress(defn["restore_existing_autoscaling_settings"].(bool)),
+			IgnoreIfNoCachedAutoscalingSettings: 		util.BoolAddress(defn["ignore_if_no_cached_autoscaling_settings"].(bool)),
 		}
 		/* Azure Actions */
 	case "deallocate_vms":
@@ -518,12 +511,6 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
 			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 		}
-	// case "start_workspaces":
-	// 	action = Action{
-	// 		Action:           &actionName,
-	// 		TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-	// 		TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
-	// 	}
 	case "stop_container_groups":
 		action = Action{
 			Action:           &actionName,
@@ -536,20 +523,12 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
 			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 		}
-	// case "stop_workspaces":
-	// 	action = Action{
-	// 		Action:           &actionName,
-	// 		DatabaseName:	  util.StringAddress(defn["database_name"].(string)),
-	// 		DatabaseAddress:  util.StringAddress(defn["database_address"].(string)),
-	// 		ResourceGroup:    util.StringAddress(defn["resource_group"].(string)),
-	// 	}
-	// case "stop_wvd_session_hosts":
-	// 	action = Action{
-	// 		Action:           &actionName,
-	// 		DatabaseName:	  util.StringAddress(defn["database_name"].(string)),
-	// 		DatabaseAddress:  util.StringAddress(defn["database_address"].(string)),
-	// 		ResourceGroup:    util.StringAddress(defn["resource_group"].(string)),
-	// 	}
+	case "stop_wvd_session_hosts":
+		action = Action{
+			Action:           &actionName,
+			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
+		}
 	case "update_aks_node_pool_scale":
 		var minCount =     util.IntAddress(defn["min_count"].(int))
 		var maxCount =     util.IntAddress(defn["max_count"].(int))
@@ -561,9 +540,6 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 		}
 
-		log.Println("[DEBUG] =============AKS node pool==========");
-		log.Printf("[DEBUG] %t %s %+v %v\n", *restoreToPrevScale, restoreToPrevScale, restoreToPrevScale,  *restoreToPrevScale);
-		// PRTODO: ensure that this is still valid.
 		if restoreToPrevScale == nil || *restoreToPrevScale == false {
 			action.Params = &AutoscalingParams{
 				MinCount: minCount,
@@ -578,16 +554,11 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		var throughput = util.IntAddress(defn["throughput"].(int))
 		var restoreToPreviousThroughput = util.BoolAddress(defn["restore_to_previous_throughput"].(bool))
 
-		log.Println("[DEBUG] =============Update Cosmos Container==========");
-		log.Printf("[DEBUG] %t %s %+v %v\n", *restoreToPreviousThroughput, restoreToPreviousThroughput, restoreToPreviousThroughput,  *restoreToPreviousThroughput);
-
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
 			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
 		}
-
-		log.Printf("[DEBUG] %+v\n", action);
 
 		if restoreToPreviousThroughput == nil || *restoreToPreviousThroughput == false { 
 			action.Params = &AutoscalingParams{
@@ -596,13 +567,6 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		} else {
 			action.RestoreToPreviousThroughput = restoreToPreviousThroughput
 		}
-	// case "update_cosmos_table_throughput":
-	// 	action = Action{
-	// 		Action:           &actionName,
-	// 		DatabaseName:	  util.StringAddress(defn["database_name"].(string)),
-	// 		DatabaseAddress:  util.StringAddress(defn["database_address"].(string)),
-	// 		ResourceGroup:    util.StringAddress(defn["resource_group"].(string)),
-	// 	}
 	case "update_scale_sets":
 		action = Action{
 			Action:           &actionName,

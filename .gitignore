@@ -27,7 +27,6 @@ website/node_modules
 *.test
 *.iml
 .env
-.vscode
 
 website/vendor
 
