@@ -231,11 +231,11 @@ func actionsSchema() map[string]*schema.Schema {
 			Elem:     &schema.Resource{Schema: updateApplicationAutoscalingSettings()},
 			Optional: true,
 		},
-		// "update_cosmos_container_throughput": {
-		// 	Type:     schema.TypeList,
-		// 	Elem:     &schema.Resource{Schema: updateCosmosContainerThroughputActionSchema()},
-		// 	Optional: true,
-		// },
+		"update_cosmos_container_throughput": {
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: updateCosmosContainerThroughputActionSchema()},
+			Optional: true,
+		},
 		// "update_cosmos_table_throughput": {
 		// 	Type:     schema.TypeList,
 		// 	Elem:     &schema.Resource{Schema: updateCosmosTableThroughputActionSchema()},
@@ -1853,6 +1853,47 @@ func updateAutoscaleSettingsActionSchema() map[string]*schema.Schema {
 		},
 	}
 }
+
+func updateCosmosContainerThroughputActionSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"action": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"action_id": {
+			Type:     schema.TypeString,
+			Computed: true,
+		},
+		"index": {
+			Type:     schema.TypeInt,
+			Required: true,
+		},
+		"tag_groups": {
+			Type:     schema.TypeList,
+			MinItems: 1,
+			MaxItems: 100,
+			Required: true,
+			Elem:     &schema.Schema{Type: schema.TypeString},
+		},
+		"minimum": {
+			Type:     schema.TypeInt,
+			Optional: true,
+		},
+		"maximum": {
+			Type:     schema.TypeInt,
+			Optional: true,
+		},
+		"multiple_of": {
+			Type:     schema.TypeInt,
+			Optional: true,
+		},
+		"restore_to_previous_throughput": {
+			Type:     schema.TypeBool,
+			Optional: true,
+		},
+	}
+}
+ 
 
 /* Pause Schema functions */
 func delayPauseSchema() map[string]*schema.Schema {

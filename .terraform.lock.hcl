@@ -4,6 +4,6 @@
 provider "terraform.gorillastack.com/gorillastack/gorillastack" {
   version = "0.3.2"
   hashes = [
-    "h1:0YnNN74V9ZooLwVGx7OKtvApkR7yyjEtKKxXriKXmzM=",
+    "h1:60GakecAxdwk5VOjq+tH+0lsIUiEJm6DfhlM0vdHuEs=",
   ]
 }

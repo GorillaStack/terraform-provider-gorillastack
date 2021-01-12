@@ -98,12 +98,16 @@ type Wait struct {
 }
 
 type AutoscalingParams struct {
-	Min     *int   `json:",omitempty"`
-	Max     *int   `json:",omitempty"`
-	Desired *int   `json:",omitempty"`
+	Min     *int
+	Max     *int
+	Desired *int
 
-	MinCount     *int  `json:",omitempty"`	
-	MaxCount     *int `json:",omitempty"`
+	MinCount     *int
+	MaxCount     *int
+
+	Minimum		*int
+	Maximum		*int
+	MultipleOf	*int
 	// Properties struct {
 	// 	MinCount     *int
 	// 	MaxCount     *int
@@ -242,7 +246,6 @@ type Action struct {
 	ResourceGroup				*string
 	// Update Aks Node Pool
 	RestoreToPreviousScale 		*bool
-
 	// Update application autoscaling settings
 	ScalableDimension  		*string
 	ServiceNamespace 		*string

@@ -551,35 +551,47 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 	// 		ResourceGroup:    util.StringAddress(defn["resource_group"].(string)),
 	// 	}
 	case "update_aks_node_pool_scale":
+		var minCount =     util.IntAddress(defn["min_count"].(int))
+		var maxCount =     util.IntAddress(defn["max_count"].(int))
+		var restoreToPrevScale = util.BoolAddress(defn["restore_to_previous_scale"].(bool))
+
 		action = Action{
 			Action:           &actionName,
 			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
 			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
-			Params: &AutoscalingParams{
-				// Properties: 
-				// Properties: struct {
-				// 	MinCount     *int
-				// 	MaxCount     *int
-				// } {
-				// 	MinCount:     util.IntAddress(defn["min_count"].(int)),
-				// 	MaxCount:     util.IntAddress(defn["max_count"].(int)),
-				// },
-				// Properties: &interface{
-				// 	MinCount:     util.IntAddress(defn["min_count"].(int)),
-				// 	MaxCount:     util.IntAddress(defn["max_count"].(int)),
-				// },
-				MinCount:     util.IntAddress(defn["min_count"].(int)),
-				MaxCount:     util.IntAddress(defn["max_count"].(int)),
-			},
-			RestoreToPreviousScale:    util.BoolAddress(defn["restore_to_previous_scale"].(bool)),
 		}
 
+		log.Println("[DEBUG] =============AKS node pool==========");
+		log.Printf("[DEBUG] %t %s %+v %v\n", *restoreToPrevScale, restoreToPrevScale, restoreToPrevScale,  *restoreToPrevScale);
+		// PRTODO: ensure that this is still valid.
+		if restoreToPrevScale == nil || *restoreToPrevScale == false {
+			action.Params = &AutoscalingParams{
+				MinCount: minCount,
+				MaxCount: maxCount,
+			}
+		} else {
+			action.RestoreToPreviousScale = restoreToPrevScale
+		}
 	// case "update_cosmos_container_throughput":
+	// 	var min =     util.IntAddress(defn["minimum"].(int))
+	// 	var max =     util.IntAddress(defn["maximum"].(int))
+	// 	var multipleOf = util.IntAddress(defn["multiple_of"].(int))
+	// 	var restoreToPreviousThroughput = util.BoolAddress(defn["restore_to_previous_throughput"].(bool))
+
 	// 	action = Action{
 	// 		Action:           &actionName,
-	// 		DatabaseName:	  util.StringAddress(defn["database_name"].(string)),
-	// 		DatabaseAddress:  util.StringAddress(defn["database_address"].(string)),
-	// 		ResourceGroup:    util.StringAddress(defn["resource_group"].(string)),
+	// 		TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
+	// 		TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
+	// 	}
+
+	// 	if restoreToPreviousThroughput == nil { 
+	// 		action.Params = &AutoscalingParams{
+	// 			Minimum: min,
+	// 			Maximum: max,
+	// 			MultipleOf: multipleOf,
+	// 		}
+	// 	} else {
+	// 		action.RestoreToPreviousScale = restoreToPreviousThroughput
 	// 	}
 	// case "update_cosmos_table_throughput":
 	// 	action = Action{
