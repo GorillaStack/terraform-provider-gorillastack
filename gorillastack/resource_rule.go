@@ -572,27 +572,30 @@ func constructAction(actionName string, defn map[string]interface{}) *Action {
 		} else {
 			action.RestoreToPreviousScale = restoreToPrevScale
 		}
-	// case "update_cosmos_container_throughput":
-	// 	var min =     util.IntAddress(defn["minimum"].(int))
-	// 	var max =     util.IntAddress(defn["maximum"].(int))
-	// 	var multipleOf = util.IntAddress(defn["multiple_of"].(int))
-	// 	var restoreToPreviousThroughput = util.BoolAddress(defn["restore_to_previous_throughput"].(bool))
+	case "update_cosmos_container_throughput":
+		fallthrough
+	case "update_cosmos_table_throughput":
+		var throughput = util.IntAddress(defn["throughput"].(int))
+		var restoreToPreviousThroughput = util.BoolAddress(defn["restore_to_previous_throughput"].(bool))
 
-	// 	action = Action{
-	// 		Action:           &actionName,
-	// 		TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
-	// 		TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
-	// 	}
+		log.Println("[DEBUG] =============Update Cosmos Container==========");
+		log.Printf("[DEBUG] %t %s %+v %v\n", *restoreToPreviousThroughput, restoreToPreviousThroughput, restoreToPreviousThroughput,  *restoreToPreviousThroughput);
 
-	// 	if restoreToPreviousThroughput == nil { 
-	// 		action.Params = &AutoscalingParams{
-	// 			Minimum: min,
-	// 			Maximum: max,
-	// 			MultipleOf: multipleOf,
-	// 		}
-	// 	} else {
-	// 		action.RestoreToPreviousScale = restoreToPreviousThroughput
-	// 	}
+		action = Action{
+			Action:           &actionName,
+			TagGroups:        util.ArrayOfStringPointers(defn["tag_groups"].([]interface{})),
+			TagGroupCombiner: util.GetTagGroupCombiner(defn["tag_group_combiner"].(string)),
+		}
+
+		log.Printf("[DEBUG] %+v\n", action);
+
+		if restoreToPreviousThroughput == nil || *restoreToPreviousThroughput == false { 
+			action.Params = &AutoscalingParams{
+				Throughput: throughput,
+			}
+		} else {
+			action.RestoreToPreviousThroughput = restoreToPreviousThroughput
+		}
 	// case "update_cosmos_table_throughput":
 	// 	action = Action{
 	// 		Action:           &actionName,

@@ -102,12 +102,12 @@ type AutoscalingParams struct {
 	Max     *int
 	Desired *int
 
+	// Update AKS Node Pool Scale 
 	MinCount     *int
 	MaxCount     *int
 
-	Minimum		*int
-	Maximum		*int
-	MultipleOf	*int
+	// Update Cosmos Container Throughput
+	Throughput *int
 	// Properties struct {
 	// 	MinCount     *int
 	// 	MaxCount     *int
@@ -254,6 +254,8 @@ type Action struct {
 	StoreExistingAutoscalingSettings		*bool
 	RestoreExistingAutoscalingSettings 		*bool
 	IgnoreIfNoCachedAutoscalingSettings		*bool
+	// Update Cosmos Container/Table Throughput
+	RestoreToPreviousThroughput		*bool
 }
 
 type Rule struct {

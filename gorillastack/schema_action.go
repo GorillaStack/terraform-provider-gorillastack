@@ -236,11 +236,11 @@ func actionsSchema() map[string]*schema.Schema {
 			Elem:     &schema.Resource{Schema: updateCosmosContainerThroughputActionSchema()},
 			Optional: true,
 		},
-		// "update_cosmos_table_throughput": {
-		// 	Type:     schema.TypeList,
-		// 	Elem:     &schema.Resource{Schema: updateCosmosTableThroughputActionSchema()},
-		// 	Optional: true,
-		// },
+		"update_cosmos_table_throughput": {
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: updateCosmosContainerThroughputActionSchema()},
+			Optional: true,
+		},
 		"update_scale_sets": {
 			Type:     schema.TypeList,
 			Elem:     &schema.Resource{Schema: updateScaleSetsActionSchema()},
@@ -1875,15 +1875,11 @@ func updateCosmosContainerThroughputActionSchema() map[string]*schema.Schema {
 			Required: true,
 			Elem:     &schema.Schema{Type: schema.TypeString},
 		},
-		"minimum": {
-			Type:     schema.TypeInt,
+		"tag_group_combiner": {
+			Type:     schema.TypeString,
 			Optional: true,
 		},
-		"maximum": {
-			Type:     schema.TypeInt,
-			Optional: true,
-		},
-		"multiple_of": {
+		"throughput": {
 			Type:     schema.TypeInt,
 			Optional: true,
 		},
