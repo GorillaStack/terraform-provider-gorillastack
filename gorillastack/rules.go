@@ -96,14 +96,14 @@ type Wait struct {
 }
 
 type AutoscalingParams struct {
-	Min     *int
-	Max     *int
-	Desired *int
+	Min				*int
+	Max				*int
+	Desired			*int
 	// Update AKS Node Pool Scale 
-	MinCount     *int
-	MaxCount     *int
+	MinCount		*int
+	MaxCount		*int
 	// Update Cosmos Container Throughput
-	Throughput *int
+	Throughput		*int
 }
 
 type AksNodePoolParams struct {
