@@ -1,0 +1,46 @@
+# This github action triggers the creation of auto generated documentation 
+# on a pull request to master.
+name: docs-gen
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    
+    # Setup Go
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: '1.14.0' # The Go version to download (if necessary) and use.
+    - name: Install dependencies
+      run: |
+        go get github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
+        go generate
+    - uses: EndBug/add-and-commit@v7 # You can change this to use a specific version
+      with:
+        # The arguments for the `git add` command (see the paragraph below for more info)
+        # Default: '.'
+        add: 'docs'
+
+        # The name of the user that will be displayed as the author of the commit
+        # Default: author of the commit that triggered the run
+        author_name: '[github-actions docs generator]'
+
+        # The email of the user that will be displayed as the author of the commit
+        # Default: author of the commit that triggered the run
+        # author_email: 
+
+        # Name of the branch to use, if different from the one that triggered the workflow
+        # Default: the branch that triggered the run
+        # branch: 
+
+        # The message for the commit
+        # Default: 'Commit from GitHub Actions (name of the workflow)'
+        message: '[github-actions] Auto generate docs.'
+
