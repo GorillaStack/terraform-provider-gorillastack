@@ -46,4 +46,6 @@ jobs:
       run: |
         go version
         go env
+        go get github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
+        ls -l
         go generate
