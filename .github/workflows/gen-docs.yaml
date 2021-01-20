@@ -37,6 +37,4 @@ jobs:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Install dependencies
-          run: |
-            go version
-            go mod vender
+          run: go mod vendor
