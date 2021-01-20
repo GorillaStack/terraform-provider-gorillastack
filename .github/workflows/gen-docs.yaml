@@ -19,7 +19,7 @@ on:
 #     tags:
 #       - 'v*'
 jobs:
-  goreleaser:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
