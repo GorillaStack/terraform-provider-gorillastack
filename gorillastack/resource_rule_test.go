@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
-	"github.com/hashicorp/terraform/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func getRuleResourceData(t *testing.T, rawAwsContext map[string]interface{}) *schema.ResourceData {

@@ -3,8 +3,8 @@ package gorillastack
 import (
 	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/constants"
 	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
-	"github.com/hashicorp/terraform/helper/schema"
-	"github.com/hashicorp/terraform/helper/validation"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
 func actionsSchema() map[string]*schema.Schema {
@@ -1267,7 +1267,6 @@ func startRdsInstancesActionSchema() map[string]*schema.Schema {
 	}
 }
 
-
 func updateAutoscalingGroupsActionSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"action": {
@@ -1698,7 +1697,6 @@ func restoreSqlDatabasesActionSchema() map[string]*schema.Schema {
 	}
 }
 
-
 func updateScaleSetsActionSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"action": {
@@ -1806,7 +1804,6 @@ func updateCosmosContainerThroughputActionSchema() map[string]*schema.Schema {
 		},
 	}
 }
- 
 
 /* Pause Schema functions */
 func delayPauseSchema() map[string]*schema.Schema {

@@ -2,7 +2,7 @@ package gorillastack
 
 import (
 	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
-	"github.com/hashicorp/terraform/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func constructTagGroupFromResourceData(d *schema.ResourceData) *TagGroup {

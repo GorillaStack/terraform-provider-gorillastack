@@ -32,7 +32,7 @@ func getURL() string {
 
 func getPrefix() string {
 	if v := os.Getenv("PREFIX_OVERRIDE"); v != "" {
-		return v 
+		return v
 	}
 	return "/v1"
 }

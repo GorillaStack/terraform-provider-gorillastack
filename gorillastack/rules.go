@@ -96,19 +96,19 @@ type Wait struct {
 }
 
 type AutoscalingParams struct {
-	Min				*int
-	Max				*int
-	Desired			*int
-	// Update AKS Node Pool Scale 
-	MinCount		*int
-	MaxCount		*int
+	Min     *int
+	Max     *int
+	Desired *int
+	// Update AKS Node Pool Scale
+	MinCount *int
+	MaxCount *int
 	// Update Cosmos Container Throughput
-	Throughput		*int
+	Throughput *int
 }
 
 type AksNodePoolParams struct {
-	MinCount     *int
-	MaxCount     *int
+	MinCount *int
+	MaxCount *int
 }
 
 type IntOrString struct {
@@ -232,21 +232,21 @@ type Action struct {
 	// Start/Stop RDS cluster instances
 	TargetClusters *bool
 	// Restore SQL database
-	DatabaseName				*string
-	DatabaseServer				*string
-	ResourceGroup				*string
+	DatabaseName   *string
+	DatabaseServer *string
+	ResourceGroup  *string
 	// Update Aks Node Pool
-	RestoreToPreviousScale 		*bool
+	RestoreToPreviousScale *bool
 	// Update application autoscaling settings
-	ScalableDimension  		*string
-	ServiceNamespace 		*string
-	MinCapacity				*int 
-	MaxCapacity				*int 
-	StoreExistingAutoscalingSettings		*bool
-	RestoreExistingAutoscalingSettings 		*bool
-	IgnoreIfNoCachedAutoscalingSettings		*bool
+	ScalableDimension                   *string
+	ServiceNamespace                    *string
+	MinCapacity                         *int
+	MaxCapacity                         *int
+	StoreExistingAutoscalingSettings    *bool
+	RestoreExistingAutoscalingSettings  *bool
+	IgnoreIfNoCachedAutoscalingSettings *bool
 	// Update Cosmos Container/Table Throughput
-	RestoreToPreviousThroughput		*bool
+	RestoreToPreviousThroughput *bool
 }
 
 type Rule struct {
