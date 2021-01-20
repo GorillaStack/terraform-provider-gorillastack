@@ -12,8 +12,12 @@
 name: docs-gen
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+    - docs-gen
+# on:
+#   push:
+#     tags:
+#       - 'v*'
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
@@ -36,5 +40,11 @@ jobs:
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
-      - name: Install dependencies
-          run: go mod vendor
+
+      # - name: Install dependencies
+      #     run: go mod vendor
+       # Install all the dependencies
+    - name: Install dependencies
+      run: |
+        go version
+        go get -u golang.org/x/lint/golint
