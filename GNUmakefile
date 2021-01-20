@@ -9,7 +9,8 @@ OS_ARCH=linux_amd64
 default: install
 
 build:
-	go build -mod vendor -o ${BINARY}
+	# go build -mod vendor -o ${BINARY}
+	go build -o ${BINARY}
 release:
 	GOOS=darwin GOARCH=amd64 go build -o ./bin/${BINARY}_${VERSION}_darwin_amd64
 	GOOS=freebsd GOARCH=386 go build -o ./bin/${BINARY}_${VERSION}_freebsd_386
