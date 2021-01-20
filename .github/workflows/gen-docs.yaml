@@ -45,4 +45,5 @@ jobs:
     - name: Install dependencies
       run: |
         go version
+        go env
         go mod vendor
