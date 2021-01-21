@@ -94,11 +94,12 @@ jobs:
         # Arguments for the git tag command (the tag name always needs to be the first word not preceded by an hyphen)
         # Default: ''
         # tag: 'v1.0.0 --force'
-        - id: bump
+      # - id: bump
+      - name: Increment version
         uses: zwaldowski/match-label-action@v1
         with:
           allowed: major,minor,patch
-        - uses: zwaldowski/semver-release-action@v1
-          with:
-            bump: ${{ steps.bump.outputs.match }}
-            github_token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: zwaldowski/semver-release-action@v1
+        with:
+          bump: ${{ steps.bump.outputs.match }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
