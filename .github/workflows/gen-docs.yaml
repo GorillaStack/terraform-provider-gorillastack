@@ -46,12 +46,6 @@ jobs:
     #   uses: zwaldowski/match-label-action@v1
     #   with:
     #     allowed: major,minor,patch
-    - uses: zwaldowski/semver-release-action@v1
-      with:
-        # bump: ${{ steps.bump.outputs.match }}
-        bump: 'patch'
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-
     - name: Install dependencies
       run: |
         go version
@@ -105,3 +99,8 @@ jobs:
         # Default: ''
         # tag: 'v1.0.0 --force'
       # - name: Install dependencies
+    - uses: zwaldowski/semver-release-action@v1
+      with:
+        # bump: ${{ steps.bump.outputs.match }}
+        bump: 'patch'
+        github_token: ${{ secrets.GITHUB_TOKEN }}
