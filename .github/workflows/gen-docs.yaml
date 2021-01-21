@@ -42,6 +42,16 @@ jobs:
       # - name: Install dependencies
       #     run: go mod vendor
        # Install all the dependencies
+    # - id: bump
+    #   uses: zwaldowski/match-label-action@v1
+    #   with:
+    #     allowed: major,minor,patch
+    - uses: zwaldowski/semver-release-action@v1
+      with:
+        # bump: ${{ steps.bump.outputs.match }}
+        bump: 'patch'
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Install dependencies
       run: |
         go version
@@ -94,12 +104,4 @@ jobs:
         # Arguments for the git tag command (the tag name always needs to be the first word not preceded by an hyphen)
         # Default: ''
         # tag: 'v1.0.0 --force'
-      # - id: bump
-      - name: Increment version
-        uses: zwaldowski/match-label-action@v1
-        with:
-          allowed: major,minor,patch
-      - uses: zwaldowski/semver-release-action@v1
-        with:
-          bump: ${{ steps.bump.outputs.match }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Install dependencies
