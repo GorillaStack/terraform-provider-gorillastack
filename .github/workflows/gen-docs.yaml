@@ -73,7 +73,7 @@ jobs:
 
         # The message for the commit
         # Default: 'Commit from GitHub Actions (name of the workflow)'
-        message: '[skip ci]'
+        message: 'dont skip'
 
         # The flag used on the pull strategy
         # Default: '--no-rebase'
@@ -94,3 +94,11 @@ jobs:
         # Arguments for the git tag command (the tag name always needs to be the first word not preceded by an hyphen)
         # Default: ''
         # tag: 'v1.0.0 --force'
+        - id: bump
+        uses: zwaldowski/match-label-action@v1
+        with:
+          allowed: major,minor,patch
+        - uses: zwaldowski/semver-release-action@v1
+          with:
+            bump: ${{ steps.bump.outputs.match }}
+            github_token: ${{ secrets.GITHUB_TOKEN }}
