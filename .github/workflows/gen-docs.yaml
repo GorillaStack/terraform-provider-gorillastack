@@ -104,3 +104,6 @@ jobs:
         # bump: ${{ steps.bump.outputs.match }}
         bump: 'patch'
         github_token: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        # Allows the action to use the `set-env` which is disabled by default
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
