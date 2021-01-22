@@ -116,3 +116,6 @@ jobs:
       env:
         # Allows the action to use the `set-env` which is disabled by default
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+    - name: Debug output
+      run: |
+        echo ${{ steps.bump.outputs.match }}
