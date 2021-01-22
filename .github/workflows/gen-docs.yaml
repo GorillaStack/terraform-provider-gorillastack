@@ -11,9 +11,12 @@
 #
 name: docs-gen
 on:
-  push:
+  pull_request:
     branches:
-    - docs-gen
+      - master
+  # push:
+  #   branches:
+  #   - docs-gen
 # on:
 #   push:
 #     tags:
@@ -99,10 +102,16 @@ jobs:
         # Default: ''
         # tag: 'v1.0.0 --force'
       # - name: Install dependencies
+    - id: bump
+      uses: zwaldowski/match-label-action@v1
+      with:
+        allowed: major,minor,patch
     - uses: zwaldowski/semver-release-action@v1
+      run: echo ${{ steps.bump.outputs.match }}
       with:
         # bump: ${{ steps.bump.outputs.match }}
-        bump: 'patch'
+        # bump: 'patch'
+        bump: ${{ steps.bump.outputs.match }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
       env:
         # Allows the action to use the `set-env` which is disabled by default
