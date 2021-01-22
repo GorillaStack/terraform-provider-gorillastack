@@ -111,6 +111,7 @@ jobs:
       with:
         # bump: ${{ steps.bump.outputs.match }}
         # bump: 'patch'
+        prefix: v
         bump: ${{ steps.bump.outputs.match }}
         github_token: ${{ secrets.GITHUB_TOKEN }}
       env:
