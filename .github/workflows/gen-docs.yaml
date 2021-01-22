@@ -106,7 +106,7 @@ jobs:
       uses: zwaldowski/match-label-action@v1
       with:
         allowed: major,minor,patch
-      run: echo ${{ steps.bump.outputs.match }}
+      # run: echo ${{ steps.bump.outputs.match }}
     - uses: zwaldowski/semver-release-action@v1
       with:
         # bump: ${{ steps.bump.outputs.match }}
