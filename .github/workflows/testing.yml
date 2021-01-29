@@ -1,10 +1,10 @@
-# This github action triggers the creation of auto generated documentation 
-# on a pull request to master.
+# This github action triggers the unit tests for the TF provider
+# on a push or pull request to master.
 name: unit-tests
 on:
   push:
     branches:
-    - master
+      - master
   pull_request:
     branches:
       - master
