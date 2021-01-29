@@ -6,7 +6,7 @@
 # major, minor, patch
 name: docs-gen
 on:
-  pull_request:
+  push:
     branches:
       - master
 jobs:
