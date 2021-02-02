@@ -1,7 +1,7 @@
 package gorillastack
 
 import (
-	"github.com/hashicorp/terraform/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func ruleSchema() map[string]*schema.Schema {
@@ -31,8 +31,9 @@ func ruleSchema() map[string]*schema.Schema {
 			Computed: true,
 		},
 		"name": {
-			Type:     schema.TypeString,
-			Required: true,
+			Type:        schema.TypeString,
+			Description: "supertest",
+			Required:    true,
 		},
 		"enabled": {
 			Type:     schema.TypeBool,
@@ -61,7 +62,7 @@ func ruleSchema() map[string]*schema.Schema {
 			Elem:     &schema.Resource{Schema: triggerSchema()},
 			MinItems: 1,
 			MaxItems: 1,
-			Required: true,
+			Required: true,	
 		},
 		"actions": {
 			Type:     schema.TypeList,

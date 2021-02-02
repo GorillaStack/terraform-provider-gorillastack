@@ -31,8 +31,8 @@ func getURL() string {
 }
 
 func getPrefix() string {
-	if v := os.Getenv("GORILLASTACK_API_URL"); v != "" {
-		return ""
+	if v := os.Getenv("PREFIX_OVERRIDE"); v != "" {
+		return v
 	}
 	return "/v1"
 }

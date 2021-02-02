@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/gorillastack/terraform-provider-gorillastack/gorillastack/util"
-	"github.com/hashicorp/terraform/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func getRuleResourceData(t *testing.T, rawAwsContext map[string]interface{}) *schema.ResourceData {
@@ -36,7 +36,7 @@ func TestConstructContextAllAccountsAllRegions(t *testing.T) {
 func TestConstructContextAccountGroupNoAccountsSelected(t *testing.T) {
 	rawAwsContext := map[string]interface{}{
 		"platform":          "aws",
-		"account_group_ids": []string{"fake_account_group_id"},
+		"account_group_ids": []interface{}{"fake_account_group_id"},
 	}
 	resourceData := getRuleResourceData(t, rawAwsContext)
 	context := constructContext(resourceData)
@@ -52,8 +52,8 @@ func TestConstructContextAccountGroupNoAccountsSelected(t *testing.T) {
 func TestConstructContextAccountGroupWithAccountsSelected(t *testing.T) {
 	rawAwsContext := map[string]interface{}{
 		"platform":          "aws",
-		"account_ids":       []string{"123"},
-		"account_group_ids": []string{"fake_account_group_id"},
+		"account_ids":       []interface{}{"123"},
+		"account_group_ids": []interface{}{"fake_account_group_id"},
 	}
 	resourceData := getRuleResourceData(t, rawAwsContext)
 	context := constructContext(resourceData)

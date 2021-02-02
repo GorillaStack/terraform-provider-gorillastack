@@ -1,7 +1,7 @@
 package gorillastack
 
 import (
-	"github.com/hashicorp/terraform/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func triggerSchema() map[string]*schema.Schema {
@@ -37,8 +37,6 @@ func triggerSchema() map[string]*schema.Schema {
 		"manual": {
 			Type:     schema.TypeList,
 			Elem:     &schema.Resource{Schema: manualTriggerSchema()},
-			MinItems: 1,
-			MaxItems: 1,
 			Optional: true,
 		},
 		"number_of_instances_threshold": {
@@ -211,7 +209,8 @@ func manualTriggerSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"trigger": {
 			Type:     schema.TypeString,
-			Computed: true,
+			Optional: true,
+			Default: "manual",
 		},
 	}
 }
