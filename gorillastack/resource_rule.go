@@ -713,8 +713,6 @@ func resourceRuleDelete(d *schema.ResourceData, m interface{}) error {
 
 func resourceRule() *schema.Resource {
 	return &schema.Resource{
-		Description: "Supertest",
-
 		Create: resourceRuleCreate,
 		Read:   resourceRuleRead,
 		Update: resourceRuleUpdate,

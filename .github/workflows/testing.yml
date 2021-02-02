@@ -1,0 +1,26 @@
+# This github action triggers the unit tests for the TF provider
+# on a push or pull request to master.
+name: unit-tests
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    
+    # Setup Go
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: '1.14.0' # The Go version to download (if necessary) and use.
+    - name: Run unit tests
+      run: |
+        make testacc

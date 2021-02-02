@@ -3,12 +3,12 @@
 page_title: "gorillastack_rule Resource - terraform-provider-gorillastack"
 subcategory: ""
 description: |-
-  Supertest
+  
 ---
 
 # gorillastack_rule (Resource)
 
-Supertest
+
 
 
 
@@ -19,7 +19,7 @@ Supertest
 
 - **actions** (Block List, Min: 1, Max: 100) (see [below for nested schema](#nestedblock--actions))
 - **context** (Block List, Min: 1, Max: 1) (see [below for nested schema](#nestedblock--context))
-- **name** (String) supertest
+- **name** (String)
 - **trigger** (Block List, Min: 1, Max: 1) (see [below for nested schema](#nestedblock--trigger))
 
 ### Optional

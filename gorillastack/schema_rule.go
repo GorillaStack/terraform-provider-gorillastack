@@ -32,7 +32,6 @@ func ruleSchema() map[string]*schema.Schema {
 		},
 		"name": {
 			Type:        schema.TypeString,
-			Description: "supertest",
 			Required:    true,
 		},
 		"enabled": {
