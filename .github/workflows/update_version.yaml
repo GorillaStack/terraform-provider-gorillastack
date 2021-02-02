@@ -1,0 +1,31 @@
+# This github action bump creates a tag which acts as the semantic versioning of the repo
+# It will use the label created on the pull request to determine which category should be 
+# Increased.
+
+# The PR must have one of these 3 labels for this workflow to run successfully.
+# major, minor, patch
+name: docs-gen
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+
+    - id: bump
+      uses: zwaldowski/match-label-action@v2
+      with:
+        allowed: major,minor,patch
+    - uses: zwaldowski/semver-release-action@v2
+      with:
+        prefix: v
+        bump: ${{ steps.bump.outputs.match }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        # Allows the action to use the `set-env` which is disabled by default
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
