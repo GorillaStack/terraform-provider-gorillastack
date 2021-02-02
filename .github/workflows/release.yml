@@ -39,7 +39,7 @@ jobs:
         WITH_V: true
         DEFAULT_BUMP: patch
   goreleaser:
-    needs: 
+    needs: bump
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
