@@ -6,7 +6,7 @@ description: |-
   
 ---
 
-# Resource `gorillastack_tag_group`
+# gorillastack_tag_group (Resource)
 
 
 
@@ -24,7 +24,7 @@ description: |-
 
 - **id** (String) The ID of this resource.
 
-### Read-only
+### Read-Only
 
 - **_id** (String)
 - **created_at** (Number)
