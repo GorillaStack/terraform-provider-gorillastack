@@ -1,9 +1,25 @@
-# This github action bump creates a tag which acts as the semantic versioning of the repo
-# It will use the label created on the pull request to determine which category should be 
-# Increased.
+# This github action creates a tag which acts as the semantic versioning of the repo
+# Upon a merge to master, it will create a new tag:
 
-# The PR must have one of these 3 labels for this workflow to run successfully.
-# major, minor, patch
+# ========= Version Bumping =============
+# Manual Bumping: Any commit message that includes #major, #minor, or #patch 
+# will trigger the respective version bump. If two or more are present, 
+# the highest-ranking one will take precedence.
+
+# Automatic Bumping: If no #major, #minor or #patch tag is contained 
+# in the commit messages, it will bump whichever DEFAULT_BUMP is set 
+# to (which is minor by default). Disable this by setting DEFAULT_BUMP to none.
+
+# This GitHub action also publishes assets for release when a tag is created.
+#
+# This uses an action (paultyng/ghaction-import-gpg) that assumes you set your 
+# private key in the `GPG_PRIVATE_KEY` secret and passphrase in the `PASSPHRASE`
+# secret. If you would rather own your own GPG handling, please fork this action
+# or use an alternative one for key handling.
+#
+# You will need to pass the `--batch` flag to `gpg` in your signing step 
+# in `goreleaser` to indicate this is being used in a non-interactive mode.
+
 name: release
 on:
   push:
