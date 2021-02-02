@@ -4,7 +4,6 @@
 
 # The PR must have one of these 3 labels for this workflow to run successfully.
 # major, minor, patch
-name: update-version
 name: Bump version
 on:
   push:
