@@ -1,5 +1,16 @@
-# This GitHub action can publish assets for release when a tag is created.
-# Currently its setup to run on any tag that matches the pattern "v*" (ie. v0.1.0).
+# This github action creates a tag which acts as the semantic versioning of the repo
+# Upon a merge to master, it will create a new tag:
+
+# ========= Version Bumping =============
+# Manual Bumping: Any commit message that includes #major, #minor, or #patch 
+# will trigger the respective version bump. If two or more are present, 
+# the highest-ranking one will take precedence.
+
+# Automatic Bumping: If no #major, #minor or #patch tag is contained 
+# in the commit messages, it will bump whichever DEFAULT_BUMP is set 
+# to (which is minor by default). Disable this by setting DEFAULT_BUMP to none.
+
+# This GitHub action also publishes assets for release when a tag is created.
 #
 # This uses an action (paultyng/ghaction-import-gpg) that assumes you set your 
 # private key in the `GPG_PRIVATE_KEY` secret and passphrase in the `PASSPHRASE`
@@ -8,39 +19,44 @@
 #
 # You will need to pass the `--batch` flag to `gpg` in your signing step 
 # in `goreleaser` to indicate this is being used in a non-interactive mode.
-#
+
 name: release
 on:
-  create:
-    tags:
-      - 'v*'
   push:
-    tags:
-      - 'v*'
+    branches:
+      - master
 jobs:
-  goreleaser:
+  bump:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: '0'
+    - name: Bump version and push tag
+      uses: anothrNick/github-tag-action@1.26.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        WITH_V: true
+        DEFAULT_BUMP: patch
+  goreleaser:
+    needs: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Unshallow
+      - name: Unshallow
         run: git fetch --prune --unshallow
-      -
-        name: Set up Go
+      - name: Set up Go
         uses: actions/setup-go@v2
         with:
           go-version: 1.14
-      -
-        name: Import GPG key
+      - name: Import GPG key
         id: import_gpg
         uses: paultyng/ghaction-import-gpg@v2.1.0
         env:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           PASSPHRASE: ${{ secrets.PASSPHRASE }}
-      -
-        name: Run GoReleaser
+      - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
         with:
           version: latest
