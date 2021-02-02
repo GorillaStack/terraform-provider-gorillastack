@@ -6,7 +6,7 @@ description: |-
   
 ---
 
-# Resource `gorillastack_rule`
+# gorillastack_rule (Resource)
 
 
 
@@ -29,7 +29,7 @@ description: |-
 - **labels** (List of String)
 - **user_group** (String)
 
-### Read-only
+### Read-Only
 
 - **_id** (String)
 - **created_at** (Number)
@@ -111,7 +111,7 @@ Optional:
 - **tag_group_combiner** (String)
 - **tag_groups** (List of String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -166,7 +166,7 @@ Optional:
 - **tag_group_combiner** (String)
 - **tag_groups** (List of String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -191,7 +191,7 @@ Optional:
 - **tag_group_combiner** (String)
 - **tag_groups** (List of String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -213,7 +213,7 @@ Optional:
 - **tag_group_combiner** (String)
 - **tag_groups** (List of String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -244,7 +244,7 @@ Optional:
 - **no_reboot** (Boolean)
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -275,7 +275,7 @@ Optional:
 - **additional_tags** (List of Object) (see [below for nested schema](#nestedatt--actions--create_snapshots--additional_tags))
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -307,7 +307,7 @@ Optional:
 - **additional_tags** (List of Object) (see [below for nested schema](#nestedatt--actions--create_vss_snapshots--additional_tags))
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -334,7 +334,7 @@ Optional:
 
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -348,7 +348,7 @@ Required:
 - **index** (Number)
 - **wait_duration** (Number)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 
@@ -368,7 +368,7 @@ Optional:
 - **tag_group_combiner** (String)
 - **tag_groups** (List of String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -390,7 +390,7 @@ Optional:
 - **tag_group_combiner** (String)
 - **tag_groups** (List of String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -410,7 +410,7 @@ Optional:
 - **tag_group_combiner** (String)
 - **tag_groups** (List of String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -434,7 +434,7 @@ Optional:
 - **tag_group_combiner** (String)
 - **tag_groups** (List of String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -455,7 +455,7 @@ Optional:
 - **tag_groups** (List of String)
 - **working_directory** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -476,7 +476,7 @@ Optional:
 - **tag_groups** (List of String)
 - **working_directory** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -497,7 +497,7 @@ Optional:
 - **payload** (String)
 - **replace_conflicting_vars** (Boolean)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -529,7 +529,7 @@ Optional:
 - **tag_group_combiner** (String)
 - **tag_groups** (List of String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -558,7 +558,7 @@ Optional:
 
 - **notifications** (Block List, Max: 1) (see [below for nested schema](#nestedblock--actions--manual_approval--notifications))
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 
@@ -602,7 +602,7 @@ Required:
 - **notifications** (Block List, Min: 1, Max: 1) (see [below for nested schema](#nestedblock--actions--notify_cost--notifications))
 - **service** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -650,7 +650,7 @@ Optional:
 
 - **notification_field_mapping** (List of Object) (see [below for nested schema](#nestedatt--actions--notify_event--notification_field_mapping))
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -704,7 +704,7 @@ Required:
 - **index** (Number)
 - **notifications** (Block List, Min: 1, Max: 1) (see [below for nested schema](#nestedblock--actions--notify_instance_count--notifications))
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -752,7 +752,7 @@ Optional:
 
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -772,7 +772,7 @@ Optional:
 - **tag_group_combiner** (String)
 - **tag_groups** (List of String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -788,7 +788,7 @@ Required:
 - **index** (Number)
 - **resource_group** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -807,7 +807,7 @@ Optional:
 
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -825,7 +825,7 @@ Optional:
 
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -846,7 +846,7 @@ Optional:
 - **wait_instance_status** (Boolean)
 - **wait_system_status** (Boolean)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -868,7 +868,7 @@ Optional:
 - **wait_instance_status** (Boolean)
 - **wait_system_status** (Boolean)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -886,7 +886,7 @@ Optional:
 
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -904,7 +904,7 @@ Optional:
 
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -922,7 +922,7 @@ Optional:
 
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -940,7 +940,7 @@ Optional:
 
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -958,7 +958,7 @@ Optional:
 
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -979,7 +979,7 @@ Optional:
 - **wait_instance_status** (Boolean)
 - **wait_system_status** (Boolean)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -1001,7 +1001,7 @@ Optional:
 - **wait_instance_status** (Boolean)
 - **wait_system_status** (Boolean)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -1019,7 +1019,7 @@ Optional:
 
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -1037,7 +1037,7 @@ Optional:
 
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -1055,7 +1055,7 @@ Optional:
 
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -1074,7 +1074,7 @@ Optional:
 
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -1095,7 +1095,7 @@ Optional:
 - **restore_to_previous_scale** (Boolean)
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -1120,7 +1120,7 @@ Optional:
 - **store_existing_autoscaling_settings** (Boolean)
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -1141,7 +1141,7 @@ Optional:
 - **min** (Number)
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -1165,7 +1165,7 @@ Optional:
 - **store_existing_asg_settings** (Boolean)
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -1185,7 +1185,7 @@ Optional:
 - **tag_group_combiner** (String)
 - **throughput** (Number)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -1205,7 +1205,7 @@ Optional:
 - **tag_group_combiner** (String)
 - **throughput** (Number)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -1225,7 +1225,7 @@ Optional:
 - **tag_group_combiner** (String)
 - **write_units** (Number)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -1247,7 +1247,7 @@ Optional:
 
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -1266,7 +1266,7 @@ Optional:
 
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -1285,7 +1285,7 @@ Optional:
 
 - **tag_group_combiner** (String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -1305,7 +1305,7 @@ Optional:
 - **tag_group_combiner** (String)
 - **tag_groups** (List of String)
 
-Read-only:
+Read-Only:
 
 - **action** (String)
 - **action_id** (String)
@@ -1338,7 +1338,7 @@ Optional:
 - **account_ids** (List of String)
 - **regions** (List of String)
 
-Read-only:
+Read-Only:
 
 - **platform** (String)
 
@@ -1350,7 +1350,7 @@ Optional:
 
 - **subscription_ids** (List of String)
 
-Read-only:
+Read-Only:
 
 - **platform** (String)
 
@@ -1365,6 +1365,7 @@ Optional:
 - **cost_threshold** (Block List, Max: 1) (see [below for nested schema](#nestedblock--trigger--cost_threshold))
 - **detached_volumes_detected** (Block List, Max: 1) (see [below for nested schema](#nestedblock--trigger--detached_volumes_detected))
 - **incoming_webhook** (Block List, Max: 1) (see [below for nested schema](#nestedblock--trigger--incoming_webhook))
+- **manual** (Block List) (see [below for nested schema](#nestedblock--trigger--manual))
 - **number_of_instances_threshold** (Block List, Max: 1) (see [below for nested schema](#nestedblock--trigger--number_of_instances_threshold))
 - **schedule** (Block List, Max: 1) (see [below for nested schema](#nestedblock--trigger--schedule))
 - **sns_push** (Block List, Max: 1) (see [below for nested schema](#nestedblock--trigger--sns_push))
@@ -1380,7 +1381,7 @@ Optional:
 
 - **match_expression** (Block List, Max: 1) (see [below for nested schema](#nestedblock--trigger--cloudtrail_event--match_expression))
 
-Read-only:
+Read-Only:
 
 - **trigger** (String)
 
@@ -1399,7 +1400,7 @@ Required:
 
 - **expression** (String)
 
-Read-only:
+Read-Only:
 
 - **expression_language** (String)
 
@@ -1413,7 +1414,7 @@ Required:
 - **service** (String)
 - **threshold** (Number)
 
-Read-only:
+Read-Only:
 
 - **exceeded** (Boolean)
 - **trigger** (String)
@@ -1426,7 +1427,7 @@ Required:
 
 - **days_detached** (Number)
 
-Read-only:
+Read-Only:
 
 - **trigger** (String)
 
@@ -1438,7 +1439,15 @@ Required:
 
 - **webhook_id** (String)
 
-Read-only:
+Read-Only:
+
+- **trigger** (String)
+
+
+<a id="nestedblock--trigger--manual"></a>
+### Nested Schema for `trigger.manual`
+
+Optional:
 
 - **trigger** (String)
 
@@ -1450,7 +1459,7 @@ Required:
 
 - **threshold** (Number)
 
-Read-only:
+Read-Only:
 
 - **exceeded** (Boolean)
 - **trigger** (String)
@@ -1470,7 +1479,7 @@ Optional:
 - **default_snooze_duration** (Number)
 - **notifications** (Block List, Max: 1) (see [below for nested schema](#nestedblock--trigger--schedule--notifications))
 
-Read-only:
+Read-Only:
 
 - **trigger** (String)
 
@@ -1512,7 +1521,7 @@ Required:
 
 - **sns_subscription_id** (String)
 
-Read-only:
+Read-Only:
 
 - **trigger** (String)
 

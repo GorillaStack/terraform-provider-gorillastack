@@ -34,13 +34,11 @@ func triggerSchema() map[string]*schema.Schema {
 			MaxItems: 1,
 			Optional: true,
 		},
-		// "manual": {
-		// 	Type:     schema.TypeList,
-		// 	Elem:     &schema.Resource{Schema: manualTriggerSchema()},
-		// 	MinItems: 1,
-		// 	MaxItems: 1,
-		// 	Optional: true,
-		// },
+		"manual": {
+			Type:     schema.TypeList,
+			Elem:     &schema.Resource{Schema: manualTriggerSchema()},
+			Optional: true,
+		},
 		"number_of_instances_threshold": {
 			Type:     schema.TypeList,
 			Elem:     &schema.Resource{Schema: numberOfInstancesThresholdTriggerSchema()},
@@ -211,7 +209,8 @@ func manualTriggerSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"trigger": {
 			Type:     schema.TypeString,
-			Computed: true,
+			Optional: true,
+			Default: "manual",
 		},
 	}
 }
