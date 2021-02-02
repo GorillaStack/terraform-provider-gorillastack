@@ -62,7 +62,7 @@ func ruleSchema() map[string]*schema.Schema {
 			Elem:     &schema.Resource{Schema: triggerSchema()},
 			MinItems: 1,
 			MaxItems: 1,
-			Required: true,
+			Required: true,	
 		},
 		"actions": {
 			Type:     schema.TypeList,
