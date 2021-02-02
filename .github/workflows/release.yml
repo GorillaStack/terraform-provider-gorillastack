@@ -11,6 +11,9 @@
 #
 name: release
 on:
+  create:
+    tags:
+      - 'v*'
   push:
     tags:
       - 'v*'
