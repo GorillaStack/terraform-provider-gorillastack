@@ -122,6 +122,7 @@ Read-Only:
 Optional:
 
 - **email** (Block List, Max: 1) (see [below for nested schema](#nestedblock--actions--check_tag_compliance--notifications--email))
+- **slack_app** (Block List, Max: 1) (see [below for nested schema](#nestedblock--actions--check_tag_compliance--notifications--slack_app))
 - **slack_webhook** (Block List, Max: 1) (see [below for nested schema](#nestedblock--actions--check_tag_compliance--notifications--slack_webhook))
 
 <a id="nestedblock--actions--check_tag_compliance--notifications--email"></a>
@@ -135,6 +136,14 @@ Optional:
 
 - **email_addresses** (List of String)
 - **send_to_user_group** (Boolean)
+
+
+<a id="nestedblock--actions--check_tag_compliance--notifications--slack_app"></a>
+### Nested Schema for `actions.check_tag_compliance.notifications.slack_webhook`
+
+Required:
+
+- **installation_id** (String)
 
 
 <a id="nestedblock--actions--check_tag_compliance--notifications--slack_webhook"></a>
@@ -568,6 +577,7 @@ Read-Only:
 Optional:
 
 - **email** (Block List, Max: 1) (see [below for nested schema](#nestedblock--actions--manual_approval--notifications--email))
+- **slack_app** (Block List, Max: 1) (see [below for nested schema](#nestedblock--actions--manual_approval--notifications--slack_app))
 - **slack_webhook** (Block List, Max: 1) (see [below for nested schema](#nestedblock--actions--manual_approval--notifications--slack_webhook))
 
 <a id="nestedblock--actions--manual_approval--notifications--email"></a>
@@ -581,6 +591,14 @@ Optional:
 
 - **email_addresses** (List of String)
 - **send_to_user_group** (Boolean)
+
+
+<a id="nestedblock--actions--manual_approval--notifications--slack_app"></a>
+### Nested Schema for `actions.manual_approval.notifications.slack_webhook`
+
+Required:
+
+- **installation_id** (String)
 
 
 <a id="nestedblock--actions--manual_approval--notifications--slack_webhook"></a>
@@ -613,6 +631,7 @@ Read-Only:
 Optional:
 
 - **email** (Block List, Max: 1) (see [below for nested schema](#nestedblock--actions--notify_cost--notifications--email))
+- **slack_app** (Block List, Max: 1) (see [below for nested schema](#nestedblock--actions--notify_cost--notifications--slack_app))
 - **slack_webhook** (Block List, Max: 1) (see [below for nested schema](#nestedblock--actions--notify_cost--notifications--slack_webhook))
 
 <a id="nestedblock--actions--notify_cost--notifications--email"></a>
@@ -626,6 +645,14 @@ Optional:
 
 - **email_addresses** (List of String)
 - **send_to_user_group** (Boolean)
+
+
+<a id="nestedblock--actions--notify_cost--notifications--slack_app"></a>
+### Nested Schema for `actions.notify_cost.notifications.slack_webhook`
+
+Required:
+
+- **installation_id** (String)
 
 
 <a id="nestedblock--actions--notify_cost--notifications--slack_webhook"></a>
@@ -661,6 +688,7 @@ Read-Only:
 Optional:
 
 - **email** (Block List, Max: 1) (see [below for nested schema](#nestedblock--actions--notify_event--notifications--email))
+- **slack_app** (Block List, Max: 1) (see [below for nested schema](#nestedblock--actions--notify_event--notifications--slack_app))
 - **slack_webhook** (Block List, Max: 1) (see [below for nested schema](#nestedblock--actions--notify_event--notifications--slack_webhook))
 
 <a id="nestedblock--actions--notify_event--notifications--email"></a>
@@ -674,6 +702,14 @@ Optional:
 
 - **email_addresses** (List of String)
 - **send_to_user_group** (Boolean)
+
+
+<a id="nestedblock--actions--notify_event--notifications--slack_app"></a>
+### Nested Schema for `actions.notify_event.notifications.slack_webhook`
+
+Required:
+
+- **installation_id** (String)
 
 
 <a id="nestedblock--actions--notify_event--notifications--slack_webhook"></a>
@@ -715,6 +751,7 @@ Read-Only:
 Optional:
 
 - **email** (Block List, Max: 1) (see [below for nested schema](#nestedblock--actions--notify_instance_count--notifications--email))
+- **slack_app** (Block List, Max: 1) (see [below for nested schema](#nestedblock--actions--notify_instance_count--notifications--slack_app))
 - **slack_webhook** (Block List, Max: 1) (see [below for nested schema](#nestedblock--actions--notify_instance_count--notifications--slack_webhook))
 
 <a id="nestedblock--actions--notify_instance_count--notifications--email"></a>
@@ -728,6 +765,14 @@ Optional:
 
 - **email_addresses** (List of String)
 - **send_to_user_group** (Boolean)
+
+
+<a id="nestedblock--actions--notify_instance_count--notifications--slack_app"></a>
+### Nested Schema for `actions.notify_instance_count.notifications.slack_webhook`
+
+Required:
+
+- **installation_id** (String)
 
 
 <a id="nestedblock--actions--notify_instance_count--notifications--slack_webhook"></a>
@@ -1506,6 +1551,7 @@ Read-Only:
 Optional:
 
 - **email** (Block List, Max: 1) (see [below for nested schema](#nestedblock--trigger--schedule--notifications--email))
+- **slack_app** (Block List, Max: 1) (see [below for nested schema](#nestedblock--trigger--schedule--notifications--slack_app))
 - **slack_webhook** (Block List, Max: 1) (see [below for nested schema](#nestedblock--trigger--schedule--notifications--slack_webhook))
 
 <a id="nestedblock--trigger--schedule--notifications--email"></a>
@@ -1519,6 +1565,14 @@ Optional:
 
 - **email_addresses** (List of String)
 - **send_to_user_group** (Boolean)
+
+
+<a id="nestedblock--trigger--schedule--notifications--slack_app"></a>
+### Nested Schema for `trigger.schedule.notifications.slack_webhook`
+
+Required:
+
+- **installation_id** (String)
 
 
 <a id="nestedblock--trigger--schedule--notifications--slack_webhook"></a>
