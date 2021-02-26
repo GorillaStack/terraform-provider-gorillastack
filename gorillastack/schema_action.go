@@ -1471,10 +1471,6 @@ func ruleChangeMatchSchema() map[string]*schema.Schema {
 			Required:     true,
 			ValidateFunc: validation.StringInSlice([]string{"ingress", "egress"}, false),
 		},
-		"fields": {
-			Type:     schema.TypeMap,
-			Optional: true,
-		},
 	}
 }
 
@@ -1491,13 +1487,17 @@ func ruleChangeChangeSchema() map[string]*schema.Schema {
 func securityGroupRuleChangesSchema() map[string]*schema.Schema {
 	return map[string]*schema.Schema{
 		"match": {
-			Type:     schema.TypeMap,
+			Type:     schema.TypeList,
 			Required: true,
+			MinItems: 1,
+			MaxItems: 1,
 			Elem:     &schema.Resource{Schema: ruleChangeMatchSchema()},
 		},
 		"change": {
-			Type:     schema.TypeMap,
+			Type:     schema.TypeList,
 			Required: true,
+			MinItems: 1,
+			MaxItems: 1,
 			Elem:     &schema.Resource{Schema: ruleChangeChangeSchema()},
 		},
 	}
