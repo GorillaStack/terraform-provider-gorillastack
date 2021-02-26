@@ -68,6 +68,15 @@ func constructNotification(notificationData map[string]interface{}) *Notificatio
 		}
 	}
 
+	rawSlackApps := notificationData["slack_app"].([]interface{})
+	if len(rawSlackApps) > 0 {
+		rawSlackApp := rawSlackApps[0].(map[string]interface{})
+
+		notification.SlackApp = &SlackAppNotificationConfig{
+			InstallationId: util.StringAddress(rawSlackApp["installation_id"].(string)),
+		}
+	}
+
 	rawEmailConfigs := notificationData["email"].([]interface{})
 	if len(rawEmailConfigs) > 0 {
 		rawEmailConfig := rawEmailConfigs[0].(map[string]interface{})
