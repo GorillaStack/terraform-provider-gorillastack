@@ -1315,8 +1315,25 @@ Read-Only:
 
 Required:
 
-- **change** (Map of String)
-- **match** (Map of String)
+- **change** (Block List, Min: 1, Max: 1) (see [below for nested schema](#nestedblock--actions--update_security_groups--rule_changes--change))
+- **match** (Block List, Min: 1, Max: 1) (see [below for nested schema](#nestedblock--actions--update_security_groups--rule_changes--match))
+
+<a id="nestedblock--actions--update_security_groups--rule_changes--change"></a>
+### Nested Schema for `actions.update_security_groups.rule_changes.match`
+
+Required:
+
+- **operation** (String)
+
+
+<a id="nestedblock--actions--update_security_groups--rule_changes--match"></a>
+### Nested Schema for `actions.update_security_groups.rule_changes.match`
+
+Required:
+
+- **direction** (String)
+- **type** (String)
+
 
 
 
