@@ -145,6 +145,11 @@ Required:
 
 - **installation_id** (String)
 
+Optional:
+
+- **channels** (List of String)
+- **users** (List of String)
+
 
 <a id="nestedblock--actions--check_tag_compliance--notifications--slack_webhook"></a>
 ### Nested Schema for `actions.check_tag_compliance.notifications.slack_webhook`
@@ -600,6 +605,11 @@ Required:
 
 - **installation_id** (String)
 
+Optional:
+
+- **channels** (List of String)
+- **users** (List of String)
+
 
 <a id="nestedblock--actions--manual_approval--notifications--slack_webhook"></a>
 ### Nested Schema for `actions.manual_approval.notifications.slack_webhook`
@@ -653,6 +663,11 @@ Optional:
 Required:
 
 - **installation_id** (String)
+
+Optional:
+
+- **channels** (List of String)
+- **users** (List of String)
 
 
 <a id="nestedblock--actions--notify_cost--notifications--slack_webhook"></a>
@@ -710,6 +725,11 @@ Optional:
 Required:
 
 - **installation_id** (String)
+
+Optional:
+
+- **channels** (List of String)
+- **users** (List of String)
 
 
 <a id="nestedblock--actions--notify_event--notifications--slack_webhook"></a>
@@ -773,6 +793,11 @@ Optional:
 Required:
 
 - **installation_id** (String)
+
+Optional:
+
+- **channels** (List of String)
+- **users** (List of String)
 
 
 <a id="nestedblock--actions--notify_instance_count--notifications--slack_webhook"></a>
@@ -1573,6 +1598,11 @@ Optional:
 Required:
 
 - **installation_id** (String)
+
+Optional:
+
+- **channels** (List of String)
+- **users** (List of String)
 
 
 <a id="nestedblock--trigger--schedule--notifications--slack_webhook"></a>
