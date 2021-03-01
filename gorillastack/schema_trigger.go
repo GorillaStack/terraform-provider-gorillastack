@@ -92,6 +92,16 @@ func notificationSchema() map[string]*schema.Schema {
 						Type:     schema.TypeString,
 						Required: true,
 					},
+					"channels": {
+						Type:     schema.TypeList,
+						Optional: true,
+						Elem:     &schema.Schema{Type: schema.TypeString},
+					},
+					"users": {
+						Type:     schema.TypeList,
+						Optional: true,
+						Elem:     &schema.Schema{Type: schema.TypeString},
+					},
 				},
 			},
 		},

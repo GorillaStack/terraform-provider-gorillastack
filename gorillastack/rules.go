@@ -45,7 +45,9 @@ type SlackNotificationConfig struct {
 }
 
 type SlackAppNotificationConfig struct {
-	InstallationId *string
+	InstallationId	*string
+	Channels 			 	[]*string
+	Users 			 		[]*string
 }
 
 type EmailNotificationConfig struct {
