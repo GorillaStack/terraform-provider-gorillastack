@@ -81,6 +81,30 @@ func notificationSchema() map[string]*schema.Schema {
 				},
 			},
 		},
+		"slack_app": {
+			Type:     schema.TypeList,
+			Optional: true,
+			MinItems: 1,
+			MaxItems: 1,
+			Elem: &schema.Resource{
+				Schema: map[string]*schema.Schema{
+					"installation_id": {
+						Type:     schema.TypeString,
+						Required: true,
+					},
+					"channels": {
+						Type:     schema.TypeList,
+						Optional: true,
+						Elem:     &schema.Schema{Type: schema.TypeString},
+					},
+					"users": {
+						Type:     schema.TypeList,
+						Optional: true,
+						Elem:     &schema.Schema{Type: schema.TypeString},
+					},
+				},
+			},
+		},
 		"email": {
 			Type:     schema.TypeList,
 			Optional: true,

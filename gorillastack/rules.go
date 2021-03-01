@@ -44,6 +44,12 @@ type SlackNotificationConfig struct {
 	RoomId *string
 }
 
+type SlackAppNotificationConfig struct {
+	InstallationId	*string
+	Channels 			 	[]*string
+	Users 			 		[]*string
+}
+
 type EmailNotificationConfig struct {
 	SendToTeam      *bool
 	SendToUserGroup *bool
@@ -51,8 +57,9 @@ type EmailNotificationConfig struct {
 }
 
 type Notification struct {
-	Slack *SlackNotificationConfig
-	Email *EmailNotificationConfig
+	Slack			*SlackNotificationConfig
+	SlackApp	*SlackAppNotificationConfig
+	Email			*EmailNotificationConfig
 }
 
 type Context struct {

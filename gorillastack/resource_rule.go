@@ -68,6 +68,23 @@ func constructNotification(notificationData map[string]interface{}) *Notificatio
 		}
 	}
 
+	rawSlackApps := notificationData["slack_app"].([]interface{})
+	if len(rawSlackApps) > 0 {
+		rawSlackApp := rawSlackApps[0].(map[string]interface{})
+
+		notification.SlackApp = &SlackAppNotificationConfig{
+			InstallationId: util.StringAddress(rawSlackApp["installation_id"].(string)),
+		}
+
+		if channels := util.ArrayOfStringPointers(rawSlackApp["channels"].([]interface{})); len(channels) > 0 {
+			notification.SlackApp.Channels = channels
+		}
+
+		if users := util.ArrayOfStringPointers(rawSlackApp["users"].([]interface{})); len(users) > 0 {
+			notification.SlackApp.Users = users
+		}
+	}
+
 	rawEmailConfigs := notificationData["email"].([]interface{})
 	if len(rawEmailConfigs) > 0 {
 		rawEmailConfig := rawEmailConfigs[0].(map[string]interface{})
