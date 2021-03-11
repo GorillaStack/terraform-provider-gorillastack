@@ -96,6 +96,10 @@ func (c *Client) DeleteTagGroup(teamId string, tagGroupId string) error {
 	var result string
 	_, err = c.do(req, &result)
 
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
