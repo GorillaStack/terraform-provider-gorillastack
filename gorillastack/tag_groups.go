@@ -93,7 +93,7 @@ func (c *Client) DeleteTagGroup(teamId string, tagGroupId string) error {
 		return err
 	}
 
-	var result string
+	var result TagGroupApiOutput
 	_, err = c.do(req, &result)
 
 	if err != nil {
