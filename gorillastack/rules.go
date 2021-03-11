@@ -346,6 +346,10 @@ func (c *Client) DeleteRule(teamId string, ruleId string) error {
 	var result string
 	_, err = c.do(req, &result)
 
+	if (err != nil) {
+		return err
+	}
+
 	return nil
 }
 
